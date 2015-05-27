@@ -2352,7 +2352,8 @@ void CGame::Packet_LuaEvent ( CLuaEventPacket& Packet )
     const char* szName = Packet.GetName ();
     ElementID ElementID = Packet.GetElementID ();
     CLuaArguments* pArguments = Packet.GetArguments ();
-
+    const char* szResourceName = Packet.GetResourceName ();
+    
     // Grab the element
     CElement* pElement = CElementIDs::GetElement ( ElementID );
     if ( pElement )
@@ -2366,10 +2367,10 @@ void CGame::Packet_LuaEvent ( CLuaEventPacket& Packet )
                 pElement->CallEvent ( szName, *pArguments, pCaller );
             }
             else
-                m_pScriptDebugging->LogError ( NULL, "Client (%s) triggered serverside event %s, but event is not marked as remotly triggerable", pCaller->GetNick(), szName );
+                m_pScriptDebugging->LogError ( NULL, "Resource (%s) at client (%s) triggered serverside event %s, but event is not marked as remotly triggerable", szResourceName, pCaller->GetNick(), szName );
         }
         else
-            m_pScriptDebugging->LogError ( NULL, "Client (%s) triggered serverside event %s, but event is not added serverside", pCaller->GetNick(), szName );
+            m_pScriptDebugging->LogError ( NULL, "Resource (%s) at client (%s) triggered serverside event %s, but event is not added serverside", szResourceName, pCaller->GetNick(), szName );
     }
 }
 

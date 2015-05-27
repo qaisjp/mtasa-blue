@@ -159,13 +159,13 @@ bool CStaticFunctionDefinitions::TriggerEvent ( const char* szName, CElement* pE
 }
 
 
-bool CStaticFunctionDefinitions::TriggerClientEvent ( const std::vector < CPlayer* >& sendList, const char* szName, CElement* pCallWithElement, CLuaArguments& Arguments )
+bool CStaticFunctionDefinitions::TriggerClientEvent ( const char* szResourceName, const std::vector < CPlayer* >& sendList, const char* szName, CElement* pCallWithElement, CLuaArguments& Arguments )
 {
     assert ( szName );
     assert ( pCallWithElement );
 
     // Make packet
-    CLuaEventPacket Packet ( szName, pCallWithElement->GetID (), &Arguments );
+    CLuaEventPacket Packet ( szName, pCallWithElement->GetID (), &Arguments, szResourceName );
 
     // Send packet to players
     CPlayerManager::Broadcast ( Packet, sendList );
@@ -176,13 +176,13 @@ bool CStaticFunctionDefinitions::TriggerClientEvent ( const std::vector < CPlaye
 }
 
 
-bool CStaticFunctionDefinitions::TriggerLatentClientEvent ( const std::vector < CPlayer* >& sendList, const char* szName, CElement* pCallWithElement, CLuaArguments& Arguments, int iBandwidth, CLuaMain* pLuaMain, ushort usResourceNetId )
+bool CStaticFunctionDefinitions::TriggerLatentClientEvent ( const char* szResourceName, const std::vector < CPlayer* >& sendList, const char* szName, CElement* pCallWithElement, CLuaArguments& Arguments, int iBandwidth, CLuaMain* pLuaMain, ushort usResourceNetId )
 {
     assert ( szName );
     assert ( pCallWithElement );
 
     // Make packet
-    CLuaEventPacket Packet ( szName, pCallWithElement->GetID (), &Arguments );
+    CLuaEventPacket Packet ( szName, pCallWithElement->GetID (), &Arguments, szResourceName );
 
     markerLatentEvent.Set ( "Make packet" );
 

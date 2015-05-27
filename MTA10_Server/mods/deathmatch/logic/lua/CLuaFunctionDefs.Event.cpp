@@ -236,7 +236,21 @@ int CLuaFunctionDefs::TriggerClientEvent ( lua_State* luaVM )
 
     if ( !argStream.HasErrors () )
     {
-        if ( CStaticFunctionDefinitions::TriggerClientEvent ( sendList, strName, pCallWithElement, Arguments ) )
+
+        // Grab our virtual machine to get the name of the resource
+        CLuaMain* pLuaMain = m_pLuaManager->GetVirtualMachine ( luaVM );
+        const char* szResourceName = "unknown";
+        if ( pLuaMain )
+        {
+            // Return the resource if any
+            CResource* pThisResource = pLuaMain->GetResource ();
+            if ( pThisResource )
+            {
+                szResourceName = pThisResource->GetName ().data (); // pretty sure we can't use c_str()
+            }
+        }
+
+        if ( CStaticFunctionDefinitions::TriggerClientEvent ( szResourceName, sendList, strName, pCallWithElement, Arguments ) )
         {
             lua_pushboolean ( luaVM, true );
             return 1;
@@ -283,6 +297,7 @@ int CLuaFunctionDefs::TriggerLatentClientEvent ( lua_State* luaVM )
         // Get resource details if transfer should be stopped when resource stops
         CLuaMain* pLuaMain = NULL;
         ushort usResourceNetId = 0xFFFF;
+        const char* szResourceName = "unknown";
         if ( !bPersist )
         {
             pLuaMain = g_pGame->GetLuaManager ()->GetVirtualMachine ( luaVM );
@@ -291,6 +306,7 @@ int CLuaFunctionDefs::TriggerLatentClientEvent ( lua_State* luaVM )
                 CResource* pResource = pLuaMain->GetResource ();
                 if ( pResource )
                 {
+                    szResourceName = pResource->GetName ().data ();
                     usResourceNetId = pResource->GetNetID ();
                 }
             }
@@ -299,7 +315,7 @@ int CLuaFunctionDefs::TriggerLatentClientEvent ( lua_State* luaVM )
         markerLatentEvent.SetAndStoreString ( SString ( "Get args (%d,%s)", sendList.size (), *strName ) );
 
         // Trigger it
-        if ( CStaticFunctionDefinitions::TriggerLatentClientEvent ( sendList, strName, pCallWithElement, Arguments, iBandwidth, pLuaMain, usResourceNetId ) )
+        if ( CStaticFunctionDefinitions::TriggerLatentClientEvent ( szResourceName, sendList, strName, pCallWithElement, Arguments, iBandwidth, pLuaMain, usResourceNetId ) )
         {
             markerLatentEvent.Set ( "End" );
 

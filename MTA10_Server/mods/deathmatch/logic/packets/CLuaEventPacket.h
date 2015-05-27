@@ -16,12 +16,13 @@
 
 #include "CPacket.h"
 #include "../lua/CLuaArguments.h"
+#include "../CResource.h"
 
 class CLuaEventPacket : public CPacket
 {
 public:
                             CLuaEventPacket             ( void );
-                            CLuaEventPacket             ( const char* szName, ElementID ID, CLuaArguments* pArguments );
+                            CLuaEventPacket             ( const char* szName, ElementID ID, CLuaArguments* pArguments, const char* szResourceName );
 
     inline ePacketID                GetPacketID                 ( void ) const              { return PACKET_ID_LUA_EVENT; };
     inline unsigned long            GetFlags                    ( void ) const              { return PACKET_HIGH_PRIORITY | PACKET_RELIABLE | PACKET_SEQUENCED; };
@@ -32,11 +33,13 @@ public:
     inline const char*      GetName                     ( void )                    { return m_strName; }
     inline ElementID        GetElementID                ( void )                    { return m_ElementID; }
     inline CLuaArguments*   GetArguments                ( void )                    { return m_pArguments; }
+    inline const char*      GetResourceName             ( void )                    { return m_strResourceName; }
 private:
     SString                 m_strName;
     ElementID               m_ElementID;
-    CLuaArguments           m_ArgumentsStore;
     CLuaArguments*          m_pArguments;
+    CLuaArguments           m_ArgumentsStore;
+    SString                 m_strResourceName;
 };
 
 #endif
