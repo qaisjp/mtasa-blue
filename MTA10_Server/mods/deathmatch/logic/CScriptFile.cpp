@@ -12,7 +12,7 @@
 
 #include "StdInc.h"
 
-CScriptFile::CScriptFile ( uint uiScriptId, const char* szFilename, unsigned long ulMaxSize ) : CElement ( NULL )
+CScriptFile::CScriptFile ( uint uiScriptId, const char* szFilename, unsigned long ulMaxSize, const char* szAbsPath ) : CElement ( NULL )
 {
     // Init
     m_iType = CElement::SCRIPTFILE;
@@ -20,6 +20,7 @@ CScriptFile::CScriptFile ( uint uiScriptId, const char* szFilename, unsigned lon
     m_uiScriptId = uiScriptId;
     m_pFile = NULL;
     m_strFilename = szFilename ? szFilename : "";
+    m_strAbsPath = szAbsPath;
     m_ulMaxSize = ulMaxSize;
 }
 

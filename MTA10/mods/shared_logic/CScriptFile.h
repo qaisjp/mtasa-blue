@@ -29,7 +29,7 @@ public:
         MODE_CREATE,
     };
 
-                            CScriptFile             ( const char* szFilename, unsigned long ulMaxSize );
+                            CScriptFile             ( const char* szFilename, unsigned long ulMaxSize, SString strFile );
                             ~CScriptFile            ( void );
 
     // Functions required for linking
@@ -45,10 +45,11 @@ public:
     bool                    Load                    ( eMode Mode );
     void                    Unload                  ( void );
     bool                    IsLoaded                ( void )    { return m_pFile != NULL; };
+    SString                 GetPath                 ( void )    { return m_strFilePath; };
 
-    // Only call functions belw this if you're sure that the file is loaded.
-    // Or you will crash.
-    bool                    IsEOF                   ( void );
+    // Only call functions these functions if you're sure
+    // that the file is loaded, otherwise you will crash:
+    bool                    IsEOF ( void );
     long                    GetPointer              ( void );
     long                    GetSize                 ( void );
 
@@ -63,6 +64,7 @@ private:
 
     CBinaryFileInterface*   m_pFile;
     std::string             m_strFilename;
+    SString                 m_strFilePath;
     unsigned long           m_ulMaxSize;
     bool                    m_bDoneResourceFileCheck;
 };

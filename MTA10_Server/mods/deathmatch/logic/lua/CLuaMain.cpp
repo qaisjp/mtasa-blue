@@ -618,22 +618,26 @@ void CLuaMain::AddFileClass ( lua_State* luaVM )
     lua_classfunction ( luaVM, "destroy", "fileClose" );
     lua_classfunction ( luaVM, "close", "fileClose" );
     lua_classfunction ( luaVM, "new", "fileCreate" );
-    
+    lua_classfunction ( luaVM, "write", "fileWrite" );
+    lua_classfunction ( luaVM, "read", "fileRead" );
+    lua_classfunction ( luaVM, "flush", "fileFlush" );
+
+    lua_classfunction ( luaVM, "copy", "fileCopy" );
+    lua_classfunction ( luaVM, "rename", "fileRename" );
     lua_classfunction ( luaVM, "delete", "fileDelete" );
     lua_classfunction ( luaVM, "exists", "fileExists" );
-    lua_classfunction ( luaVM, "flush", "fileFlush" );
+
     lua_classfunction ( luaVM, "getPos", "fileGetPos" );
     lua_classfunction ( luaVM, "getSize", "fileGetSize" );
+    lua_classfunction ( luaVM, "getPath", "fileGetPath" );
     lua_classfunction ( luaVM, "isEOF", "fileIsEOF" );
-    lua_classfunction ( luaVM, "read", "fileRead" );
-    lua_classfunction ( luaVM, "rename", "fileRename" );
-    lua_classfunction ( luaVM, "setPos", "fileSetPos" );
-    lua_classfunction ( luaVM, "write", "fileWrite" );
-    lua_classfunction ( luaVM, "copy", "fileCopy" );
+
+    lua_classfunction ( luaVM, "setPos", "fileSetPos" );    
     
     lua_classvariable ( luaVM, "pos", "fileSetPos", "fileGetPos" );
     lua_classvariable ( luaVM, "size", NULL, "fileGetSize" );
     lua_classvariable ( luaVM, "isEOF", NULL, "fileIsEOF" );
+    lua_classvariable ( luaVM, "path", NULL, "fileGetPath" );
 
     lua_registerclass ( luaVM, "File" );
 }

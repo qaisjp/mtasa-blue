@@ -13,12 +13,13 @@
 
 #include <StdInc.h>
 
-CScriptFile::CScriptFile ( const char* szFilename, unsigned long ulMaxSize ) : ClassInit ( this ), CClientEntity ( INVALID_ELEMENT_ID )
+CScriptFile::CScriptFile ( const char* szFilename, unsigned long ulMaxSize, SString strFile ) : ClassInit ( this ), CClientEntity ( INVALID_ELEMENT_ID )
 {
     // Init
     SetTypeName ( "file" );
     m_pFile = NULL;
     m_strFilename = szFilename ? szFilename : "";
+    m_strFilePath = strFile;
     m_ulMaxSize = ulMaxSize;
 }
 

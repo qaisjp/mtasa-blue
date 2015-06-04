@@ -27,7 +27,7 @@ public:
         MODE_CREATE,
     };
 
-                            CScriptFile             ( uint uiScriptId, const char* szFilename, unsigned long ulMaxSize );
+                            CScriptFile             ( uint uiScriptId, const char* szFilename, unsigned long ulMaxSize, const char* szFile );
                             ~CScriptFile            ( void );
 
     // Functions required by CElement
@@ -38,9 +38,10 @@ public:
     bool                    Load                    ( CResource* pResourceForFilePath, eMode Mode );
     void                    Unload                  ( void );
     bool                    IsLoaded                ( void )    { return m_pFile != NULL; };
+    const char*             GetPath                 ( void )    { return m_strAbsPath.c_str(); };
 
-    // Only call functions belw this if you're sure that the file is loaded.
-    // Or you will crash.
+    // Only call functions these functions if you're sure
+    // that the file is loaded, otherwise you will crash:
     bool                    IsEOF                   ( void );
     long                    GetPointer              ( void );
     long                    GetSize                 ( void );
@@ -56,6 +57,7 @@ private:
     FILE*                   m_pFile;
     uint                    m_uiScriptId;
     std::string             m_strFilename;
+    std::string             m_strAbsPath;
     unsigned long           m_ulMaxSize;
 };
 

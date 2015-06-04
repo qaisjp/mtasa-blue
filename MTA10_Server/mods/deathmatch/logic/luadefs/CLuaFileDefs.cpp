@@ -33,6 +33,7 @@ void CLuaFileDefs::LoadFunctions ( void )
     CLuaCFunctions::AddFunction ( "fileDelete", CLuaFileDefs::fileDelete );
     CLuaCFunctions::AddFunction ( "fileRename", CLuaFileDefs::fileRename );
     CLuaCFunctions::AddFunction ( "fileCopy", CLuaFileDefs::fileCopy );
+    CLuaCFunctions::AddFunction ( "fileGetPath", CLuaFileDefs::fileGetPath );
 }
 
 
@@ -74,7 +75,7 @@ int CLuaFileDefs::fileCreate ( lua_State* luaVM )
                     MakeSureDirExists ( strAbsPath.c_str () );
                     
                     // Create the file to create
-                    CScriptFile* pFile = new CScriptFile ( pThisResource->GetScriptID(), strSubPath.c_str (), DEFAULT_MAX_FILESIZE );
+                    CScriptFile* pFile = new CScriptFile ( pThisResource->GetScriptID(), strSubPath.c_str (), DEFAULT_MAX_FILESIZE, strAbsPath.c_str() );
                     assert ( pFile );
 
                     // Try to load it
@@ -198,14 +199,14 @@ int CLuaFileDefs::fileOpen ( lua_State* luaVM )
                 {
 
                     // Create the file to create
-                    CScriptFile* pFile = new CScriptFile ( pThisResource->GetScriptID(), strSubPath.c_str (), DEFAULT_MAX_FILESIZE );
+                    CScriptFile* pFile = new CScriptFile ( pThisResource->GetScriptID(), strSubPath.c_str (), DEFAULT_MAX_FILESIZE, strAbsPath.c_str() );
                     assert ( pFile );
 
                     // Try to load it
                     if ( ( bReadOnly && pFile->Load ( pResource, CScriptFile::MODE_READ ) ) ||
                         ( !bReadOnly && pFile->Load ( pResource, CScriptFile::MODE_READWRITE ) ) )
                     {
-                        // Add it to the scrpt resource element group
+                        // Add it to the script resource element group
                         CElementGroup* pGroup = pThisResource->GetElementGroup ();
                         if ( pGroup )
                         {
@@ -748,6 +749,36 @@ int CLuaFileDefs::fileCopy ( lua_State* luaVM )
 
     // Failed
     lua_pushboolean ( luaVM, false );
+    return 1;
+}
+
+int CLuaFileDefs::fileGetPath ( lua_State* luaVM )
+{
+    // string fileGetPath ( file theFile )
+    CScriptFile* pFile;
+
+    CScriptArgReader argStream ( luaVM );
+    argStream.ReadUserData ( pFile );
+
+    if ( !argStream.HasErrors () )
+    {
+        const char* strPath = pFile->GetPath ();
+        if ( strPath != NULL )
+        {
+            // Return its path
+            lua_pushstring ( luaVM, strPath );
+            return 1;
+        }
+        else
+        {
+            m_pScriptDebugging->LogBadPointer ( luaVM, "file", 1 );
+        }
+    }
+    else
+        m_pScriptDebugging->LogCustom ( luaVM, argStream.GetFullErrorMessage () );
+
+    // Error
+    lua_pushnil ( luaVM );
     return 1;
 }
 
