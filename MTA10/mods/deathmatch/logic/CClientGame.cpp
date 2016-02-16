@@ -72,6 +72,7 @@ CClientGame::CClientGame ( bool bLocalPlay )
     m_bLocalPlay = bLocalPlay;
     m_bErrorStartingLocal = false;
     m_iLocalConnectAttempts = 0;
+    m_customSound = nullptr;
     m_fMarkerBounce = 0.0f;
     m_Status = CClientGame::STATUS_CONNECTING;
     m_ulVerifyTimeStart = 0;
@@ -6348,6 +6349,8 @@ void CClientGame::SetDevelopmentMode ( bool bEnable, bool bEnableWeb )
 void CClientGame::StaticWorldSoundHandler ( uint uiGroup, uint uiIndex )
 {
     g_pClientGame->WorldSoundHandler ( uiGroup, uiIndex );
+    if (g_pClientGame->m_customSound)
+        g_pClientGame->GetManager ()->GetSoundManager ()->PlaySound2D ( g_pClientGame->m_customSound, false, false, false );
 } 
 
 

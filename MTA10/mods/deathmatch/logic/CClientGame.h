@@ -775,6 +775,7 @@ private:
     // Debug class. Empty in release.
 public:
     CFoo                                m_Foo;
+    SString m_customSound;
 
 private:
 

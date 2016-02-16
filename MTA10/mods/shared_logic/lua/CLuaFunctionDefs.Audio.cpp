@@ -48,6 +48,7 @@ int CLuaFunctionDefs::PlaySound ( lua_State* luaVM )
                 // Fixes #6507 - Caz
                 if ( pResource )
                 {
+                    m_pClientGame->m_customSound = strSound;
                     CClientSound* pSound = CStaticFunctionDefinitions::PlaySound ( pResource, strSound, bIsURL, bLoop, bThrottle );
                     if ( pSound )
                     {
