@@ -255,7 +255,6 @@ public:
     static bool  IsVehicleFrozen(CVehicle* pVehicle, bool& bFrozen);
     static bool  IsVehicleOnGround(CVehicle* pVehicle, bool& bOnGround);
     static bool  GetVehicleEngineState(CVehicle* pVehicle, bool& bState);
-    static bool  GetTrainPosition(CVehicle* pVehicle, float& fPosition);
     static bool  IsVehicleBlown(CVehicle* pVehicle);
     static bool  GetVehicleHeadLightColor(CVehicle* pVehicle, SColor& outColor);
     static bool  GetVehicleDoorOpenRatio(CVehicle* pVehicle, unsigned char ucDoor, float& fRatio);
