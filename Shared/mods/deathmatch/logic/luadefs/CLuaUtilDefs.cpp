@@ -53,6 +53,7 @@ void CLuaUtilDefs::LoadFunctions(void)
 
     // Add functions
     for (const auto& pair : functions)
+    {
         CLuaCFunctions::AddFunction(pair.first, pair.second);
     }
 }

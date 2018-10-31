@@ -92,9 +92,6 @@ private:
 
     lua_State*        m_luaVM;
     CLuaTimerManager* m_pLuaTimerManager;
-
-    lua_State*        m_luaVM;
-    CLuaTimerManager* m_pLuaTimerManager;
     int               m_iPackageLoadedRef;
 
     bool m_bBeingDeleted;            // prevent it being deleted twice
