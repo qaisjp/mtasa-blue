@@ -117,6 +117,7 @@ class CAudioEngineSA : public CAudioEngine
 public:
     CAudioEngineSA(CAudioEngineSAInterface* pInterface);
 
+    void          DisplayRadioStationName();
     VOID          PlayFrontEndSound(DWORD dwSound);
     VOID          PlayBeatTrack(short iTrack);
     VOID          SetEffectsMasterVolume(BYTE bVolume);            // 64 = max volume

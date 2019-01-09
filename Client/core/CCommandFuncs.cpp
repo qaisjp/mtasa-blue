@@ -444,6 +444,7 @@ void CCommandFuncs::DebugClear(const char* szParameters)
 
 void CCommandFuncs::Test(const char* szParameters)
 {
+    CCore::GetSingleton().GetGame()->GetAudioEngine()->DisplayRadioStationName();
     if (SStringX(szParameters) == "ca")
     {
         SString strStats = CCrashDumpWriter::GetCrashAvertedStatsSoFar();

@@ -48,6 +48,7 @@ enum eAmbientSoundType
 class CAudioEngine
 {
 public:
+    virtual void          DisplayRadioStationName() = 0;
     virtual VOID          PlayFrontEndSound(DWORD dwSound) = 0;
     virtual VOID          PlayBeatTrack(short iTrack) = 0;
     virtual VOID          SetEffectsMasterVolume(BYTE bVolume) = 0;            // 64 = max volume

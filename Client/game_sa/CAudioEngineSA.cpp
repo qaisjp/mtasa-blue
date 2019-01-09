@@ -146,6 +146,47 @@ VOID CAudioEngineSA::StartRadio(unsigned int station)
     }
 }
 
+void CAudioEngineSA::DisplayRadioStationName()
+{
+    // typedef void(__thiscall * t_fn)(void* pThis);
+    // t_fn fn = (t_fn)FUNC_CAudioEngine_DisplayRadioStationName;
+    // fn(m_pInterface);
+
+    //DWORD dwFunc = (DWORD)0x507410;            // FUNC_CAudioEngine_DisplayRadioStationName;
+    //_asm
+    //{
+    //    mov ecx, CLASS_CAudioEngine
+    //    call dwFunc
+    //}
+
+    
+    typedef void(__thiscall * t_fn)(void* pThis, DWORD eventID, float volumeChange, float speed);
+    t_fn fn = (t_fn)FUNC_ReportFrontendAudioEvent;
+
+
+    
+
+       DWORD dwSound = 32;
+    if (*(DWORD*)VAR_AudioEventVolumes != 0 && dwSound <= 101)            // may prevent a crash
+    {
+      fn((void*)CLASS_CAudioEngine, dwSound, 0, 1.0f);
+
+        //DEBUG_TRACE("VOID CAudioEngineSA::PlayFrontEndSound(DWORD dwSound)");
+        //DWORD dwFunc = FUNC_ReportFrontendAudioEvent;
+        //FLOAT fUnknown = 2.0f;
+        ////fn((void*)CLASS_CAudioEngine, fUnknown, 0, dwSound);
+        //_asm
+        //{
+        //    push    fUnknown
+        //    push    0
+        //    push    dwSound
+        //    mov     ecx, CLASS_CAudioEngine
+        //    call    dwFunc
+        //}
+    }
+    
+}
+
 // 43 = race one
 // 32 = help
 // 13 = camera take picture
