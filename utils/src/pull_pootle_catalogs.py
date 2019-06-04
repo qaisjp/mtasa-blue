@@ -97,72 +97,75 @@ parser.add_option("-e", "--excludeusers", dest="excludeusers", default="",
 # http://translate.mtasa.com/export/client/nl/client.po
 # http://translate.mtasa.com/download/nl/client/client.po
 
-if options.rmdir:
-    # Clear our output directory first
-    if os.path.exists(options.output):
-        shutil.rmtree(options.output)
-    print ( "Cleared output directory: '%s'"%(options.output) )
+def main():
+    if options.rmdir:
+        # Clear our output directory first
+        if os.path.exists(options.output):
+            shutil.rmtree(options.output)
+        print ( "Cleared output directory: '%s'"%(options.output) )
 
-# Let's split our option strings into Python lists
-langlist = (options.languages).replace(" ","").split(",")
-excludeUserList = (options.excludeusers).replace(" ","").split(",")
+    # Let's split our option strings into Python lists
+    langlist = (options.languages).replace(" ","").split(",")
+    excludeUserList = (options.excludeusers).replace(" ","").split(",")
 
-# Select one language if required
-if options.langindex > -1:
-    if options.langindex >= len(langlist):
-        print ( "Index out of range" )
-        sys.exit(2)
-    langlist = [langlist[options.langindex]]
+    # Select one language if required
+    if options.langindex > -1:
+        if options.langindex >= len(langlist):
+            print ( "Index out of range" )
+            sys.exit(2)
+        langlist = [langlist[options.langindex]]
 
-# Loop over the list
-for lang in (langlist):
-    # Let's create our full Pootle export URL depending on whether we're GNU or not
-    url = ""
-    alturl = ""
-    output = ""
-    if options.gnu:
-        url = urlparse.urljoin(options.url, "export/%s/%s.po"%(options.project,lang))
-        alturl = urlparse.urljoin(options.url, "download/%s/%s/%s.po"%(lang,options.project,lang))
-        output = os.path.join(options.output,"%s.po"%(lang))
-    else:
-        url = urlparse.urljoin(options.url, "export/%s/%s/%s.po"%(options.project,lang,options.project))
-        alturl = urlparse.urljoin(options.url, "download/%s/%s/%s.po"%(lang,options.project,options.project))
-        output = os.path.join(options.output,"%s/%s.po"%(lang,options.project))
-
-    # Read from alt url first (try to flush pootle cache)
-    content = myurlopenDeluxe(alturl,options.urltimeout,options.attempts)
-    content = myurlopenDeluxe(url,options.urltimeout,options.attempts)
-
-    path,tail = os.path.split(output)
-    if ( not os.path.exists(path) ):
-        os.makedirs(path)
-    
-    localFile = open(output, 'w')
-    localFile.write(content)
-    localFile.close()
-    print ( "Read '%s' and written to '%s'"%(url,output) )
-
-    # Tidy translators list
-    po = polib.pofile(output)
-    translatorList = po.metadata["Translators"].split('; ')
-    p = re.compile('(.*) "(.*)" (.*)')
-    newTranslatorList = []
-    for translator in (translatorList):
-        m = p.match(translator)
-        if not m:
-            accountName = translator
+    # Loop over the list
+    for lang in (langlist):
+        # Let's create our full Pootle export URL depending on whether we're GNU or not
+        url = ""
+        alturl = ""
+        output = ""
+        if options.gnu:
+            url = urlparse.urljoin(options.url, "export/%s/%s.po"%(options.project,lang))
+            alturl = urlparse.urljoin(options.url, "download/%s/%s/%s.po"%(lang,options.project,lang))
+            output = os.path.join(options.output,"%s.po"%(lang))
         else:
-            firstName = m.group(1)
-            accountName = m.group(2)
-            secondName = m.group(3)
-            if firstName != secondName:
-                translator = firstName+" "+secondName
+            url = urlparse.urljoin(options.url, "export/%s/%s/%s.po"%(options.project,lang,options.project))
+            alturl = urlparse.urljoin(options.url, "download/%s/%s/%s.po"%(lang,options.project,options.project))
+            output = os.path.join(options.output,"%s/%s.po"%(lang,options.project))
+
+        # Read from alt url first (try to flush pootle cache)
+        content = myurlopenDeluxe(alturl,options.urltimeout,options.attempts)
+        content = myurlopenDeluxe(url,options.urltimeout,options.attempts)
+
+        path,tail = os.path.split(output)
+        if ( not os.path.exists(path) ):
+            os.makedirs(path)
+        
+        localFile = open(output, 'w')
+        localFile.write(content)
+        localFile.close()
+        print ( "Read '%s' and written to '%s'"%(url,output) )
+
+        # Tidy translators list
+        po = polib.pofile(output)
+        translatorList = po.metadata["Translators"].split('; ')
+        p = re.compile('(.*) "(.*)" (.*)')
+        newTranslatorList = []
+        for translator in (translatorList):
+            m = p.match(translator)
+            if not m:
+                accountName = translator
             else:
-                translator = firstName
+                firstName = m.group(1)
+                accountName = m.group(2)
+                secondName = m.group(3)
+                if firstName != secondName:
+                    translator = firstName+" "+secondName
+                else:
+                    translator = firstName
 
-        # Remove admins from credits
-        if not accountName in excludeUserList:
-            newTranslatorList.append(translator)
+            # Remove admins from credits
+            if not accountName in excludeUserList:
+                newTranslatorList.append(translator)
 
-    po.metadata["Translators"] = "; ".join(newTranslatorList);
-    po.save(output)
+        po.metadata["Translators"] = "; ".join(newTranslatorList);
+        po.save(output)
+
+main()
