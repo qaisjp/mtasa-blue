@@ -30,7 +30,37 @@ directories = {
     #"../Server/locale/client.pot" : [ "../Server", "../Shared" ],
 }
 
+# You MUST have a pootle_path for every `.pot` file,
+# otherwise Pootle will not accept your pot
+pootle_path = {
+    "client.pot": "/templates/client/client.pot"
+}
+
+def pause():
+    raw_input("\nPress enter to continue...")
+
+def add_pot_header(filename, *headers):
+    with open(filename, "r+") as f:
+        sep = 'msgstr ""\n'
+        content = f.read()
+        content = content.split(sep, 1)
+        for header in headers:
+            content.insert(1, '"' + header + '\\n"\n')
+        content.insert(1, sep)
+        content = "".join(content)
+
+        f.seek(0)
+        f.write(content)
+        f.truncate()
+
 def main():
+    # Verify pot
+    for filename, _ in directories.iteritems():
+        if filename not in pootle_path:
+            print("pootle_path error! %s is missing." % filename)
+            pause()
+            return
+
     scanDirsList = []
 
     fd,temp_path = tempfile.mkstemp()
@@ -57,6 +87,9 @@ def main():
         scanDirsFile.writelines(scanDirsList)
         scanDirsFile.close()
 
+        # Generate X-Pootle-Path
+        x_pootle_path = "X-Pootle-Path: " + pootle_path[output]
+
         # If we have .pot in the destination, strip it (xgettext seems to append an extension regardless)
         path,ext = os.path.splitext(output)
         if ext == ".pot":
@@ -72,10 +105,15 @@ def main():
         stdout, stderr = proc.communicate()
         print stdout
         print stderr
+
+        # Apply x_pootle_path
+        add_pot_header(output+".po", x_pootle_path, "X-Pootle-Revision: 0")
         
-        #Rename our template to .pot (xgettext always outputs .po)
+        # Remove old pot
         if os.path.isfile(output + ".pot"):
             os.remove(output + ".pot")
+
+        # Rename our template to .pot (xgettext always outputs .po)
         if os.path.isfile(output + ".po"):
             os.rename(output + ".po", output + ".pot")
 
