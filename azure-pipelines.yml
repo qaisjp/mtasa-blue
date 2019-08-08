@@ -1,25 +1,5 @@
-resources:
-  containers:
-  - container: ci
-    image: sbx320/mtasa-blue-azure:latest
 
 jobs:
-- job: macOS
-  pool:
-    vmImage: 'macOS-10.14'
-  steps:
-  - bash: brew install mysql
-    displayName: 'Install MySQL'
-  - script: ./linux-build.sh
-    displayName: 'Run Build'
-
-- job: linux
-  pool:
-    vmImage: 'Ubuntu 16.04'
-  container: ci
-  steps:
-  - script: ./linux-build.sh
-    displayName: 'Run Build'
 
 - job: windows
   pool:
