@@ -4,7 +4,7 @@ on: push
 jobs:
   windows:
     name: Build on Windows
-    runs-on: windows-latest
+    runs-on: windows-2016
     # variables:
     #   solution: 'Build/MTASA.sln'
     #   buildConfiguration: 'Release'
