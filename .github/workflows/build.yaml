@@ -5,9 +5,6 @@ jobs:
   windows:
     name: Build on Windows
     runs-on: windows-2016
-    # variables:
-    #   solution: 'Build/MTASA.sln'
-    #   buildConfiguration: 'Release'
     steps:
       - uses: actions/checkout@v1
         with:
@@ -24,22 +21,20 @@ jobs:
       - name: Install CEF
         run: utils\premake5 install_cef
 
-#       - name: Create Visual Studio 2017 solution
-#         run: utils\premake5 vs2017
-#         env:
-#           DXSDK_DIR: './utils/DXFiles/'
-#           CI: 'true'
-
       - name: Run Build
         run: win-build.bat
         shell: cmd
         env:
           DXSDK_DIR: './utils/DXFiles/'
           CI: 'true'
-      # - task: VSBuild@1
-      #   inputs:
-      #     solution: '$(solution)'
-      #     configuration: '$(buildConfiguration)'
+      
+      - name: Create build artifacts
+        run: utils\premake5 compose_files
+      
+      - uses: actions/upload-artifact@master
+        with:
+          name: InstallFiles
+          path: InstallFiles/
 
   macOS:
     name: Build on macOS
