@@ -13,11 +13,23 @@ function make_cef_download_url()
 	return CEF_URL_PREFIX..http.escapeUrlParam(CEF_VERSION)..CEF_URL_SUFFIX
 end
 
+local function check_option_true(opt)
+	if _OPTIONS[opt] == nil then
+		return false
+	end
+	return _OPTIONS[opt] == "" or _OPTIONS[opt] == "true"
+end
+
 newaction {
 	trigger = "install_cef",
 	description = "Downloads and installs CEF",
 
-	execute = function()
+	execute = function(...)
+		if check_option_true("print-cef-version") then
+			print(CEF_VERSION)
+			return
+		end
+
 		-- Only execute on Windows
 		if os.host() ~= "windows" then return end
 
@@ -56,13 +68,18 @@ newaction {
 		-- Extract first bz2 and then tar
 		os.extract_archive(archive_path, CEF_PATH, true) -- Extract .tar.bz2 to .tar
 		os.extract_archive(CEF_PATH.."temp.tar", CEF_PATH, true) -- Extract .tar
-		
+
 		-- Move all files from cef_binary*/* to ./
 		os.expanddir_wildcard(CEF_PATH.."cef_binary*", CEF_PATH)
-		
+
 		-- Delete .tar archive, but keep .tar.bz2 for checksumming
 		os.remove(CEF_PATH.."temp.tar")
 	end
+}
+
+newoption {
+	trigger = "print-cef-version",
+	description = "prints the cef version when using the install_cef buildaction"
 }
 
 return premake.modules.install_cef
