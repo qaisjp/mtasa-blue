@@ -60,7 +60,7 @@ jobs:
     name: Build on Linux
     runs-on: ubuntu-16.04
     container:
-      image: docker.pkg.github.com/qaisjp/mtasa-blue/ci:latest
+      image: qaisjp/mtasa-blue/ci:latest
     steps:
       - uses: actions/checkout@v1
         with:
