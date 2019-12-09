@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUITooltip.h"
 #include "CEGUILogger.h"
 #include "CEGUIFont.h"
@@ -343,26 +342,20 @@ namespace CEGUI
         }
     }
 
-    void Tooltip::addTooltipEvents(bool bCommon)
+    void Tooltip::addTooltipEvents(void)
     {
-        if ( bCommon == false )
-        {
-            addEvent(EventHoverTimeChanged);
-            addEvent(EventDisplayTimeChanged);
-            addEvent(EventFadeTimeChanged);
-            addEvent(EventTooltipActive);
-            addEvent(EventTooltipInactive);
-        }
+        addEvent(EventHoverTimeChanged);
+        addEvent(EventDisplayTimeChanged);
+        addEvent(EventFadeTimeChanged);
+        addEvent(EventTooltipActive);
+        addEvent(EventTooltipInactive);
     }
 
-    void Tooltip::addTooltipProperties( bool bCommon )
+    void Tooltip::addTooltipProperties(void)
     {
-        if ( bCommon == false )
-        {
-            addProperty(&d_hoverTimeProperty);
-            addProperty(&d_displayTimeProperty);
-            addProperty(&d_fadeTimeProperty);
-        }
+        addProperty(&d_hoverTimeProperty);
+        addProperty(&d_displayTimeProperty);
+        addProperty(&d_fadeTimeProperty);
     }
 
     void Tooltip::onMouseEnters(MouseEventArgs& e)

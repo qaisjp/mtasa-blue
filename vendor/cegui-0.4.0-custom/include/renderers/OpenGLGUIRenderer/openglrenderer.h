@@ -312,7 +312,7 @@ private:
     struct MyQuad
     {
         float tex[2];
-        uint32 color;
+        long color;
         float vertex[3];
     };
 
@@ -326,10 +326,10 @@ private:
         Rect		position;
         float		z;
         Rect		texPosition;
-		uint32		topLeftCol;
-		uint32		topRightCol;
-		uint32		bottomLeftCol;
-		uint32		bottomRightCol;
+		long		topLeftCol;
+		long		topRightCol;
+		long		bottomLeftCol;
+		long		bottomRightCol;
 
         QuadSplitMode   splitMode;
 
@@ -361,7 +361,7 @@ private:
     void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// convert colour value to whatever the OpenGL system is expecting.
-	uint32	colourToOGL(const colour& col) const;
+	long	colourToOGL(const colour& col) const;
 
 	// set the module ID string
 	void setModuleIdentifierString();

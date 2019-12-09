@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIPopupMenu.h"
 #include "elements/CEGUIMenuItem.h"
 
@@ -326,13 +325,10 @@ void PopupMenu::onAlphaChanged(WindowEventArgs& e)
 /*************************************************************************
 	Add PopupMenu specific properties
 *************************************************************************/
-void PopupMenu::addPopupMenuProperties( bool bCommon )
+void PopupMenu::addPopupMenuProperties(void)
 {
-	if ( bCommon == false )
-    {
-        addProperty(&d_fadeInTimeProperty);
-        addProperty(&d_fadeOutTimeProperty);
-    }
+	addProperty(&d_fadeInTimeProperty);
+    addProperty(&d_fadeOutTimeProperty);
 }
 
 } // End of  CEGUI namespace section

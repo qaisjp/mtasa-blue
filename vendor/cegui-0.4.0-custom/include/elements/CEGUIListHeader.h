@@ -623,36 +623,6 @@ public:
 	void	setColumnPixelWidth(uint column, float width);
 
 
-	/*!
-	\brief
-		Set the column title of the specified column.
-
-	\param column
-		Column index for set title with in.
-
-	\param title
-		const char specifying the new title to set for the ListHeaderSegment at the zero based column
-		index specified by \a column.
-
-	\return
-		Nothing
-	*/
-	void    setColumnTitle(uint column, const char *title);
-
-
-	/*!
-	\brief
-		Get the column title of the specified column.
-
-	\param column
-		Column index for get title with in.
-
-	\return
-		String with column title
-	*/
-	const char*    getColumnTitle(uint column);
-
-
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -723,8 +693,7 @@ protected:
 	\brief
 		Add ListHeader specific events
 	*/
-	void	addListHeaderEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addListHeaderEvents(false); }
+	void	addListHeaderEvents(void);
 
 
 	/*!
@@ -869,8 +838,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addHeaderProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addHeaderProperties(false); }
+	void	addHeaderProperties(void);
 };
 
 } // End of  CEGUI namespace section

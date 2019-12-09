@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIFrameWindow.h"
 #include "CEGUIMouseCursor.h"
@@ -245,16 +244,10 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 /*************************************************************************
 	Add title bar specific properties
 *************************************************************************/
-void Titlebar::addTitlebarProperties( bool bCommon )
+void Titlebar::addTitlebarProperties(void)
 {
-	if ( bCommon == false )
-    {
-        addProperty(&d_dragEnabledProperty);
-    }
-    else
-    {
-	    addProperty(&d_captionColourProperty);
-    }
+	addProperty(&d_dragEnabledProperty);
+	addProperty(&d_captionColourProperty);
 }
 
 

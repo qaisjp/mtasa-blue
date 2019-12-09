@@ -152,8 +152,6 @@ public:
 	static const String EventKeyUp;					//!< A key on the keyboard was released.
 	static const String EventCharacterKey;			//!< A text character was typed on the keyboard.
 
-    // lil_Toady: This is our custom event, we use to handle redraws with
-    static const String EventRedrawRequested;
 
 	/*************************************************************************
 		Construction and Destruction
@@ -464,7 +462,7 @@ public:
 	\return
 		A String object that holds the current text for this Window.
 	*/
-	const String&	getText(bool bidified=false) const		{return bidified ? d_text : d_text_raw;}
+	const String&	getText(void) const		{return d_text;}
 
 
 	/*!
@@ -625,19 +623,6 @@ public:
 		Pointer to the child Window that was hit according to the Point \a position, or NULL if no child window was hit.
 	*/
 	Window*	getChildAtPosition(const Point& position) const;
-
-
-    /*!
-    \brief
-        return the child Window that is 'hit' by the given position, and is allowed to handle mouse events.
-
-    \param position
-        Point object that describes the position to check in screen pixels
-
-    \return
-        Pointer to the child Window that was hit according to the Point \a position, or NULL if no child window was hit.
-    */
-    Window* getTargetChildAtPosition(const Point& position) const;
 
 
 	/*!
@@ -1249,17 +1234,6 @@ public:
     */
     Window* getActiveSibling();
 
-    /*!
-    \brief
-        Returns whether this window should ignore mouse event and pass them through to and other windows behind it.
-        In effect making the window transparent to the mouse.
-
-    \return
-        true if mouse pass through is enabled.
-        false if mouse pass through is not enabled.
-    */
-    bool isMousePassThroughEnabled(void) const      {return d_mousePassThroughEnabled;}
-
     /*************************************************************************
 		Manipulator functions
 	*************************************************************************/
@@ -1740,17 +1714,8 @@ public:
 	\return
 		Nothing
 	*/
-	void	requestRedraw(void);
-    void	requestRedraw(void) const;
+	void	requestRedraw(void) const;
 
-    /*!
-	\brief
-		Signal the System object to redraw (at least) this Window on the next render cycle.
-
-	\return
-		Nothing
-	*/
-    void    forceRedraw(void);
 
 	/*!
 	\brief
@@ -2232,17 +2197,6 @@ public:
         Nothing.
     */
     void setUserString(const String& name, const String& value);
-
-    /*!
-    \brief
-        Sets whether this window should ignore mouse events and pass them through to any windows behind it.
-        In effect making the window transparent to the mouse.
-
-    \param setting
-        true if mouse pass through is enabled.
-        false if mouse pass through is not enabled.
-    */
-    void setMousePassThroughEnabled(bool setting)       {d_mousePassThroughEnabled = setting;}
 
     /*************************************************************************
 		Co-ordinate and Size Conversion Functions
@@ -3573,16 +3527,6 @@ protected:
     */
     virtual void    onHorizontalAlignmentChanged(WindowEventArgs& e);
 
-
-    /*! *** MTA EVENT ***
-    \brief
-        Handler called when cegui internally requests an object redraw
-
-    \param e
-        WindowEventArgs object initialised as follows:
-        - window field is set to point to the Window object whos redraw has been requested (typically 'this').
-    */
-    virtual void    onRedrawRequested(WindowEventArgs& e);
     
 	/*************************************************************************
 		Implementation Functions
@@ -3755,8 +3699,7 @@ protected:
 	Window*			d_oldCapture;		//!< The Window that previously had capture (used for restoreOldCapture mode)
 	Window*			d_parent;			//!< Holds pointer to the parent window.
 	const Font*		d_font;				//!< Holds pointer to the Window objects current Font.
-	String			d_text;				//!< Holds the visual text / label / caption for this Window.
-    String			d_text_raw;			//!< Holds the raw, unprocessed text / label / caption for this Window.
+	String			d_text;				//!< Holds the text / label / caption for this Window.
 	uint			d_ID;				//!< User ID assigned to this Window
 	float			d_alpha;			//!< Alpha transparency setting for the Window
     URect			d_area;             //!< This Window objects area as defined by a URect.
@@ -3809,9 +3752,6 @@ protected:
 
     // Look'N'Feel stuff
     String  d_lookName;         //!< Name of the Look assigned to this window (if any).
-
-    // Event pass through
-    bool    d_mousePassThroughEnabled;  //!< true if this window can never be "hit" by the cursor. false for normal mouse event handling.
 
 protected:
 	/*************************************************************************
@@ -3876,7 +3816,6 @@ protected:
     static	WindowProperties::UnifiedHeight		d_unifiedHeightProperty;
     static	WindowProperties::UnifiedMinSize	d_unifiedMinSizeProperty;
     static	WindowProperties::UnifiedMaxSize	d_unifiedMaxSizeProperty;
-    static  WindowProperties::MousePassThroughEnabled   d_mousePassThroughEnabledProperty;
 
 
 	/*************************************************************************
@@ -3886,8 +3825,7 @@ protected:
 	\brief
 		Add standard CEGUI::Window events
 	*/
-	void	addStandardEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addStandardEvents(false); }
+	void	addStandardEvents(void);
 
 	/*!
 	\brief
@@ -3918,8 +3856,7 @@ protected:
 	\brief
 		Add standard CEGUI::Window properties.
 	*/
-	void	addStandardProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addStandardProperties(false); }
+	void	addStandardProperties(void);
 
 
     /*!

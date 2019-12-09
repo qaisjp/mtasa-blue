@@ -30,7 +30,6 @@
 #define _CEGUIBase_h_
 
 #include <cassert>
-#include <algorithm>
 
 // bring in configuration options
 #include "CEGUIConfig.h"
@@ -54,9 +53,6 @@
 #       define CEGUIPRIVATE
 #endif
 
-// Statically linked, so blank it out
-#undef CEGUIEXPORT
-#define CEGUIEXPORT
 
 // totally kill this warning (debug info truncated to 255 chars etc...) on <= VC6
 #if defined(_MSC_VER) && (_MSC_VER <= 1200)
@@ -101,8 +97,8 @@
 #    define ceguimin	std::_cpp_min
 #    define ceguimax	std::_cpp_max
 #else
-template<class T> static inline T ceguimin ( const T& a, const T& b ) { return std::min(a,b); }
-template<class T> static inline T ceguimax ( const T& a, const T& b ) { return std::max(a,b); }
+#    define ceguimin	std::min
+#    define ceguimax	std::max
 #endif
 
 

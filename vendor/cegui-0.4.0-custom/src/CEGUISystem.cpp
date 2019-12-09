@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
@@ -65,7 +64,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-bool System::ms_bBidiEnabled = true;
 const String System::EventNamespace("System");
 
 /*!
@@ -231,7 +229,6 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	d_rctrl		= false;
     d_ralt      = false;
     d_lalt      = false;
-    d_started   = false;
 
 	d_click_timeout		= DefaultSingleClickTimeout;
 	d_dblclick_timeout	= DefaultMultiClickTimeout;
@@ -325,7 +322,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 
 	// cause creation of other singleton objects
 	new ImagesetManager();
-	d_fontManager = new FontManager();
+	new FontManager();
 	new WindowFactoryManager();
 	new WindowManager();
 	new SchemeManager();
@@ -479,7 +476,7 @@ System::~System(void)
 /*************************************************************************
 	Render the GUI for this frame
 *************************************************************************/
-bool System::renderGUI(void)
+void System::renderGUI(void)
 {
 	//////////////////////////////////////////////////////////////////////////
 	// This makes use of some tricks the Renderer can do so that we do not
@@ -491,19 +488,11 @@ bool System::renderGUI(void)
 	// drawn directly to the display every frame.
 	//////////////////////////////////////////////////////////////////////////
 
-    // Update cache timer
-    for ( FontManager::FontIterator fontIt = d_fontManager->getIterator() ; !fontIt.isAtEnd() ; ++fontIt )
-        (*fontIt)->pulse ();
-
 	if (d_gui_redraw)
 	{
 		d_renderer->resetZValue();
 		d_renderer->setQueueingEnabled(true);
 		d_renderer->clearRenderList();
-
-        // Build fonts while the render list is empty
-        for ( FontManager::FontIterator fontIt = d_fontManager->getIterator() ; !fontIt.isAtEnd() ; ++fontIt )
-            (*fontIt)->onClearRenderList ();
 
 		if (d_activeSheet != NULL)
 		{
@@ -513,23 +502,14 @@ bool System::renderGUI(void)
 		d_gui_redraw = false;
 	}
 
-	bool bRenderOk = d_renderer->doRender();
+	d_renderer->doRender();
 
 	// draw mouse
 	d_renderer->setQueueingEnabled(false);
-	// MouseCursor::getSingleton().draw();  This is done by MTA later
+	MouseCursor::getSingleton().draw();
 
     // do final destruction on dead-pool windows
     WindowManager::getSingleton().cleanDeadPool();
-
-    // Flag for redraw to rebuild fonts if needed
-    for ( FontManager::FontIterator fontIt = d_fontManager->getIterator() ; !fontIt.isAtEnd() ; ++fontIt )
-        if ( (*fontIt)->needsRebuild () )
-            d_gui_redraw = true;
-
-    d_started = true;
-
-    return bRenderOk;
 }
 
 
@@ -603,7 +583,6 @@ void System::setDefaultMouseCursor(const Image* image)
     // image directly without a call to this member changing the image back
     // again.  However, 'normal' updates to the cursor when the mouse enters
     // a window will, of course, update the mouse image as expected.
-#if 0
     if (MouseCursor::getSingleton().getImage() == d_defaultMouseCursor)
     {
         // does the window containing the mouse use the default cursor?
@@ -613,10 +592,6 @@ void System::setDefaultMouseCursor(const Image* image)
             MouseCursor::getSingleton().setImage(image);
         }
     }
-#else
-    // Hope fix for #8017: Crash on changing GUI skin.
-    MouseCursor::getSingleton().setImage(image);
-#endif
 
     // update our pointer for the default mouse cursor image.
     d_defaultMouseCursor = image;
@@ -781,11 +756,9 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 			if (d_wndWithMouse != NULL)
 			{
 				ma.window = d_wndWithMouse;
-                ma.switchedWindow = dest_window;
 				d_wndWithMouse->onMouseLeaves(ma);
 			}
 
-            ma.switchedWindow = d_wndWithMouse;
 			d_wndWithMouse = dest_window;
 			ma.window = dest_window;
 			dest_window->onMouseEnters(ma);
@@ -1039,7 +1012,6 @@ bool System::injectKeyUp(uint key_code)
 
 /*************************************************************************
 	Method that injects a typed character event into the system.
-    > Make sure the glyph is loaded for this font by calling setText on the place where it is used
 *************************************************************************/
 bool System::injectChar(utf32 code_point)
 {
@@ -1134,7 +1106,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 
 		if (dest_window == NULL)
 		{
-			dest_window = d_activeSheet->getTargetChildAtPosition(pt);
+			dest_window = d_activeSheet->getChildAtPosition(pt);
 
 			if (dest_window == NULL)
 			{
@@ -1146,7 +1118,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 		{
             if (dest_window->distributesCapturedInputs())
             {
-                Window* child_window = dest_window->getTargetChildAtPosition(pt);
+                Window* child_window = dest_window->getChildAtPosition(pt);
 
                 if (child_window != NULL)
                 {

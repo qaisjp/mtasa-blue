@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIScrollablePane.h"
 #include "elements/CEGUIScrolledContainer.h"
 #include "elements/CEGUIScrollbar.h"
@@ -259,16 +258,13 @@ namespace CEGUI
         configureScrollbars();
     }
 
-    void ScrollablePane::addScrollablePaneEvents(bool bCommon)
+    void ScrollablePane::addScrollablePaneEvents(void)
     {
-        if ( bCommon == false )
-        {
-            addEvent(EventAutoSizeSettingChanged);
-            addEvent(EventContentPaneChanged);
-            addEvent(EventHorzScrollbarModeChanged);
-            addEvent(EventVertScrollbarModeChanged);
-            addEvent(EventContentPaneScrolled);
-        }
+        addEvent(EventAutoSizeSettingChanged);
+        addEvent(EventContentPaneChanged);
+        addEvent(EventHorzScrollbarModeChanged);
+        addEvent(EventVertScrollbarModeChanged);
+        addEvent(EventContentPaneScrolled);
     }
 
     void ScrollablePane::configureScrollbars(void)
@@ -486,24 +482,18 @@ namespace CEGUI
         e.handled = true;
     }
 
-    void ScrollablePane::addScrollablePaneProperties( bool bCommon )
+    void ScrollablePane::addScrollablePaneProperties(void)
     {
-        if ( bCommon == false )
-        {
-            addProperty(&d_horzScrollbarProperty);
-            addProperty(&d_vertScrollbarProperty);
-            addProperty(&d_horzStepProperty);
-            addProperty(&d_horzOverlapProperty);
-            addProperty(&d_horzScrollPositionProperty);
-            addProperty(&d_vertOverlapProperty);
-            addProperty(&d_vertScrollPositionProperty);
-        }
-        else
-        {
-            addProperty(&d_autoSizedProperty);
-            addProperty(&d_contentAreaProperty);
-            addProperty(&d_vertStepProperty);
-        }
+        addProperty(&d_horzScrollbarProperty);
+        addProperty(&d_vertScrollbarProperty);
+        addProperty(&d_autoSizedProperty);
+        addProperty(&d_contentAreaProperty);
+        addProperty(&d_horzStepProperty);
+        addProperty(&d_horzOverlapProperty);
+        addProperty(&d_horzScrollPositionProperty);
+        addProperty(&d_vertStepProperty);
+        addProperty(&d_vertOverlapProperty);
+        addProperty(&d_vertScrollPositionProperty);
     }
 
 } // End of  CEGUI namespace section

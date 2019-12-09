@@ -140,8 +140,7 @@ protected:
 	\brief
 		Add radio button specific events
 	*/
-	void	addRadioButtonEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addRadioButtonEvents(false); }
+	void	addRadioButtonEvents(void);
 
 
 	/*!
@@ -203,8 +202,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addRadioButtonProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addRadioButtonProperties(false); }
+	void	addRadioButtonProperties(void);
 };
 
 

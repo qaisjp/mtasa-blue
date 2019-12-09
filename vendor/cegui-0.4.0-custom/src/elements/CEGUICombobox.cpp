@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUICombobox.h"
 #include "elements/CEGUIEditbox.h"
 #include "elements/CEGUIPushButton.h"
@@ -564,31 +563,17 @@ void Combobox::handleUpdatedListItemData(void)
 /*************************************************************************
 	Add combo box specific events
 *************************************************************************/
-void Combobox::addComboboxEvents(bool bCommon)
+void Combobox::addComboboxEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventReadOnlyModeChanged);
-        addEvent(EventValidationStringChanged);
-        addEvent(EventMaximumTextLengthChanged);
-        addEvent(EventTextInvalidated);
-        addEvent(EventInvalidEntryAttempted);
-        addEvent(EventCaratMoved);
-        addEvent(EventTextSelectionChanged);
-        addEvent(EventEditboxFull);
-        addEvent(EventListContentsChanged);
-        addEvent(EventListSelectionChanged);
-        addEvent(EventSortModeChanged);
-        addEvent(EventVertScrollbarModeChanged);
-        addEvent(EventHorzScrollbarModeChanged);
-        addEvent(EventDropListDisplayed);
-        addEvent(EventDropListRemoved);
-        addEvent(EventListSelectionAccepted);
-    }
-    else
-    {
-        addEvent(EventTextAccepted);
-    }
+	addEvent(EventReadOnlyModeChanged);			addEvent(EventValidationStringChanged);
+	addEvent(EventMaximumTextLengthChanged);	addEvent(EventTextInvalidated);
+	addEvent(EventInvalidEntryAttempted);		addEvent(EventCaratMoved);
+	addEvent(EventTextSelectionChanged);		addEvent(EventEditboxFull);
+	addEvent(EventTextAccepted);				addEvent(EventListContentsChanged);
+	addEvent(EventListSelectionChanged);		addEvent(EventSortModeChanged);
+	addEvent(EventVertScrollbarModeChanged);	addEvent(EventHorzScrollbarModeChanged);
+	addEvent(EventDropListDisplayed);			addEvent(EventDropListRemoved);
+	addEvent(EventListSelectionAccepted);
 }
 
 
@@ -765,10 +750,10 @@ void Combobox::onFontChanged(WindowEventArgs& e)
 void Combobox::onTextChanged(WindowEventArgs& e)
 {
 	// update ourselves only if needed (prevents perpetual event loop & stack overflow)
-	if (d_editbox->getText() != getText())
+	if (d_editbox->getText() != d_text)
 	{
 		// done before doing base class processing so event subscribers see 'updated' version of this.
-		d_editbox->setText(getText());
+		d_editbox->setText(d_text);
 		e.handled = true;
 
 		Window::onTextChanged(e);
@@ -905,28 +890,22 @@ bool Combobox::isHorzScrollbarAlwaysShown(void) const
 /*************************************************************************
 	Add properties for this class
 *************************************************************************/
-void Combobox::addComboboxProperties( bool bCommon )
+void Combobox::addComboboxProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_sortProperty);
-        addProperty(&d_forceHorzProperty);
-        addProperty(&d_forceVertProperty);
-        addProperty(&d_readOnlyProperty);
-        addProperty(&d_validationStringProperty);
-        addProperty(&d_maxTextLengthProperty);
-        addProperty(&d_selStartProperty);
-        addProperty(&d_selLengthProperty);
-        addProperty(&d_selectedTextColourProperty);
-        addProperty(&d_activeSelectionColourProperty);
-        addProperty(&d_inactiveSelectionColourProperty);
-        addProperty(&d_caratIndexProperty);
-        addProperty(&d_singleClickOperationProperty);
-    }
-    else
-    {
-        addProperty(&d_normalTextColourProperty);
-    }
+	addProperty(&d_sortProperty);
+	addProperty(&d_forceHorzProperty);
+	addProperty(&d_forceVertProperty);
+	addProperty(&d_readOnlyProperty);
+	addProperty(&d_validationStringProperty);
+	addProperty(&d_maxTextLengthProperty);
+	addProperty(&d_selStartProperty);
+	addProperty(&d_selLengthProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_selectedTextColourProperty);
+	addProperty(&d_activeSelectionColourProperty);
+	addProperty(&d_inactiveSelectionColourProperty);
+	addProperty(&d_caratIndexProperty);
+	addProperty(&d_singleClickOperationProperty);
 }
 
 

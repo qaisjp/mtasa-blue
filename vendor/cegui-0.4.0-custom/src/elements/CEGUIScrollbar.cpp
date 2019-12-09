@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIScrollbar.h"
 #include "elements/CEGUIThumb.h"
 
@@ -197,18 +196,12 @@ void Scrollbar::setScrollPosition(float position)
 /*************************************************************************
 	Add scroll bar specific events
 *************************************************************************/
-void Scrollbar::addScrollbarEvents(bool bCommon)
+void Scrollbar::addScrollbarEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventScrollConfigChanged);
-    }
-    else
-    {
-        addEvent(EventScrollPositionChanged);
-        addEvent(EventThumbTrackStarted);
-        addEvent(EventThumbTrackEnded);
-    }
+	addEvent(EventScrollPositionChanged);
+	addEvent(EventThumbTrackStarted);
+	addEvent(EventThumbTrackEnded);
+	addEvent(EventScrollConfigChanged);
 }
 
 
@@ -244,7 +237,6 @@ void Scrollbar::onThumbTrackEnded(WindowEventArgs& e)
 *************************************************************************/
 void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 {
-	performChildWindowLayout();
 	fireEvent(EventScrollConfigChanged, e, EventNamespace);
 }
 
@@ -370,19 +362,13 @@ bool Scrollbar::handleThumbTrackEnded(const EventArgs& e)
 /*************************************************************************
 	Add scroll bar properties
 *************************************************************************/
-void Scrollbar::addScrollbarProperties( bool bCommon )
+void Scrollbar::addScrollbarProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_documentSizeProperty);
-        addProperty(&d_pageSizeProperty);
-        addProperty(&d_overlapSizeProperty);
-        addProperty(&d_scrollPositionProperty);
-    }
-    else
-    {
-        addProperty(&d_stepSizeProperty);
-    }
+	addProperty(&d_documentSizeProperty);
+	addProperty(&d_pageSizeProperty);
+	addProperty(&d_stepSizeProperty);
+	addProperty(&d_overlapSizeProperty);
+	addProperty(&d_scrollPositionProperty);
 }
 
 

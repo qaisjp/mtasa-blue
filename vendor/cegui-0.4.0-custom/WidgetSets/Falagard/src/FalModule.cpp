@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "FalModule.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowFactoryManager.h"
@@ -153,7 +152,7 @@ extern "C" void registerFactory(const CEGUI::String& type_name)
     throw UnknownObjectException((utf8*)"::registerFactory - The window factory for type '" + type_name + "' is not known in this module.");
 }
 
-CEGUI::uint registerAllFactoriesF(void)
+extern "C" CEGUI::uint registerAllFactories(void)
 {
     CEGUI::uint count = 0;
     mapEntry* entry = factoriesMap;

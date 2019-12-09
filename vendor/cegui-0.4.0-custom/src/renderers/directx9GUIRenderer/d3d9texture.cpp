@@ -29,6 +29,7 @@
 #include "CEGUISystem.h"
 
 #include <d3dx9.h>
+#include <dxerr9.h>
 #undef max
 
 // Start of CEGUI namespace section
@@ -45,7 +46,6 @@ DirectX9Texture::DirectX9Texture(Renderer* owner) :
 
 	// do this mainly to indicate the lack of a filename.
 	d_isMemoryTexture = true;
-	d_isRenderTarget = false;
 }
 
 /*************************************************************************
@@ -70,7 +70,7 @@ void DirectX9Texture::loadFromFile(const String& filename, const String& resourc
 
 	D3DXIMAGE_INFO texInfo;
 	HRESULT hr = D3DXCreateTextureFromFileInMemoryEx(((DirectX9Renderer*)getRenderer())->getDevice(), texFile.getDataPtr(),
-            static_cast<UINT>(texFile.getSize()), D3DX_DEFAULT_NONPOW2, D3DX_DEFAULT_NONPOW2, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_MANAGED,
+            static_cast<UINT>(texFile.getSize()), D3DX_DEFAULT, D3DX_DEFAULT, 1, 0, D3DFMT_UNKNOWN, D3DPOOL_DEFAULT,
             D3DX_DEFAULT, D3DX_DEFAULT, 0, &texInfo, NULL, &d_d3dtexture);
 	
 	System::getSingleton().getResourceProvider()->unloadRawDataContainer(texFile);
@@ -82,12 +82,11 @@ void DirectX9Texture::loadFromFile(const String& filename, const String& resourc
 
 		d_filename = filename;
         d_resourceGroup = resourceGroup;
-		d_isMemoryTexture = true;
-		d_isRenderTarget = false;
+		d_isMemoryTexture = false;
 	}
 	else
 	{
-		throw RendererException((utf8*)"Failed to create Texture object from file '" + filename );
+		throw RendererException((utf8*)"Failed to create Texture object from file '" + filename + "'.  Additional Info: " + (const utf8*)DXGetErrorString9(hr));
 	}
 
 }
@@ -124,10 +123,10 @@ void DirectX9Texture::loadFromMemory(const void* buffPtr, uint buffWidth, uint b
 		d_height	= (ushort)texdesc.Height;
 
 		// lock the D3D texture
-		D3DLOCKED_RECT	rect = { 0, NULL };
+		D3DLOCKED_RECT	rect;
 		hr = d_d3dtexture->LockRect(0, &rect, NULL, 0);
 
-		if (FAILED(hr) || rect.pBits == NULL )
+		if (FAILED(hr))
 		{
 			d_d3dtexture->Release();
 			d_d3dtexture = NULL;
@@ -172,32 +171,6 @@ void DirectX9Texture::freeD3DTexture(void)
 
 	d_filename.clear();
 	d_isMemoryTexture = true;
-	d_isRenderTarget = false;
-}
-
-
-void DirectX9Texture::createRenderTarget(uint width, uint height)
-{
-	freeD3DTexture();
-
-	d_isMemoryTexture = true;
-	d_isRenderTarget = true;
-
-	HRESULT hr = D3DXCreateTexture(((DirectX9Renderer*)getRenderer())->getDevice(), width, height, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &d_d3dtexture);
-
-	if (FAILED(hr))
-	{
-		throw RendererException((utf8*)"Failed to create texture of specified size: D3D Texture creation failed.");
-	}
-	else
-	{
-		D3DSURFACE_DESC	texdesc;
-		d_d3dtexture->GetLevelDesc(0, &texdesc);
-
-		// store new size;
-		d_width		= (ushort)texdesc.Width;
-		d_height	= (ushort)texdesc.Height;
-	}
 }
 
 
@@ -235,7 +208,7 @@ void DirectX9Texture::preD3DReset(void)
 {
 	// textures not based on files are in the managed pool, so we do
 	// not worry about those.
-	if (!d_isMemoryTexture || d_isRenderTarget)
+	if (!d_isMemoryTexture)
 	{
 		// release the d3d texture
 		if (d_d3dtexture != NULL)
@@ -269,9 +242,8 @@ void DirectX9Texture::postD3DReset(void)
 
 		// re-load the texture
 		loadFromFile(name, d_resourceGroup);
-	} else if (d_isRenderTarget) {
-		createRenderTarget(d_width,d_height);
 	}
+
 }
 
 } // End of  CEGUI namespace section

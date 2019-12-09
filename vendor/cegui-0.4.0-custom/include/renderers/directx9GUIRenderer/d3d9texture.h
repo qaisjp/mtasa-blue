@@ -56,10 +56,10 @@ private:
 	/*************************************************************************
 		Construction & Destruction (by Renderer object only)
 	*************************************************************************/
-public: // changed by MTA; BE CAREFUL!
 	DirectX9Texture(Renderer* owner);
 	virtual ~DirectX9Texture(void);
 
+public:
 	/*!
 	\brief
 		Returns the current pixel width of the texture
@@ -122,11 +122,8 @@ public: // changed by MTA; BE CAREFUL!
 	\return
 		Pointer to the IDirect3DTexture9 interface currently being used by this Texture object
 	*/
-	virtual LPDIRECT3DTEXTURE9	getD3DTexture(void) const		{return d_d3dtexture;}
+	LPDIRECT3DTEXTURE9	getD3DTexture(void) const		{return d_d3dtexture;}
 
-
-	//
-	void	createRenderTarget(uint width, uint height);
 
 	// 
 	/*!
@@ -185,7 +182,6 @@ private:
 	String					d_filename;			//!< name of file used to create the texture, if any.
     String                  d_resourceGroup;    //!< Group from which the file was loaded.
 	bool					d_isMemoryTexture;	//!< true if the texture was created from memory (and not a file).
-	bool					d_isRenderTarget;
 
 	ushort					d_width;			//!< cached width of the texture
 	ushort					d_height;			//!< cached height of the texture

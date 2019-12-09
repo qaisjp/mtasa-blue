@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIStaticText.h"
 #include "CEGUIFont.h"
 #include "CEGUIWindowManager.h"
@@ -205,19 +204,13 @@ void StaticText::populateRenderCache()
 /*************************************************************************
 	Add properties for static text
 *************************************************************************/
-void StaticText::addStaticTextProperties( bool bCommon )
+void StaticText::addStaticTextProperties(void)
 {
-	if ( bCommon == true )
-    {
-        addProperty(&d_textColoursProperty);
-    }
-    else
-    {
-	    addProperty(&d_vertFormattingProperty);
-	    addProperty(&d_horzFormattingProperty);
-	    addProperty(&d_vertScrollbarProperty);
-	    addProperty(&d_horzScrollbarProperty);
-    }
+	addProperty(&d_textColoursProperty);
+	addProperty(&d_vertFormattingProperty);
+	addProperty(&d_horzFormattingProperty);
+	addProperty(&d_vertScrollbarProperty);
+	addProperty(&d_horzScrollbarProperty);
 }
 
 

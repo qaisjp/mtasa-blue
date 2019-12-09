@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIDragContainer.h"
 #include "CEGUIImageset.h"
 #include <math.h>
@@ -155,30 +154,24 @@ namespace CEGUI
         return d_dropTarget;
     }
 
-    void DragContainer::addDragContainerEvents(bool bCommon)
+    void DragContainer::addDragContainerEvents(void)
     {
-        if ( bCommon == false )
-        {
-            addEvent(EventDragStarted);
-            addEvent(EventDragEnded);
-            addEvent(EventDragPositionChanged);
-            addEvent(EventDragEnabledChanged);
-            addEvent(EventDragAlphaChanged);
-            addEvent(EventDragMouseCursorChanged);
-            addEvent(EventDragThresholdChanged);
-            addEvent(EventDragDropTargetChanged);
-        }
+        addEvent(EventDragStarted);
+        addEvent(EventDragEnded);
+        addEvent(EventDragPositionChanged);
+        addEvent(EventDragEnabledChanged);
+        addEvent(EventDragAlphaChanged);
+        addEvent(EventDragMouseCursorChanged);
+        addEvent(EventDragThresholdChanged);
+        addEvent(EventDragDropTargetChanged);
     }
 
-    void DragContainer::addDragContainerProperties( bool bCommon )
+    void DragContainer::addDragContainerProperties(void)
     {
-        if ( bCommon == false )
-        {
-            addProperty(&d_dragEnabledProperty);
-            addProperty(&d_dragAlphaProperty);
-            addProperty(&d_dragThresholdProperty);
-            addProperty(&d_dragCursorImageProperty);
-        }
+        addProperty(&d_dragEnabledProperty);
+        addProperty(&d_dragAlphaProperty);
+        addProperty(&d_dragThresholdProperty);
+        addProperty(&d_dragCursorImageProperty);
     }
 
     bool DragContainer::isDraggingThresholdExceeded(const Point& local_mouse)

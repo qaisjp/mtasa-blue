@@ -447,8 +447,7 @@ protected:
 	\brief
 		Add edit box specific events
 	*/
-	void	addEditboxEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addEditboxEvents(false); }
+	void	addEditboxEvents(void);
 
 
 	/*!
@@ -703,8 +702,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addEditboxProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addEditboxProperties(false); }
+	void	addEditboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIGUILayout_xmlHandler.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
@@ -171,7 +170,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
                 d_stack.back()->addChildWindow(subLayout);
         }
         // something failed when loading the sub-layout
-        catch (Exception& /*exc*/)
+        catch (Exception& exc)
         {
             // delete all windows created so far
             cleanupLoadedWindows();

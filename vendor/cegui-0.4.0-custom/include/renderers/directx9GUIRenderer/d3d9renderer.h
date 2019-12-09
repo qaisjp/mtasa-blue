@@ -32,9 +32,6 @@
 #include "CEGUIBase.h"
 #include "CEGUIRenderer.h"
 #include "CEGUITexture.h"
-#include "CEGUIFont.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIImage.h"
 #include <d3d9.h>
 #include <list>
 #include <set>
@@ -45,9 +42,6 @@
 #define DIRECTX9_GUIRENDERER_API __declspec(dllimport)
 #endif
 
-// Statically linked, so blank it out
-#undef DIRECTX9_GUIRENDERER_API
-#define DIRECTX9_GUIRENDERER_API
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -89,10 +83,10 @@ public:
 	virtual ~DirectX9Renderer(void);
 
 	// add's a quad to the list to be rendered
-	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode, const Image* image = NULL );
+	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// perform final rendering for all queued renderable quads.
-	virtual	bool	doRender(void);
+	virtual	void	doRender(void);
 
 	// clear the queue
 	virtual	void	clearRenderList(void);
@@ -253,7 +247,6 @@ public:
 	*/
 	void	setDisplaySize(const Size& sz);
 
-    virtual void NotifyImageInvalid ( Image* const image );
 
 private:
 	/************************************************************************
@@ -283,8 +276,7 @@ private:
 	*/
 	struct QuadInfo
 	{
-		DirectX9Texture*	texture;
-        const Image*        image;
+		LPDIRECT3DTEXTURE9	texture;
 		Rect				position;
 		float				z;
 		Rect				texPosition;
@@ -323,6 +315,7 @@ private:
 
 	// method to do work of constructor
 	void	constructor_impl(LPDIRECT3DDEVICE9 device, const Size& display_size);
+
 
 	/*************************************************************************
 	    Implementation Data

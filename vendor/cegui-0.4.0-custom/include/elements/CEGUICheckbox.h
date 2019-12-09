@@ -129,8 +129,7 @@ protected:
 	\brief
 		Add check-box specific events
 	*/
-	void	addCheckboxEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addCheckboxEvents(false); }
+	void	addCheckboxEvents(void);
 
 
 	/*!
@@ -165,8 +164,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addCheckboxProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addCheckboxProperties(false); }
+	void	addCheckboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

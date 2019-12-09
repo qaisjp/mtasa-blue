@@ -39,10 +39,6 @@
 #   define FALAGARDBASE_API
 #endif
 
-// Statically linked, so blank it out
-#undef FALAGARDBASE_API
-#define FALAGARDBASE_API
-
 // forward refs
 class CEGUI::WindowFactory;
 
@@ -50,7 +46,7 @@ class CEGUI::WindowFactory;
     Prototypes
 *************************************************************************/
 extern "C" FALAGARDBASE_API void registerFactory(const CEGUI::String& type_name);
-FALAGARDBASE_API CEGUI::uint registerAllFactoriesF(void);
+extern "C" FALAGARDBASE_API CEGUI::uint registerAllFactories(void);
 // implementation helper function
 void doSafeFactoryRegistration(CEGUI::WindowFactory* factory);
 #endif  // end of guard _FalModule_h_

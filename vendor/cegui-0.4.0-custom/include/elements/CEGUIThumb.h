@@ -224,8 +224,7 @@ protected:
 	\brief
 		Add thumb specific events
 	*/
-	void	addThumbEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addThumbEvents(false); }
+	void	addThumbEvents(void);
 
 
 	/*!
@@ -309,8 +308,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addThumbProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addThumbProperties(false); }
+	void	addThumbProperties(void);
 };
 
 } // End of  CEGUI namespace section

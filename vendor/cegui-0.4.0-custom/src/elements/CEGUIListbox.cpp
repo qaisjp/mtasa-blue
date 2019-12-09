@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUIListbox.h"
@@ -410,7 +409,7 @@ void Listbox::setSortingEnabled(bool setting)
 		// if we are enabling sorting, we need to sort the list
 		if (d_sorted)
 		{
-			std::stable_sort(d_listItems.begin(), d_listItems.end(), &lbi_greater);
+			std::sort(d_listItems.begin(), d_listItems.end(), &lbi_greater);
 		}
 
         WindowEventArgs args(this);
@@ -830,17 +829,14 @@ ListboxItem* Listbox::getItemAtPoint(const Point& pt) const
 /*************************************************************************
 	Add list box specific events
 *************************************************************************/
-void Listbox::addListboxEvents(bool bCommon)
+void Listbox::addListboxEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventListContentsChanged);
-        addEvent(EventSelectionChanged);
-        addEvent(EventSortModeChanged);
-        addEvent(EventMultiselectModeChanged);
-        addEvent(EventVertScrollbarModeChanged);
-        addEvent(EventHorzScrollbarModeChanged);
-    }
+	addEvent(EventListContentsChanged);
+	addEvent(EventSelectionChanged);
+	addEvent(EventSortModeChanged);
+	addEvent(EventMultiselectModeChanged);
+	addEvent(EventVertScrollbarModeChanged);
+	addEvent(EventHorzScrollbarModeChanged);
 }
 
 
@@ -1119,16 +1115,13 @@ bool Listbox::isHorzScrollbarAlwaysShown(void) const
 /*************************************************************************
 	Add properties for this class
 *************************************************************************/
-void Listbox::addListboxProperties( bool bCommon )
+void Listbox::addListboxProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_sortProperty);
-        addProperty(&d_multiSelectProperty);
-        addProperty(&d_forceHorzProperty);
-        addProperty(&d_forceVertProperty);
-        addProperty(&d_itemTooltipsProperty);
-    }
+	addProperty(&d_sortProperty);
+	addProperty(&d_multiSelectProperty);
+	addProperty(&d_forceHorzProperty);
+	addProperty(&d_forceVertProperty);
+	addProperty(&d_itemTooltipsProperty);
 }
 
 

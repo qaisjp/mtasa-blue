@@ -77,22 +77,6 @@ public:
 	static const String EventListSelectionAccepted;		//!< Event triggered when the user accepts a selection from the drop-down list
 
 
-    /*!
-    \brief
-        get the combobox chidren
-        lil_Toady: That are custom functions i added
-
-    \param
-        none
-    
-    \return
-        children
-    */
-
-    Editbox*		getEditBox(void)                    {return d_editbox;}
-    ComboDropList*	getDropList(void)                   {return d_droplist;}
-    PushButton*		getPushButton(void)                 {return d_button;}
-
 	/*!
 	\brief
 		check if the given position would hit this window.
@@ -805,8 +789,7 @@ protected:
 	\brief
 		Add combo box specific events
 	*/
-	void	addComboboxEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addComboboxEvents(false); }
+	void	addComboboxEvents(void);
 
 
 	/*!
@@ -1071,8 +1054,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addComboboxProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addComboboxProperties(false); }
+	void	addComboboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

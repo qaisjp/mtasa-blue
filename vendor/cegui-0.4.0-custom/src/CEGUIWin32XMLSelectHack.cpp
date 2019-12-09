@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 /*************************************************************************
     This hack of a file will become source for whichever XML Parser has
     been selected as the default.  It's easier to do this than to mess
@@ -38,7 +37,7 @@
 #           pragma comment(lib,"xerces-c_2.lib")
 #       endif
 #   endif
-#   include "CEGUIXercesParser.hpp"
+#   include "CEGUIXercesParser.cpp"
 #else
-#   include "CEGUITinyXMLParser.hpp"
+#   include "CEGUITinyXMLParser.cpp"
 #endif

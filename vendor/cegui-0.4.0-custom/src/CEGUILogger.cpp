@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUILogger.h"
 #include <ctime>
 #include <iomanip>
@@ -43,8 +42,7 @@ namespace CEGUI
     *************************************************************************/
     Logger::Logger(void) :
             d_level(Standard),
-            d_caching(true),
-            d_pDuplicateLineFilter(new CDuplicateLineFilter<SLoggingLine>(4, 60))
+            d_caching(true)
     {
         // create log header
         logEvent("+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+");
@@ -62,11 +60,9 @@ namespace CEGUI
         if (d_ostream.is_open())
         {
             logEvent((utf8*)"CEGUI::Logger singleton destroyed.");
-            d_pDuplicateLineFilter->Flush();
-            updateLogOutput();
             d_ostream.close();
         }
-        delete d_pDuplicateLineFilter;
+
     }
 
     /*************************************************************************
@@ -74,26 +70,8 @@ namespace CEGUI
     *************************************************************************/
     void Logger::logEvent(const String& message, LoggingLevel level /* = Standard */)
     {
-		// Early out if not relevant
-        if ( d_level < level && !d_caching )
-            return;
-        d_pDuplicateLineFilter->AddLine({message, level});
-        updateLogOutput();
-    }
-
-    // Handle duplicate lines
-    void Logger::updateLogOutput()
-    {
-        SLoggingLine line;
-        while (d_pDuplicateLineFilter->PopOutputLine(line))
-        {
-            logEventInternal(line.message, line.level);
-        }
-    }
-
-    void Logger::logEventInternal(const String& message, LoggingLevel level)
-    {
         using namespace std;
+
         time_t  et;
         time(&et);
         tm* etm = localtime(&et);
@@ -161,7 +139,7 @@ namespace CEGUI
             d_ostream.close();
         }
 
-        d_ostream.open(filename.c_wstring().c_str(), std::ios_base::out | (append ? std::ios_base::app : std::ios_base::trunc));
+        d_ostream.open(filename.c_str(), std::ios_base::out | (append ? std::ios_base::app : std::ios_base::trunc));
 
         if (!d_ostream)
         {

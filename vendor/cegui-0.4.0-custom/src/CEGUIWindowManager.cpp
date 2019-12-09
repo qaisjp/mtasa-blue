@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIWindowManager.h"
 #include "CEGUIWindowFactoryManager.h"
 #include "CEGUIWindowFactory.h"
@@ -58,7 +57,6 @@ const String WindowManager::GeneratedWindowNameBase("__cewin_uid_");
 WindowManager::WindowManager(void) :
     d_uid_counter(0)
 {
-    m_editBox = NULL;
     Logger::getSingleton().logEvent((utf8*)"CEGUI::WindowManager singleton created");
 }
 
@@ -106,12 +104,6 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 
 	d_windowRegistry[finalName] = newWindow;
 
-    // Hack to store the first editbox so that we can force text redraw
-    if ( !m_editBox && type == "CGUI/Editbox" )
-    {
-        m_editBox = newWindow;
-    }
-
 	return newWindow;
 }
 
@@ -123,11 +115,6 @@ void WindowManager::destroyWindow(Window* window)
 {
 	if (window != NULL)
 	{
-        // If our first editbox is destroyed, we need a new one
-        if ( window == m_editBox )
-        {
-            m_editBox = NULL;
-        }
 		// this is done because the name is used for the log after the window is destroyed,
 		// if we just did getName() we would get a const ref to the Window's internal name
 		// string which is destroyed along with the window so wouldn't exist when the log tried

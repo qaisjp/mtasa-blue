@@ -181,8 +181,7 @@ protected:
 	\brief
 		Add slider specific events
 	*/
-	void	addSliderEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addSliderEvents(false); }
+	void	addSliderEvents(void);
 
 
 	/*!
@@ -320,8 +319,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addSliderProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addSliderProperties(false); }
+	void	addSliderProperties(void);
 };
 
 } // End of  CEGUI namespace section

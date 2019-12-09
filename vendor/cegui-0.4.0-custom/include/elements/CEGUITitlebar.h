@@ -182,8 +182,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addTitlebarProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addTitlebarProperties(false); }
+	void	addTitlebarProperties(void);
 };
 
 } // End of  CEGUI namespace section

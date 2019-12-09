@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIEventSet.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIGlobalEventSet.h"
@@ -36,8 +35,7 @@ namespace CEGUI
 	Constructor
 *************************************************************************/
 EventSet::EventSet() :
-	d_muted(false),
-	d_addedUncommonEvents(false)
+	d_muted(false)
 {
 }
 
@@ -134,12 +132,7 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber
 
 	if (pos == d_events.end())
 	{
-        // See if we should initialize all events for this instance
-        maybeAddUncommonEvents ( name );
-        // Re-check for match
-        pos = d_events.find ( name ) ;
-	    if ( pos == d_events.end () )
-    		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
+		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
 	}
 
 	return pos->second->subscribe(subscriber);
@@ -155,12 +148,7 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Group grou
 
 	if (pos == d_events.end())
 	{
-        // See if we should initialize all events for this instance
-        maybeAddUncommonEvents ( name );
-        // Re-check for match
-        pos = d_events.find ( name ) ;
-	    if ( pos == d_events.end () )
-		    throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
+		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
 	}
 
 	return pos->second->subscribe(group, subscriber);
@@ -178,8 +166,7 @@ void EventSet::fireEvent(const String& name, EventArgs& args, const String& even
 
 	if (pos == d_events.end())
 	{
-        return;
-		//throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
+		throw UnknownObjectException("No event named '" + name + "' is defined for this EventSet");	
 	}
 
 	// fire the event
@@ -215,50 +202,7 @@ void EventSet::setMutedState(bool setting)
 *************************************************************************/
 EventSet::EventIterator EventSet::getIterator(void) const
 {
-    maybeAddUncommonEvents ( "getIterator" );
 	return EventIterator(d_events.begin(), d_events.end());
-}
-
-
-/*************************************************************************
-	Return a dummy type name - Should never be called
-*************************************************************************/
-const String& EventSet::getType(void) const
-{
-    static String dummy;
-    return dummy;
-}
-
-
-/*************************************************************************
-	maybeAddUncommonEvents	
-*************************************************************************/
-void EventSet::maybeAddUncommonEvents ( const String& name ) const
-{
-    // Const cast hack
-    const_cast < EventSet* > ( this )->maybeAddUncommonEvents ( name ) ;
-}
-
-
-/*************************************************************************
-	maybeAddUncommonEvents	
-*************************************************************************/
-void EventSet::maybeAddUncommonEvents ( const String& name )
-{
-    if ( !d_addedUncommonEvents )
-    {
-        Logger::getSingleton ().logEvent ( SString ( "** Adding uncommon events for a %s, to find missing event %s", getType ().c_str (), name.c_str() ), Informative);
-        d_addedUncommonEvents = true;
-        addUncommonEvents ();
-
-        // See if event there now
-        if ( d_events.find ( name ) != d_events.end () )
-        {
-            return;
-        }
-    }
-
-    Logger::getSingleton ().logEvent ( SString ( "** Trouble with %s, can't find event %s", getType ().c_str (), name.c_str() ), Informative);
 }
 
 

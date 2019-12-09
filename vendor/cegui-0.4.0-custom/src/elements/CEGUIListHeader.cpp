@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIListHeader.h"
 #include "CEGUIExceptions.h"
 
@@ -365,17 +364,21 @@ void ListHeader::setSortingEnabled(bool setting)
 *************************************************************************/
 void ListHeader::setSortDirection(ListHeaderSegment::SortDirection direction)
 {
-	d_sortDir = direction;
-
-	// set direction of current sort segment
-	if (d_sortSegment != NULL)
+	if (d_sortDir != direction)
 	{
-		d_sortSegment->setSortDirection(direction);
+		d_sortDir = direction;
+
+		// set direction of current sort segment
+		if (d_sortSegment != NULL)
+		{
+			d_sortSegment->setSortDirection(direction);
+		}
+
+		// Fire sort direction changed event.
+		WindowEventArgs args(this);
+		onSortDirectionChanged(args);
 	}
 
-	// Fire sort direction changed event.
-	WindowEventArgs args(this);
-	onSortDirectionChanged(args);
 }
 
 
@@ -399,19 +402,24 @@ void ListHeader::setSortColumn(uint column)
 	}
 	else
 	{
-		// set sort direction on 'old' sort segment to none.
-		if (d_sortSegment != NULL)
+		// if column is different to current sort segment
+		if (d_sortSegment != d_segments[column])
 		{
-			d_sortSegment->setSortDirection(ListHeaderSegment::None);
+			// set sort direction on 'old' sort segment to none.
+			if (d_sortSegment != NULL)
+			{
+				d_sortSegment->setSortDirection(ListHeaderSegment::None);
+			}
+
+			// set-up new sort segment
+			d_sortSegment = d_segments[column];
+			d_sortSegment->setSortDirection(d_sortDir);
+
+			// Fire sort column changed event
+			WindowEventArgs args(this);
+			onSortColumnChanged(args);
 		}
 
-		// set-up new sort segment
-		d_sortSegment = d_segments[column];
-		d_sortSegment->setSortDirection(d_sortDir);
-
-		// Fire sort column changed event
-		WindowEventArgs args(this);
-		onSortColumnChanged(args);
 	}
 
 }
@@ -684,30 +692,6 @@ void ListHeader::setColumnPixelWidth(uint column, float width)
 
 }
 
-
-/*************************************************************************
-	Set the title of the specified column.	
-*************************************************************************/
-void ListHeader::setColumnTitle(uint column, const char* szText)
-{
-	if (column >= getColumnCount())
-	{
-		throw InvalidRequestException((utf8*)"ListHeader::setColumnTitle - specified column index is out of range for this ListHeader.");
-	}
-	else
-	{
-		d_segments[column]->setText((utf8*)szText);
-	}
-}
-
-
-/*************************************************************************
-	Get the title of the specified column.	
-*************************************************************************/
-const char* ListHeader::getColumnTitle(uint column)
-{
-	return d_segments[column]->getText().c_str();
-}
 
 /*************************************************************************
 	Create initialise and return a ListHeaderSegment object, with all
@@ -1061,41 +1045,32 @@ bool ListHeader::segmentDragHandler(const EventArgs& e)
 /*************************************************************************
 	Add ListHeader specific events	
 *************************************************************************/
-void ListHeader::addListHeaderEvents(bool bCommon)
+void ListHeader::addListHeaderEvents(void)
 {
-    if ( bCommon == true )
-    {
-        addEvent(EventSortColumnChanged);
-        addEvent(EventSortDirectionChanged);
-        addEvent(EventSegmentSized);
-        addEvent(EventSegmentClicked);
-        addEvent(EventSplitterDoubleClicked);
-        addEvent(EventSegmentSequenceChanged);
-        addEvent(EventSegmentRenderOffsetChanged);
-    }
-    else
-    {
-        addEvent(EventSegmentAdded);
-        addEvent(EventSegmentRemoved);
-        addEvent(EventSortSettingChanged);
-        addEvent(EventDragMoveSettingChanged);
-        addEvent(EventDragSizeSettingChanged);
-    }
+	addEvent(EventSortColumnChanged);
+	addEvent(EventSortDirectionChanged);
+	addEvent(EventSegmentSized);
+	addEvent(EventSegmentClicked);
+	addEvent(EventSplitterDoubleClicked);
+	addEvent(EventSegmentSequenceChanged);
+	addEvent(EventSegmentAdded);
+	addEvent(EventSegmentRemoved);
+	addEvent(EventSortSettingChanged);
+	addEvent(EventDragMoveSettingChanged);
+	addEvent(EventDragSizeSettingChanged);
+	addEvent(EventSegmentRenderOffsetChanged);
 }
 
 /*************************************************************************
 	Add ListHeader specific properties
 *************************************************************************/
-void ListHeader::addHeaderProperties( bool bCommon )
+void ListHeader::addHeaderProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_sizableProperty);
-        addProperty(&d_movableProperty);
-        addProperty(&d_sortSettingProperty);
-        addProperty(&d_sortColumnIDProperty);
-        addProperty(&d_sortDirectionProperty);
-    }
+	addProperty(&d_sizableProperty);
+	addProperty(&d_movableProperty);
+	addProperty(&d_sortSettingProperty);
+	addProperty(&d_sortColumnIDProperty);
+	addProperty(&d_sortDirectionProperty);
 }
 
 

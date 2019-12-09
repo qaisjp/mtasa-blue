@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUICheckbox.h"
 
 // Start of CEGUI namespace section
@@ -123,17 +122,17 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 /*************************************************************************
 	Add check-box specific events
 *************************************************************************/
-void Checkbox::addCheckboxEvents(bool bCommon)
+void Checkbox::addCheckboxEvents(void)
 {
-	if ( bCommon == true )	addEvent(EventCheckStateChanged);
+	addEvent(EventCheckStateChanged);
 }
 
 /*************************************************************************
 	Add properties
 *************************************************************************/
-void Checkbox::addCheckboxProperties( bool bCommon )
+void Checkbox::addCheckboxProperties(void)
 {
-	if ( bCommon == false )   addProperty(&d_selectedProperty);
+	addProperty(&d_selectedProperty);
 }
 
 

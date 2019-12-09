@@ -110,7 +110,7 @@ public:
 	\return
 		Nothing
 	*/
-	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode, const Image* image = NULL ) = 0;
+	virtual	void	addQuad(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode) = 0;
 
 
 	/*!
@@ -120,9 +120,9 @@ public:
 		The contents of the rendering queue is retained and can be rendered again as required.  If the contents is not required call clearRenderList().
 
 	\return
-		False if render failed
+		Nothing
 	*/
-	virtual	bool	doRender(void) = 0;
+	virtual	void	doRender(void) = 0;
 
 
 	/*!
@@ -366,9 +366,6 @@ public:
     const String& getIdentifierString() const;
 
     virtual ResourceProvider* createResourceProvider(void);
-
-    // MTA extras
-    virtual void NotifyImageInvalid ( Image* const image ) = 0;
 
 protected:
 	/*************************************************************************

@@ -200,8 +200,7 @@ namespace CEGUI
         \brief
             Add ScrollablePane specific events
         */
-        void addTooltipEvents(bool bCommon=true);
-	    void addUncommonEvents( void )							{ __super::addUncommonEvents(); addTooltipEvents(false); }
+        void addTooltipEvents(void);
 
         // methods to perform processing for each of the widget states
         void doActiveState(float elapsed);
@@ -349,8 +348,7 @@ namespace CEGUI
         /*************************************************************************
             Private methods
         *************************************************************************/
-        void addTooltipProperties( bool bCommon = true );
-		void addUncommonProperties( void )							{ __super::addUncommonProperties(); addTooltipProperties(false); }
+        void addTooltipProperties(void);
     };
 
 } // End of  CEGUI namespace section

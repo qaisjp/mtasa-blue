@@ -284,18 +284,6 @@ public:
 	virtual ~TabControl(void);
 
 
-    /*!
-    \brief
-        Return the TabButton associated with this Window.
-    \exception	InvalidRequestException	thrown if content is not found.
-    */
-	TabButton* getButtonForTabContents(Window* wnd) const;
-
-    /*!
-    lil_Toady: MTA STUFF! Requests layout recalculation
-    */
-    void requestChildWindowLayout () { performChildWindowLayout(); };
-
 protected:
 
 	/*************************************************************************
@@ -317,8 +305,7 @@ protected:
 	\brief
 		Add tab control specific events
 	*/
-	void	addTabControlEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addTabControlEvents(false); }
+	void	addTabControlEvents(void);
 
     /*!
     \brief
@@ -330,6 +317,12 @@ protected:
         Remove the TabButton for the specified child Window.
     */
     virtual void removeButtonForTabContent(Window* wnd);
+    /*!
+    \brief
+        Return the TabButton associated with this Window.
+    \exception	InvalidRequestException	thrown if content is not found.
+    */
+	TabButton* getButtonForTabContents(Window* wnd) const;
     /*!
     \brief
         Construct a button name to handle a window.
@@ -460,8 +453,7 @@ protected:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addTabControlProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addTabControlProperties(false); }
+	void	addTabControlProperties(void);
 
     void    addChild_impl(Window* wnd);
     void    removeChild_impl(Window* wnd);

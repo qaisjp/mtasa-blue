@@ -93,8 +93,6 @@ class StaticText;
 class StaticImage;
 class ListboxItem;
 class ListboxTextItem;
-class ListboxNumberItem;
-class ListboxImageItem;
 class ComboDropList;
 class MultiLineEditbox;
 class Spinner;

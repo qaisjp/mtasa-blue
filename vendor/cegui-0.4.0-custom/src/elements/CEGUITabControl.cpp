@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIExceptions.h"
 #include "elements/CEGUITabControl.h"
 #include "elements/CEGUITabButton.h"
@@ -318,7 +317,7 @@ void TabControl::removeTab(const String& name)
 
     Window* wnd = d_tabContentPane->getChild(name);
     // Was this selected?
-    bool reselect = wnd->isVisible(true);
+    bool reselect = wnd->isVisible();
     // Tab buttons are the 2nd onward children
     d_tabContentPane->removeChildWindow(name);
 
@@ -442,7 +441,7 @@ void TabControl::calculateTabButtonSizePosition(TabButton* btn, uint targetIndex
     // Width is based on font size (expressed as absolute)
     const Font* fnt = btn->getFont();
     btn->setWidth(Absolute, 
-        fnt->getTextExtent(btn->getText(true)) + getAbsoluteTabTextPadding()*2);
+        fnt->getTextExtent(btn->getText()) + getAbsoluteTabTextPadding()*2);
     btn->requestRedraw();
 }
 /*************************************************************************
@@ -504,17 +503,14 @@ void TabControl::selectTab_impl(Window* wnd)
 /*************************************************************************
 Add tab control properties
 *************************************************************************/
-void TabControl::addTabControlProperties( bool bCommon )
+void TabControl::addTabControlProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_tabHeightProperty);
-        addProperty(&d_relativeTabHeightProperty);
-        addProperty(&d_absoluteTabHeightProperty);
-        addProperty(&d_tabTextPaddingProperty);
-        addProperty(&d_relativeTabTextPaddingProperty);
-        addProperty(&d_absoluteTabTextPaddingProperty);
-    }
+    addProperty(&d_tabHeightProperty);
+    addProperty(&d_relativeTabHeightProperty);
+    addProperty(&d_absoluteTabHeightProperty);
+    addProperty(&d_tabTextPaddingProperty);
+    addProperty(&d_relativeTabTextPaddingProperty);
+    addProperty(&d_absoluteTabTextPaddingProperty);
 }
 /*************************************************************************
 Internal version of adding a child window
@@ -569,7 +565,7 @@ void TabControl::onFontChanged(WindowEventArgs& e)
     // Propagate font change to buttons
     TabButtonIndexMap::iterator i, iend;
     iend = d_tabButtonIndexMap.end();
-    for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
+    for (i = d_tabButtonIndexMap.end(); i != iend; ++i)
     {
         i->second->setFont(getFont());
     }
@@ -577,9 +573,9 @@ void TabControl::onFontChanged(WindowEventArgs& e)
 /*************************************************************************
 Add events for this class
 *************************************************************************/
-void TabControl::addTabControlEvents(bool bCommon)
+void TabControl::addTabControlEvents(void)
 {
-    if ( bCommon == true )	addEvent(EventSelectionChanged);
+    addEvent(EventSelectionChanged);
 }
 /*************************************************************************
 Layout the widgets
@@ -592,19 +588,15 @@ void TabControl::performChildWindowLayout()
     {
         // Set the size of the tab button area (full width, height from tab height)
         d_tabButtonPane->setSize(Relative, Size(1.0f, d_rel_tabHeight) );
-        //d_tabButtonPane->setPosition(Relative, Point(0.0f, 0.0f) );
+        d_tabButtonPane->setPosition(Relative, Point(0.0f, 0.0f) );
         // Calculate the positions and sizes of the tab buttons
         TabButtonIndexMap::iterator i, iend;
         iend = d_tabButtonIndexMap.end();
         uint x = 0;
-        for (i = d_tabButtonIndexMap.begin(); i != iend; ++i)
+        for (i = d_tabButtonIndexMap.begin(); i != iend; ++i, ++x)
         {
             TabButton* btn = i->second;
-            if ( btn->isVisible ( true ) )
-            {
-                calculateTabButtonSizePosition(btn, x);
-                ++x;
-            }
+            calculateTabButtonSizePosition(btn, x);
         }
     }
     if (d_tabContentPane)

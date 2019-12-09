@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIScrolledContainer.h"
 
 // Start of CEGUI namespace section
@@ -89,13 +88,10 @@ namespace CEGUI
 
     }
 
-    void ScrolledContainer::addScrolledContainerEvents(bool bCommon)
+    void ScrolledContainer::addScrolledContainerEvents(void)
     {
-        if ( bCommon == true )
-        {
-            addEvent(EventContentChanged);
-            addEvent(EventAutoSizeSettingChanged);
-        }
+        addEvent(EventContentChanged);
+        addEvent(EventAutoSizeSettingChanged);
     }
 
     Rect ScrolledContainer::getChildExtentsArea(void) const
@@ -224,14 +220,11 @@ namespace CEGUI
         onContentChanged(args);
     }
 
-    void ScrolledContainer::addScrolledContainerProperties( bool bCommon )
+    void ScrolledContainer::addScrolledContainerProperties(void)
     {
-        if ( bCommon == false )
-        {
-            addProperty(&d_autoSizedProperty);
-            addProperty(&d_contentAreaProperty);
-            addProperty(&d_childExtentsAreaProperty);
-        }
+        addProperty(&d_autoSizedProperty);
+        addProperty(&d_contentAreaProperty);
+        addProperty(&d_childExtentsAreaProperty);
     }
 
 } // End of  CEGUI namespace section

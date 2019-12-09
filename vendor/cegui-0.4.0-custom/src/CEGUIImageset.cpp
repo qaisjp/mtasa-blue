@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIImageset.h"
 #include "CEGUIExceptions.h"
 #include "CEGUITexture.h"
@@ -50,10 +49,9 @@ const char	Imageset::ImagesetSchemaName[]			= "Imageset.xsd";
 /*************************************************************************
 	constructor
 *************************************************************************/
-Imageset::Imageset(const String& name, Texture* texture, bool bDestroyTextureManagedExternally) :
-    d_name(name),
-    d_texture(texture),
-    d_bDestroyTextureManagedExternally(bDestroyTextureManagedExternally)
+Imageset::Imageset(const String& name, Texture* texture) :
+	d_name(name),
+	d_texture(texture)
 {
 	if (d_texture == NULL)
 	{
@@ -69,8 +67,7 @@ Imageset::Imageset(const String& name, Texture* texture, bool bDestroyTextureMan
 /*************************************************************************
 	construct and initialise Imageset from the specified file.
 *************************************************************************/
-Imageset::Imageset(const String& filename, const String& resourceGroup, bool bDestroyTextureManagedExternally) :
-    d_bDestroyTextureManagedExternally(bDestroyTextureManagedExternally)
+Imageset::Imageset(const String& filename, const String& resourceGroup)
 {
 	// defaults for scaling options
 	d_autoScale = false;
@@ -81,9 +78,8 @@ Imageset::Imageset(const String& filename, const String& resourceGroup, bool bDe
 }
 
 
-Imageset::Imageset(const String& name, const String& filename, const String& resourceGroup, bool bDestroyTextureManagedExternally) :
-    d_name(name),
-    d_bDestroyTextureManagedExternally(bDestroyTextureManagedExternally)
+Imageset::Imageset(const String& name, const String& filename, const String& resourceGroup) :
+    d_name(name)
 {
     // try to load the image file using the renderer
     d_texture =
@@ -177,7 +173,7 @@ const Image& Imageset::getImage(const String& name) const
 /*************************************************************************
 	defines a new Image.
 *************************************************************************/
-void Imageset::defineImage(const String& name, const Rect& image_rect, const Point& render_offset, unsigned long ulCodepoint, Font* pFont )
+void Imageset::defineImage(const String& name, const Rect& image_rect, const Point& render_offset)
 {
 	if (isImageDefined(name))
 	{
@@ -189,7 +185,7 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 	float vscale = d_autoScale ? d_vertScaling : 1.0f;
 
 	// add the Image definition
-	d_images[name] = Image(this, name, image_rect, render_offset, hscale, vscale, ulCodepoint, pFont );
+	d_images[name] = Image(this, name, image_rect, render_offset, hscale, vscale);
 
 	CEGUI_LOGINSANE("Image '" + name + "' has been defined for Imageset '" + d_name + "'.")
 }
@@ -199,7 +195,7 @@ void Imageset::defineImage(const String& name, const Rect& image_rect, const Poi
 	Queues an area of the associated Texture the be drawn on the screen.
 	Low-level routine not normally used!
 *************************************************************************/
-void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode, const Image* image ) const
+void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, const Rect& clip_rect,const ColourRect& colours, QuadSplitMode quad_split_mode) const
 {
 	// get the rect area that we will actually draw to (i.e. perform clipping)
 	Rect final_rect(dest_rect.getIntersection(clip_rect));
@@ -207,10 +203,6 @@ void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, con
 	// check if rect was totally clipped
 	if (final_rect.getWidth() != 0)
 	{
-        // Check for somthing that shouldn't happen but does
-        if ( !d_texture )
-            return;
-
 		float x_scale = 1.0f / (float)d_texture->getWidth();
 		float y_scale = 1.0f / (float)d_texture->getHeight();
 
@@ -229,7 +221,7 @@ void Imageset::draw(const Rect& source_rect, const Rect& dest_rect, float z, con
 		final_rect.d_bottom	= PixelAligned(final_rect.d_bottom);
 
 		// queue a quad to be rendered
-		d_texture->getRenderer()->addQuad(final_rect, z, d_texture, tex_rect, colours, quad_split_mode,image);
+		d_texture->getRenderer()->addQuad(final_rect, z, d_texture, tex_rect, colours, quad_split_mode);
 	}
 
 }
@@ -242,9 +234,7 @@ void Imageset::unload(void)
 	undefineAllImages();
 
 	// cleanup texture
-    // MTA destroys textures manually
-    if ( !d_bDestroyTextureManagedExternally )
-    	System::getSingleton().getRenderer()->destroyTexture(d_texture);
+	System::getSingleton().getRenderer()->destroyTexture(d_texture);
 	d_texture = NULL;
 }
 

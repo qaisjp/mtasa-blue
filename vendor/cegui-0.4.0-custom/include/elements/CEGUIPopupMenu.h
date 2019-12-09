@@ -213,8 +213,7 @@ private:
 	/*************************************************************************
 	Private methods
 	*************************************************************************/
-	void	addPopupMenuProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addPopupMenuProperties(false); }
+	void	addPopupMenuProperties(void);
 };
 
 } // End of  CEGUI namespace section
