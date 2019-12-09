@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowManager.h"
 #include "elements/CEGUIItemListBase.h"
@@ -280,9 +279,9 @@ void ItemListBase::handleUpdatedItemData(void)
 /*************************************************************************
 	Add list box specific events
 *************************************************************************/
-void ItemListBase::addItemListBaseEvents(bool bCommon)
+void ItemListBase::addItemListBaseEvents(void)
 {
-	if ( bCommon == false )	addEvent(EventListContentsChanged);
+	addEvent(EventListContentsChanged);
 }
 
 
@@ -350,9 +349,9 @@ bool ItemListBase::resetList_impl(void)
 /*************************************************************************
 	Add ItemListBase specific properties
 *************************************************************************/
-void ItemListBase::addItemListBaseProperties( bool bCommon )
+void ItemListBase::addItemListBaseProperties(void)
 {
-    if ( bCommon == false )   addProperty(&d_autoResizeEnabledProperty);
+    addProperty(&d_autoResizeEnabledProperty);
 }
 
 

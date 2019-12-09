@@ -327,9 +327,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addButtonBaseProperties( bool bCommon = true );
-protected:
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addButtonBaseProperties(false); }
+	void	addButtonBaseProperties(void);
 };
 
 } // End of  CEGUI namespace section

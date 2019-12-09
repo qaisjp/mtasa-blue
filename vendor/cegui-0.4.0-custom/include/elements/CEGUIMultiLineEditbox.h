@@ -370,7 +370,7 @@ public:
 	virtual ~MultiLineEditbox(void);
 
 
-public:
+protected:
 	/*************************************************************************
 		Implementation Methods (abstract)
 	*************************************************************************/
@@ -441,8 +441,7 @@ public:
 	\brief
 		Add multi-line edit box specific events
 	*/
-	void	addMultiLineEditboxEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addMultiLineEditboxEvents(false); }
+	void	addMultiLineEditboxEvents(void);
 
 
 	/*!
@@ -623,12 +622,7 @@ public:
 	*/
 	virtual bool	testClassName_impl(const String& class_name) const
 	{
-		if ((class_name==(const utf8*)"MultiLineEditBox") ||
-			(class_name==(const utf8*)"MultiLineEditbox"))
-		{
-			return true;
-		}
-
+		if (class_name==(const utf8*)"MultiLineEditBox")	return true;
 		return Window::testClassName_impl(class_name);
 	}
 
@@ -782,8 +776,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addMultiLineEditboxProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addMultiLineEditboxProperties(false); }
+	void	addMultiLineEditboxProperties(void);
 };
 
 } // End of  CEGUI namespace section

@@ -27,7 +27,6 @@
 #ifndef _openglrenderer_h_
 #define _openglrenderer_h_
 
-#include "CEGUIBase.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef OPENGL_GUIRENDERER_EXPORTS
@@ -85,7 +84,7 @@ typedef unsigned short wchar_t;
 #endif /* __APPLE__ */
 #include <list>
 #include <set>
-
+#include "CEGUIBase.h"
 #include "CEGUIRenderer.h"
 #include "CEGUITexture.h"
 
@@ -282,29 +281,13 @@ public:
 	void	setDisplaySize(const Size& sz);
 
 
-    /*!
-    \brief
-        Grabs all the loaded textures from Texture RAM and stores them in a local data buffer.
-        This function invalidates all textures, and restoreTextures must be called before any
-        CEGUI rendering is done for predictable results
-    */
-    void grabTextures(void);
-
-
-    /*!
-    \brief
-        Restores all the loaded textures from the local data buffers previously created by 'grabTextures'
-    */
-    void restoreTextures(void);
-
-
 private:
     /************************************************************************
 		Implementation Constants
     ************************************************************************/
-    static const int			VERTEX_PER_QUAD;							//!< number of vertices per quad
-    static const int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
-    static const int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
+    const static int			VERTEX_PER_QUAD;							//!< number of vertices per quad
+    const static int			VERTEX_PER_TRIANGLE;						//!< number of vertices for a triangle
+    const static int			VERTEXBUFFER_CAPACITY;						//!< capacity of the allocated vertex buffer
     
     /*************************************************************************
 		Implementation Structs & classes
@@ -312,7 +295,7 @@ private:
     struct MyQuad
     {
         float tex[2];
-        uint32 color;
+        long color;
         float vertex[3];
     };
 
@@ -326,10 +309,10 @@ private:
         Rect		position;
         float		z;
         Rect		texPosition;
-		uint32		topLeftCol;
-		uint32		topRightCol;
-		uint32		bottomLeftCol;
-		uint32		bottomRightCol;
+		long		topLeftCol;
+		long		topRightCol;
+		long		bottomLeftCol;
+		long		bottomRightCol;
 
         QuadSplitMode   splitMode;
 
@@ -361,7 +344,7 @@ private:
     void	renderQuadDirect(const Rect& dest_rect, float z, const Texture* tex, const Rect& texture_rect, const ColourRect& colours, QuadSplitMode quad_split_mode);
 
 	// convert colour value to whatever the OpenGL system is expecting.
-	uint32	colourToOGL(const colour& col) const;
+	long	colourToOGL(const colour& col) const;
 
 	// set the module ID string
 	void setModuleIdentifierString();

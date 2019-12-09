@@ -5,7 +5,6 @@
 	
 	purpose:	Implements Vector class methods
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIVector.h"
 
 // Start of CEGUI namespace section

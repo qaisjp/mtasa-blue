@@ -331,8 +331,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addStaticImageProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addStaticImageProperties(false); }
+	void	addStaticImageProperties(void);
 };
 
 } // End of  CEGUI namespace section

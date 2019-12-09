@@ -440,9 +440,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addStaticProperties( bool bCommon = true );
-protected:
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addStaticProperties(false); }
+	void	addStaticProperties(void);
 };
 
 

@@ -224,9 +224,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addTextItemProperties( bool bCommon = true );
-protected:
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addTextItemProperties(false); }
+	void	addTextItemProperties(void);
 };
 
 } // End of  CEGUI namespace section

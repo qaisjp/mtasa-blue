@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIMenuBase.h"
 #include "elements/CEGUIPopupMenu.h"
 #include "elements/CEGUIMenuItem.h"
@@ -112,13 +111,10 @@ void MenuBase::changePopupMenuItem(MenuItem* item)
 /*************************************************************************
 	Add MenuBase specific events	
 *************************************************************************/
-void MenuBase::addMenuBaseEvents(bool bCommon)
+void MenuBase::addMenuBaseEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventPopupOpened);
-        addEvent(EventPopupClosed);
-    }
+	addEvent(EventPopupOpened);
+	addEvent(EventPopupClosed);
 }
 
 
@@ -142,17 +138,14 @@ void MenuBase::onPopupClosed(WindowEventArgs& e)
 }
 
 
-void MenuBase::addMenuBaseProperties( bool bCommon )
+void MenuBase::addMenuBaseProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_itemSpacingProperty);
-        addProperty(&d_horzPaddingProperty);
-        addProperty(&d_vertPaddingProperty);
-        addProperty(&d_borderWidthProperty);
-        addProperty(&d_backgroundColoursProperty);
-        addProperty(&d_allowMultiplePopupsProperty);
-    }
+	addProperty(&d_itemSpacingProperty);
+    addProperty(&d_horzPaddingProperty);
+    addProperty(&d_vertPaddingProperty);
+    addProperty(&d_borderWidthProperty);
+    addProperty(&d_backgroundColoursProperty);
+    addProperty(&d_allowMultiplePopupsProperty);
 }
 
 } // End of  CEGUI namespace section

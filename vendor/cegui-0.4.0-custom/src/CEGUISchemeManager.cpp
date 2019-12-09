@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUISchemeManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
@@ -91,10 +90,6 @@ void SchemeManager::unloadScheme(const String& scheme_name)
 		d_schemes.erase(pos);
 
 		Logger::getSingleton().logEvent((utf8*)"Scheme '" + tmpName + "' has been unloaded.");
-	}
-	else
-	{
-		Logger::getSingleton().logEvent((utf8*)"Unable to unload non-existant scheme '" + scheme_name + "'.", Errors);
 	}
 
 }

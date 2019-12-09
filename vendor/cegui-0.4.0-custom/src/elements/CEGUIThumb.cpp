@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIThumb.h"
 
 // Start of CEGUI namespace section
@@ -142,14 +141,11 @@ void Thumb::setHorzRange(float min, float max)
 /*************************************************************************
 	Add thumb specific events	
 *************************************************************************/
-void Thumb::addThumbEvents(bool bCommon)
+void Thumb::addThumbEvents(void)
 {
-    if ( bCommon == true )
-    {
-        addEvent(EventThumbPositionChanged);
-        addEvent(EventThumbTrackStarted);
-        addEvent(EventThumbTrackEnded);
-    }
+	addEvent(EventThumbPositionChanged);
+	addEvent(EventThumbTrackStarted);
+	addEvent(EventThumbTrackEnded);
 }
 
 
@@ -334,19 +330,13 @@ std::pair<float, float>	Thumb::getHorzRange(void) const
 /*************************************************************************
 	Add thumb specifiec properties
 *************************************************************************/
-void Thumb::addThumbProperties( bool bCommon )
+void Thumb::addThumbProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_hotTrackedProperty);
-        addProperty(&d_vertRangeProperty);
-        addProperty(&d_horzRangeProperty);
-    }
-    else
-    {
-        addProperty(&d_vertFreeProperty);
-        addProperty(&d_horzFreeProperty);
-    }
+	addProperty(&d_hotTrackedProperty);
+	addProperty(&d_vertFreeProperty);
+	addProperty(&d_horzFreeProperty);
+	addProperty(&d_vertRangeProperty);
+	addProperty(&d_horzRangeProperty);
 }
 
 

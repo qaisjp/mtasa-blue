@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIListHeaderSegment.h"
 #include "CEGUIMouseCursor.h"
 
@@ -168,24 +167,18 @@ void ListHeaderSegment::setClickable(bool setting)
 /*************************************************************************
 	Add list header segment specific events
 *************************************************************************/
-void ListHeaderSegment::addHeaderSegmentEvents(bool bCommon)
+void ListHeaderSegment::addHeaderSegmentEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventSizingSettingChanged);
-        addEvent(EventSegmentDragStart);
-        addEvent(EventMovableSettingChanged);
-        addEvent(EventClickableSettingChanged);
-    }
-    else
-    {
-        addEvent(EventSortDirectionChanged);
-        addEvent(EventSegmentSized);
-        addEvent(EventSegmentDragStop);
-        addEvent(EventSegmentDragPositionChanged);
-        addEvent(EventSplitterDoubleClicked);
-        addEvent(EventSegmentClicked);
-    }
+	addEvent(EventSortDirectionChanged);
+	addEvent(EventSizingSettingChanged);
+	addEvent(EventSplitterDoubleClicked);
+	addEvent(EventSegmentClicked);
+	addEvent(EventSegmentDragStart);
+	addEvent(EventSegmentDragStop);
+	addEvent(EventSegmentDragPositionChanged);
+	addEvent(EventMovableSettingChanged);
+	addEvent(EventSegmentSized);
+	addEvent(EventClickableSettingChanged);
 }
 
 
@@ -651,15 +644,12 @@ void ListHeaderSegment::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
 	adds properties for the class
 *************************************************************************/
-void ListHeaderSegment::addHeaderSegmentProperties( bool bCommon )
+void ListHeaderSegment::addHeaderSegmentProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_clickableProperty);
-        addProperty(&d_sizableProperty);
-        addProperty(&d_dragableProperty);
-        addProperty(&d_sortDirectionProperty);
-    }
+	addProperty(&d_clickableProperty);
+	addProperty(&d_sizableProperty);
+	addProperty(&d_dragableProperty);
+	addProperty(&d_sortDirectionProperty);
 }
 
 

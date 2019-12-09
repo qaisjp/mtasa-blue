@@ -21,7 +21,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUISpinner.h"
 #include "elements/CEGUIPushButton.h"
 #include "elements/CEGUIEditbox.h"
@@ -204,28 +203,22 @@ namespace CEGUI
         }
     }
 
-    void Spinner::addSpinnerEvents(bool bCommon)
+    void Spinner::addSpinnerEvents(void)
     {
-        if ( bCommon == false )
-        {
-            addEvent(EventValueChanged);
-            addEvent(EventStepChanged);
-            addEvent(EventMaximumValueChanged);
-            addEvent(EventMinimumValueChanged);
-            addEvent(EventTextInputModeChanged);
-        }
+        addEvent(EventValueChanged);
+        addEvent(EventStepChanged);
+        addEvent(EventMaximumValueChanged);
+        addEvent(EventMinimumValueChanged);
+        addEvent(EventTextInputModeChanged);
     }
 
-    void Spinner::addSpinnerProperties( bool bCommon )
+    void Spinner::addSpinnerProperties(void)
     {
-        if ( bCommon == false )
-        {
-            addProperty(&d_currentValueProperty);
-            addProperty(&d_stepSizeProperty);
-            addProperty(&d_maxValueProperty);
-            addProperty(&d_minValueProperty);
-            addProperty(&d_textInputModeProperty);
-        }
+        addProperty(&d_currentValueProperty);
+        addProperty(&d_stepSizeProperty);
+        addProperty(&d_maxValueProperty);
+        addProperty(&d_minValueProperty);
+        addProperty(&d_textInputModeProperty);
     }
 
     float Spinner::getValueFromText(void) const
@@ -305,11 +298,11 @@ namespace CEGUI
     void Spinner::onTextChanged(WindowEventArgs& e)
     {
         // update only if needed
-        if (d_editbox->getText() != getText())
+        if (d_editbox->getText() != d_text)
         {
             // done before doing base class processing so event subscribers see
             // 'updated' version.
-            d_editbox->setText(getText());
+            d_editbox->setText(d_text);
             e.handled = true;
 
             Window::onTextChanged(e);

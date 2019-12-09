@@ -34,9 +34,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Base class for TabButtons.  A TabButton based class is used internally as
-    the button that appears at the top of a TabControl widget to select the
-    active tab pane.
+
 */
 class CEGUIEXPORT TabButton : public ButtonBase
 {
@@ -142,8 +140,7 @@ protected:
 	\brief
 		Add button specific events
 	*/
-	void	addTabButtonEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addTabButtonEvents(false); }
+	void	addTabButtonEvents(void);
 	/*!
 	\brief
 		Perform the rendering for this widget.

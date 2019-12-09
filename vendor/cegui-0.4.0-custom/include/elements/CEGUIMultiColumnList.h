@@ -136,14 +136,6 @@ public:
 	*/
 	bool	isUserColumnSizingEnabled(void) const;
 
-    
-    /*!
-    \Added to MTA by Talidan
-        Return whether a specific column is sizable
-    \return
-        true if the user may interactively modify the width of column, false if they may not.
-    */
-    bool	isUserColumnSegmentSizingEnabled(uint col_idx) const;
 
 	/*!
 	\brief
@@ -535,8 +527,6 @@ public:
 	*/
 	uint	getNominatedSelectionRow(void) const;
 
-    // Return the range of visible rows
-    void    getVisibleRowRange(int &first, int& last) const;
 
 	/*!
 	\brief
@@ -762,7 +752,7 @@ public:
 	\return
 		Initial zero based index of the new row.
 	*/
-	uint	addRow(uint row_id = 0, bool fast = false);
+	uint	addRow(uint row_id = 0);
 
 
 	/*!
@@ -787,7 +777,7 @@ public:
 
 	\exception InvalidRequestException	thrown if no column with the specified ID is attached to the list box.
 	*/
-	uint	addRow(ListboxItem* item, uint col_id, uint row_id = 0, bool fast = false);
+	uint	addRow(ListboxItem* item, uint col_id, uint row_id = 0);
 
 
 	/*!
@@ -870,13 +860,8 @@ public:
 
 	\exception InvalidRequestException	thrown if \a position contains an invalid grid reference.
 	*/
-	void	setItem(ListboxItem* item, const MCLGridRef& position, bool fast = false);
+	void	setItem(ListboxItem* item, const MCLGridRef& position);
 
-
-    /*
-    Added by eAi for MTA
-    */
-    void    forceUpdate();
 
 	/*!
 	\brief
@@ -896,7 +881,7 @@ public:
 
 	\exception InvalidRequestException	thrown if no column with ID \a col_id exists, or of \a row_idx is out of range.
 	*/
-	void	setItem(ListboxItem* item, uint col_id, uint row_idx, bool fast = false);
+	void	setItem(ListboxItem* item, uint col_id, uint row_idx);
 
 
 	/*!
@@ -1106,48 +1091,14 @@ public:
 
 	\param width
 		float value specifying the new width for the column using the active metrics system.
-		
-	\param relative
-		*Added by Talidan for MTA* specifies whether the measurement is relative or absolute
 
 	\return
 		Nothing.
 
 	\exception InvalidRequestException	thrown if \a column is out of range.
 	*/
-	void	setColumnHeaderWidth(uint col_idx, float width, bool relative = true);
+	void	setColumnHeaderWidth(uint col_idx, float width);
 
-    /*!
-	\brief
-		Set the title of the specified column header (and therefore the column itself).
-
-	\param col_idx
-		Zero based column index of the column whos width is to be set.
-
-	\param title
-		const chart value specifying the new title for the column.
-		
-	\return
-		Nothing.
-
-	\exception InvalidRequestException	thrown if \a column is out of range.
-	*/
-
-    void	setColumnHeaderTitle(uint col_idx, const char* title);
-
-	/*!
-	\brief
-		Get the title of the specified column header (and therefore the column itself).
-
-	\param col_idx
-		Zero based column index of the column whos width is to be get.
-		
-	\return
-		const char with column title
-
-	*/
-
-    const char*	getColumnHeaderTitle(uint col_idx);
 
 	/*!
 	\brief
@@ -1176,17 +1127,6 @@ public:
 	*/
 	void	setUserColumnSizingEnabled(bool setting);
 
-    /*!
-    \Added to MTA by Talidan
-        Set whether the user may size a specific column segment
-
-    \param setting
-        -col_idx: Zero based column index of the column whos width is to be set.
-        -setting: true if the user may interactively modify the width of columns.  false if the user may not change the width of the columns.
-    \return
-        Nothing
-    */
-    void	setUserColumnSegmentSizingEnabled(uint col_idx, bool setting);
 
 	/*!
 	\brief
@@ -1250,7 +1190,7 @@ public:
 	virtual ~MultiColumnList(void);
 
 
-public:
+protected:
 	/*************************************************************************
 		Implementation Functions (abstract interface)
 	*************************************************************************/
@@ -1325,8 +1265,7 @@ public:
 	\brief
 		Add multi column list box specific events
 	*/
-	void	addMultiColumnListboxEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addMultiColumnListboxEvents(false); }
+	void	addMultiColumnListboxEvents(void);
 
     // overridden from base class.
 	virtual	void populateRenderCache();
@@ -1554,11 +1493,10 @@ public:
 	bool	handleSortDirectionChange(const EventArgs& e);
 	bool	handleHeaderSegDblClick(const EventArgs& e);
 
-    /*!
-    \brief
-        Struct used internally to represent a row in the list and also to ease
-        sorting of the rows.
-    */
+
+	/*************************************************************************
+		Struct used to wrap a 'row' and ease sorting
+	*************************************************************************/
 	struct ListRow
 	{
 		typedef	std::vector<ListboxItem*>	RowItems;
@@ -1606,8 +1544,6 @@ public:
 	typedef std::vector<ListRow>		ListItemGrid;
 	ListItemGrid	d_grid;			//!< Holds the list box data.
 
-    uint    d_firstVisibleRow;
-    uint    d_lastVisibleRow;
 
 private:
 	/*************************************************************************
@@ -1630,8 +1566,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addMultiColumnListProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addMultiColumnListProperties(false); }
+	void	addMultiColumnListProperties(void);
 };
 
 } // End of  CEGUI namespace section

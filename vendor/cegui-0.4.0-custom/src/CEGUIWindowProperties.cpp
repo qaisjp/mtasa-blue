@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIWindowProperties.h"
 #include "CEGUIWindow.h"
 #include "CEGUIFont.h"
@@ -938,17 +937,6 @@ String UnifiedMaxSize::get(const PropertyReceiver* receiver) const
 void UnifiedMaxSize::set(PropertyReceiver* receiver, const String& value)
 {
     static_cast<Window*>(receiver)->setWindowMaxSize(PropertyHelper::stringToUVector2(value));
-}
-
-
-String MousePassThroughEnabled::get(const PropertyReceiver* receiver) const
-{
-    return PropertyHelper::boolToString(static_cast<const Window*>(receiver)->isMousePassThroughEnabled());
-}
-
-void MousePassThroughEnabled::set(PropertyReceiver* receiver, const String& value)
-{
-    static_cast<Window*>(receiver)->setMousePassThroughEnabled(PropertyHelper::stringToBool(value));
 }
 
 

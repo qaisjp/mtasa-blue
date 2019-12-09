@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIEditbox.h"
 #include "CEGUITextUtils.h"
 #include "CEGUIExceptions.h"
@@ -402,8 +401,7 @@ void Editbox::eraseSelectedText(bool modify_text)
 		// erase the selected characters (if required)
 		if (modify_text)
 		{
-			d_text_raw.erase(getSelectionStartIndex(), getSelectionLength());
-            d_text = d_text_raw.bidify();
+			d_text.erase(getSelectionStartIndex(), getSelectionLength());
 
 			// trigger notification that text has changed.
 			WindowEventArgs args(this);
@@ -583,11 +581,10 @@ void Editbox::onCharacter(KeyEventArgs& e)
 	Window::onCharacter(e);
 
 	// only need to take notice if we have focus
-    bool bHasCodePoint = ( e.codepoint > 128 ) || getFont()->isCodepointAvailable(e.codepoint);
-	if (hasInputFocus() && bHasCodePoint && !isReadOnly())
+	if (hasInputFocus() && getFont()->isCodepointAvailable(e.codepoint) && !isReadOnly())
 	{
 		// backup current text
-		String tmp(d_text_raw);
+		String tmp(d_text);
 		tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
 		// if there is room
@@ -621,9 +618,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
 			onEditboxFullEvent(args);
 		}
 
-        e.handled = true;
 	}
 
+	e.handled = true;
 }
 
 
@@ -711,7 +708,7 @@ void Editbox::handleBackspace(void)
 {
 	if (!isReadOnly())
 	{
-		String tmp(d_text_raw);
+		String tmp(d_text);
 
 		if (getSelectionLength() != 0)
 		{
@@ -765,7 +762,7 @@ void Editbox::handleDelete(void)
 {
 	if (!isReadOnly())
 	{
-		String tmp(d_text_raw);
+		String tmp(d_text);
 
 		if (getSelectionLength() != 0)
 		{
@@ -945,25 +942,14 @@ void Editbox::handleEnd(uint sysKeys)
 /*************************************************************************
 	Add edit box specific events
 *************************************************************************/
-void Editbox::addEditboxEvents(bool bCommon)
+void Editbox::addEditboxEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventMaskedRenderingModeChanged);
-        addEvent(EventMaskCodePointChanged);
-        addEvent(EventValidationStringChanged);
-        addEvent(EventMaximumTextLengthChanged);
-        addEvent(EventTextInvalidated);
-        addEvent(EventInvalidEntryAttempted);
-        addEvent(EventCaratMoved);
-        addEvent(EventTextSelectionChanged);
-        addEvent(EventEditboxFull);
-    }
-    else
-    {
-        addEvent(EventReadOnlyModeChanged);
-        addEvent(EventTextAccepted);
-    }
+	addEvent(EventReadOnlyModeChanged);				addEvent(EventMaskedRenderingModeChanged);
+	addEvent(EventMaskCodePointChanged);			addEvent(EventValidationStringChanged);
+	addEvent(EventMaximumTextLengthChanged);		addEvent(EventTextInvalidated);
+	addEvent(EventInvalidEntryAttempted);			addEvent(EventCaratMoved);
+	addEvent(EventTextSelectionChanged);			addEvent(EventEditboxFull);
+	addEvent(EventTextAccepted);
 }
 
 
@@ -1151,26 +1137,20 @@ void Editbox::onTextChanged(WindowEventArgs& e)
 /*************************************************************************
 	Add properties
 *************************************************************************/
-void Editbox::addEditboxProperties( bool bCommon )
+void Editbox::addEditboxProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_readOnlyProperty);
-        addProperty(&d_maskTextProperty);
-        addProperty(&d_maskCodepointProperty);
-        addProperty(&d_validationStringProperty);
-        addProperty(&d_caratIndexProperty);
-        addProperty(&d_selectionStartProperty);
-        addProperty(&d_selectionLengthProperty);
-        addProperty(&d_maxTextLengthProperty);
-    }
-    else
-    {
-        addProperty(&d_normalTextColourProperty);
-        addProperty(&d_selectedTextColourProperty);
-        addProperty(&d_activeSelectionColourProperty);
-        addProperty(&d_inactiveSelectionColourProperty);
-    }
+	addProperty(&d_readOnlyProperty);
+	addProperty(&d_maskTextProperty);
+	addProperty(&d_maskCodepointProperty);
+	addProperty(&d_validationStringProperty);
+	addProperty(&d_caratIndexProperty);
+	addProperty(&d_selectionStartProperty);
+	addProperty(&d_selectionLengthProperty);
+	addProperty(&d_maxTextLengthProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_selectedTextColourProperty);
+	addProperty(&d_activeSelectionColourProperty);
+	addProperty(&d_inactiveSelectionColourProperty);
 }
 
 

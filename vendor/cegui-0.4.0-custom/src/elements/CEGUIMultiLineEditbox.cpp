@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIMultiLineEditbox.h"
 #include "elements/CEGUIScrollbar.h"
 #include "CEGUITextUtils.h"
@@ -108,8 +107,7 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	addMultiLineEditboxProperties();
 
 	// we always need a terminating \n
-	d_text_raw.append(1, '\n');
-    d_text = d_text_raw.bidify ();
+	d_text.append(1, '\n');
 }
 
 
@@ -180,19 +178,16 @@ size_t MultiLineEditbox::getSelectionLength(void) const
 /*************************************************************************
 	Add multi-line edit box specific events	
 *************************************************************************/
-void MultiLineEditbox::addMultiLineEditboxEvents(bool bCommon)
+void MultiLineEditbox::addMultiLineEditboxEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventReadOnlyModeChanged);
-        addEvent(EventWordWrapModeChanged);
-        addEvent(EventMaximumTextLengthChanged);
-        addEvent(EventCaratMoved);
-        addEvent(EventTextSelectionChanged);
-        addEvent(EventEditboxFull);
-        addEvent(EventVertScrollbarModeChanged);
-        addEvent(EventHorzScrollbarModeChanged);
-    }
+	addEvent(EventReadOnlyModeChanged);
+	addEvent(EventWordWrapModeChanged);
+	addEvent(EventMaximumTextLengthChanged);
+	addEvent(EventCaratMoved);
+	addEvent(EventTextSelectionChanged);
+	addEvent(EventEditboxFull);
+	addEvent(EventVertScrollbarModeChanged);
+	addEvent(EventHorzScrollbarModeChanged);
 }
 
 
@@ -314,10 +309,9 @@ void MultiLineEditbox::setMaxTextLength(size_t max_len)
 		onMaximumTextLengthChanged(args);
 
 		// trim string
-		if (d_text_raw.length() > d_maxTextLen)
+		if (d_text.length() > d_maxTextLen)
 		{
-			d_text_raw.resize(d_maxTextLen);
-			d_text = d_text_raw.bidify ();
+			d_text.resize(d_maxTextLen);
 			onTextChanged(args);
 		}
 
@@ -535,101 +529,94 @@ void MultiLineEditbox::cacheTextLines(const Rect& dest_area)
         colour selectBrushCol = hasInputFocus() ? d_selectBrushColour : d_inactiveSelectBrushColour;
         selectBrushCol.setAlpha(selectBrushCol.getAlpha() * alpha);
 
-        // Cache font info
-        const float fLineSpacing = fnt->getLineSpacing ();
-
         // for each formatted line.
         for (size_t i = 0; i < d_lines.size(); ++i)
         {
             Rect lineRect(drawArea);
-            // Check line is within the dest_area
-            if ( lineRect.d_top < dest_area.d_bottom && lineRect.d_top + fLineSpacing > dest_area.d_top )
+            const LineInfo& currLine = d_lines[i];
+            String lineText(d_text.substr(currLine.d_startIdx, currLine.d_length));
+
+            // if it is a simple 'no selection area' case
+            if ((currLine.d_startIdx >= d_selectionEnd) ||
+                ((currLine.d_startIdx + currLine.d_length) <= d_selectionStart) ||
+                (d_selectionBrush == NULL))
             {
-                const LineInfo& currLine = d_lines[i];
-                String lineText(d_text.substr(currLine.d_startIdx, currLine.d_length));
+                colours.setColours(normalTextCol);
+                // render the complete line.
+                d_renderCache.cacheText(lineText, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+            }
+            // we have at least some selection highlighting to do
+            else
+            {
+                // Start of actual rendering section.
+                String sect;
+                size_t sectIdx = 0, sectLen;
+                float selStartOffset = 0.0f, selAreaWidth = 0.0f;
 
-                // if it is a simple 'no selection area' case
-                if ((currLine.d_startIdx >= d_selectionEnd) ||
-                    ((currLine.d_startIdx + currLine.d_length) <= d_selectionStart) ||
-                    (d_selectionBrush == NULL))
+                // render any text prior to selected region of line.
+                if (currLine.d_startIdx < d_selectionStart)
                 {
-                    colours.setColours(normalTextCol);
-                    // render the complete line.
-                    d_renderCache.cacheText(lineText, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
-                }
-                // we have at least some selection highlighting to do
-                else
-                {
-                    // Start of actual rendering section.
-                    String sect;
-                    size_t sectIdx = 0, sectLen;
-                    float selStartOffset = 0.0f, selAreaWidth = 0.0f;
+                    // calculate length of text section
+                    sectLen = d_selectionStart - currLine.d_startIdx;
 
-                    // render any text prior to selected region of line.
-                    if (currLine.d_startIdx < d_selectionStart)
-                    {
-                        // calculate length of text section
-                        sectLen = d_selectionStart - currLine.d_startIdx;
-
-                        // get text for this section
-                        sect = lineText.substr(sectIdx, sectLen);
-                        sectIdx += sectLen;
-
-                        // get the pixel offset to the beginning of the selection area highlight.
-                        selStartOffset = fnt->getTextExtent(sect);
-
-                        // draw this portion of the text
-                        colours.setColours(normalTextCol);
-                        d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
-
-                        // set position ready for next portion of text
-                        lineRect.d_left += selStartOffset;
-                    }
-
-                    // calculate the length of the selected section
-                    sectLen = ceguimin(d_selectionEnd - currLine.d_startIdx, currLine.d_length) - sectIdx;
-
-                    // get the text for this section
+                    // get text for this section
                     sect = lineText.substr(sectIdx, sectLen);
                     sectIdx += sectLen;
 
-                    // get the extent to use as the width of the selection area highlight
-                    selAreaWidth = fnt->getTextExtent(sect);
+                    // get the pixel offset to the beginning of the selection area highlight.
+                    selStartOffset = fnt->getTextExtent(sect);
 
-                    // draw the text for this section
-                    colours.setColours(selectTextCol);
+                    // draw this portion of the text
+                    colours.setColours(normalTextCol);
                     d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
 
-                    // render any text beyond selected region of line
-                    if (sectIdx < currLine.d_length)
-                    {
-                        // update render position to the end of the selected area.
-                        lineRect.d_left += selAreaWidth;
-
-                        // calculate length of this section
-                        sectLen = currLine.d_length - sectIdx;
-
-                        // get the text for this section
-                        sect = lineText.substr(sectIdx, sectLen);
-
-                        // render the text for this section.
-                        colours.setColours(normalTextCol);
-                        d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
-                    }
-
-                    // calculate area for the selection brush on this line
-                    lineRect.d_left = drawArea.d_left + selStartOffset;
-                    lineRect.d_right = lineRect.d_left + selAreaWidth;
-                    lineRect.d_bottom = lineRect.d_top + fLineSpacing;
-
-                    // render the selection area brush for this line
-                    colours.setColours(selectBrushCol);
-                    d_renderCache.cacheImage(*d_selectionBrush, lineRect, selZ, colours, &dest_area);
+                    // set position ready for next portion of text
+                    lineRect.d_left += selStartOffset;
                 }
+
+                // calculate the length of the selected section
+                sectLen = ceguimin(d_selectionEnd - currLine.d_startIdx, currLine.d_length) - sectIdx;
+
+                // get the text for this section
+                sect = lineText.substr(sectIdx, sectLen);
+                sectIdx += sectLen;
+
+                // get the extent to use as the width of the selection area highlight
+                selAreaWidth = fnt->getTextExtent(sect);
+
+                // draw the text for this section
+                colours.setColours(selectTextCol);
+                d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+
+                // render any text beyond selected region of line
+                if (sectIdx < currLine.d_length)
+                {
+                    // update render position to the end of the selected area.
+                    lineRect.d_left += selAreaWidth;
+
+                    // calculate length of this section
+                    sectLen = currLine.d_length - sectIdx;
+
+                    // get the text for this section
+                    sect = lineText.substr(sectIdx, sectLen);
+
+                    // render the text for this section.
+                    colours.setColours(normalTextCol);
+                    d_renderCache.cacheText(sect, fnt, LeftAligned, lineRect, textZ, colours, &dest_area);
+                }
+
+                // calculate area for the selection brush on this line
+                lineRect.d_left = drawArea.d_left + selStartOffset;
+                lineRect.d_right = lineRect.d_left + selAreaWidth;
+                lineRect.d_bottom = lineRect.d_top + fnt->getLineSpacing();
+
+                // render the selection area brush for this line
+                colours.setColours(selectBrushCol);
+                d_renderCache.cacheImage(*d_selectionBrush, lineRect, selZ, colours, &dest_area);
             }
 
             // update master position for next line in paragraph.
-            drawArea.d_top += fLineSpacing;
+            drawArea.d_top += fnt->getLineSpacing();
         }
     }
 }
@@ -712,10 +699,6 @@ void MultiLineEditbox::formatText(void)
 							{
 								// get point at which to break the token
 								lineLen = fnt->getCharAtPixel(paraText.substr(lineIndex, nextTokenSize), areaWidth);
-
-                                // If not enough room, pretend there is (to prevent infinite loop)
-							    if ( lineLen == 0 )
-							        lineLen = 1;
 							}
 
 							// text wraps, exit loop early with line info up until wrap point
@@ -893,8 +876,7 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 		// erase the selected characters (if required)
 		if (modify_text)
 		{
-			d_text_raw.erase(getSelectionStartIndex(), getSelectionLength());
-            d_text = d_text_raw.bidify();
+			d_text.erase(getSelectionStartIndex(), getSelectionLength());
 
 			// trigger notification that text has changed.
 			WindowEventArgs args(this);
@@ -920,9 +902,8 @@ void MultiLineEditbox::handleBackspace(void)
 		}
 		else if (d_caratPos > 0)
 		{
-			d_text_raw.erase(d_caratPos - 1, 1);
+			d_text.erase(d_caratPos - 1, 1);
 			setCaratIndex(d_caratPos - 1);
-            d_text = d_text_raw.bidify();
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -945,9 +926,8 @@ void MultiLineEditbox::handleDelete(void)
 		}
 		else if (getCaratIndex() < d_text.length() - 1)
 		{
-			d_text_raw.erase(d_caratPos, 1);
+			d_text.erase(d_caratPos, 1);
 			ensureCaratIsVisible();
-            d_text = d_text_raw.bidify();
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -1221,12 +1201,10 @@ void MultiLineEditbox::handleNewLine(uint sysKeys)
 		eraseSelectedText();
 
 		// if there is room
-		if (d_text_raw.length() - 1 < d_maxTextLen)
+		if (d_text.length() - 1 < d_maxTextLen)
 		{
-			d_text_raw.insert(getCaratIndex(), 1, 0x0a);
-            d_text = d_text_raw.bidify ();
+			d_text.insert(getCaratIndex(), 1, 0x0a);
 			d_caratPos++;
-
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -1331,9 +1309,7 @@ void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
 		// erroneous situation and select up to end at end of text.
 		if (paraEnd == String::npos)
 		{
-	        d_text_raw.append(1, '\n');
-            d_text = d_text_raw.bidify ();
-
+			d_text.append(1, '\n');
 			paraEnd = d_text.length() - 1;
 		}
 
@@ -1388,20 +1364,16 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 	Window::onCharacter(e);
 
 	// only need to take notice if we have focus
-	bool bHasCodePoint = (e.codepoint > 128) || getFont()->isCodepointAvailable(e.codepoint);
-	if (hasInputFocus() && bHasCodePoint && !isReadOnly())
+	if (hasInputFocus() && !isReadOnly() && getFont()->isCodepointAvailable(e.codepoint))
 	{
-        // erase selected text
+		// erase selected text
 		eraseSelectedText();
 
 		// if there is room
-		if ( d_text_raw.length() == 0 || ( d_text_raw.length() - 1 < d_maxTextLen ) )
+		if (d_text.length() - 1 < d_maxTextLen)
 		{
-			d_text_raw.insert(getCaratIndex(), 1, e.codepoint);
+			d_text.insert(getCaratIndex(), 1, e.codepoint);
 			d_caratPos++;
-
-            // Trigger our text setting
-            d_text = d_text_raw.bidify();
 
 			WindowEventArgs args(this);
 			onTextChanged(args);
@@ -1523,19 +1495,15 @@ void MultiLineEditbox::onTextChanged(WindowEventArgs& e)
 {
     // ensure last character is a new line
     if ((d_text.length() == 0) || (d_text[d_text.length() - 1] != '\n'))
-    {
-    	d_text_raw.append(1, '\n');
-        d_text = d_text_raw.bidify ();
-    }
+        d_text.append(1, '\n');
+
+    // base class processing
+    Window::onTextChanged(e);
 
     // clear selection
     clearSelection();
     // layout new text
     formatText();
-
-    // base class processing
-    Window::onTextChanged(e);
-
     // layout child windows (scrollbars) since text layout may have changed
     performChildWindowLayout();
     // ensure carat is still within the text
@@ -1674,24 +1642,18 @@ bool MultiLineEditbox::isWordWrapped(void) const
 /*************************************************************************
 	Add new properties for this class
 *************************************************************************/
-void MultiLineEditbox::addMultiLineEditboxProperties( bool bCommon )
+void MultiLineEditbox::addMultiLineEditboxProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_wordWrapProperty);
-        addProperty(&d_caratIndexProperty);
-        addProperty(&d_selectionStartProperty);
-        addProperty(&d_selectionLengthProperty);
-        addProperty(&d_maxTextLengthProperty);
-    }
-    else
-    {
-        addProperty(&d_readOnlyProperty);
-        addProperty(&d_normalTextColourProperty);
-        addProperty(&d_selectedTextColourProperty);
-        addProperty(&d_activeSelectionColourProperty);
-        addProperty(&d_inactiveSelectionColourProperty);
-    }
+	addProperty(&d_readOnlyProperty);
+	addProperty(&d_wordWrapProperty);
+	addProperty(&d_caratIndexProperty);
+	addProperty(&d_selectionStartProperty);
+	addProperty(&d_selectionLengthProperty);
+	addProperty(&d_maxTextLengthProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_selectedTextColourProperty);
+	addProperty(&d_activeSelectionColourProperty);
+	addProperty(&d_inactiveSelectionColourProperty);
 }
 
 /*************************************************************************

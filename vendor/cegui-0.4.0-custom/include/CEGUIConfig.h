@@ -74,13 +74,13 @@ Each item in here has a comment to describe what it's for.
 // Comment this line if you wish to remove the Xerces-C++ dependency.
 // The system will revert to using an embedded version of TinyXML instead.
 //////////////////////////////////////////////////////////////////////////
-//#define CEGUI_WITH_XERCES
+#define CEGUI_WITH_XERCES
 
 //////////////////////////////////////////////////////////////////////////
 // Comment/Uncomment these lines to control renderer use in samples where
 // MSVC/XCode are used (since they don't auto-detect such things).
 //////////////////////////////////////////////////////////////////////////
-//#define CEGUI_SAMPLES_USE_OPENGL
+#define CEGUI_SAMPLES_USE_OPENGL
 //#define CEGUI_SAMPLES_USE_OGRE
 //#define CEGUI_SAMPLES_USE_IRRLICHT
 

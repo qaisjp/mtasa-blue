@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIRadioButton.h"
 
 // Start of CEGUI namespace section
@@ -109,9 +108,9 @@ void RadioButton::setGroupID(ulong group)
 /*************************************************************************
 	Add radio button specific events	
 *************************************************************************/
-void RadioButton::addRadioButtonEvents(bool bCommon)
+void RadioButton::addRadioButtonEvents(void)
 {
-	if ( bCommon == true )	addEvent(EventSelectStateChanged);
+	addEvent(EventSelectStateChanged);
 }
 
 
@@ -226,13 +225,10 @@ RadioButton* RadioButton::getSelectedButtonInGroup(void) const
 /*************************************************************************
 	Add properties for radio button
 *************************************************************************/
-void RadioButton::addRadioButtonProperties( bool bCommon )
+void RadioButton::addRadioButtonProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_selectedProperty);
-        addProperty(&d_groupIDProperty);
-    }
+	addProperty(&d_selectedProperty);
+	addProperty(&d_groupIDProperty);
 }
 
 

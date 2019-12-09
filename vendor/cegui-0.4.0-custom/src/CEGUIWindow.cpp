@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIWindow.h"
 #include "CEGUIExceptions.h"
 #include "CEGUIWindowManager.h"
@@ -106,7 +105,6 @@ WindowProperties::UnifiedWidth		Window::d_unifiedWidthProperty;
 WindowProperties::UnifiedHeight		Window::d_unifiedHeightProperty;
 WindowProperties::UnifiedMinSize	Window::d_unifiedMinSizeProperty;
 WindowProperties::UnifiedMaxSize	Window::d_unifiedMaxSizeProperty;
-WindowProperties::MousePassThroughEnabled   Window::d_mousePassThroughEnabledProperty;
 
 /*************************************************************************
 	static data definitions
@@ -160,7 +158,6 @@ const String Window::EventMouseTripleClick( (utf8*)"MouseTripleClick" );
 const String Window::EventKeyDown( (utf8*)"KeyDown" );
 const String Window::EventKeyUp( (utf8*)"KeyUp" );
 const String Window::EventCharacterKey( (utf8*)"CharacterKey" );
-const String Window::EventRedrawRequested( (utf8*)"RedrawRequested" );
 	
 	
 /*************************************************************************
@@ -220,9 +217,6 @@ Window::Window(const String& type, const String& name) :
     // set initial alignments
     d_horzAlign = HA_LEFT;
     d_vertAlign = VA_TOP;
-
-    // event pass through
-    d_mousePassThroughEnabled = false;
 
 	// add properties
 	addStandardProperties();
@@ -658,45 +652,6 @@ Window* Window::getChildAtPosition(const Point& position) const
 
 
 /*************************************************************************
-    return the child Window that is 'hit' by the given position and
-    is allowed to handle mouse events
-*************************************************************************/
-Window* Window::getTargetChildAtPosition(const Point& position) const
-{
-    ChildList::const_reverse_iterator child;
-    ChildList::const_reverse_iterator end = d_drawList.rend();
-
-    for (child = d_drawList.rbegin(); child != end; ++child)
-    {
-        if ((*child)->isVisible())
-        {
-            // recursively scan children of this child windows...
-            Window* wnd = (*child)->getTargetChildAtPosition(position);
-
-            // return window pointer if we found a 'hit' down the chain somewhere
-            if (wnd != NULL)
-            {
-                return wnd;
-            }
-            // none of our childs children were hit, 
-            else
-            {
-                // see if this child is accepting mouse input and is hit,
-                // and return it's pointer if it is
-                if (!(*child)->isMousePassThroughEnabled() && (*child)->isHit(position))
-                {
-                    return (*child);
-                }
-            }
-        }
-    }
-
-    // nothing hit
-    return NULL;
-}
-
-
-/*************************************************************************
 	return the current metrics mode employed by the Window
 *************************************************************************/
 MetricsMode Window::getMetricsMode(void) const
@@ -898,14 +853,7 @@ void Window::setClippedByParent(bool setting)
 *************************************************************************/
 void Window::setText(const String& text)
 {
-    if ( text == d_text_raw )
-        return;
-    d_text_raw = text;
-    d_text = d_text_raw.bidify ();
-
-    if ( getFont () )
-        const_cast < Font* > ( getFont () )->insertStringForGlyphs ( d_text ); // Refresh our glyph set if there are new characters
-
+	d_text = text;
     WindowEventArgs args(this);
 	onTextChanged(args);
 }
@@ -989,9 +937,6 @@ void Window::setAreaRect(const Rect& area)
 *************************************************************************/
 void Window::setFont(const Font* font)
 {
-    if ( !d_font && font && !d_text.empty() )
-        const_cast < Font* > ( font )->insertStringForGlyphs ( d_text ); // Refresh our glyph set if there are new characters
-
 	d_font = font;
     WindowEventArgs args(this);
 	onFontChanged(args);
@@ -1033,11 +978,6 @@ void Window::addChildWindow(const String& name)
 *************************************************************************/
 void Window::addChildWindow(Window* window)
 {
-	// dont add ourselves as a child
-	if (window == this)
-	{
-		return;
-	}
 	addChild_impl(window);
     WindowEventArgs args(window);
 	onChildAdded(args);
@@ -1252,16 +1192,8 @@ void Window::releaseInput(void)
 		d_captureWindow = NULL;
 	}
 
-    try
-    {
-        WindowEventArgs args(this);
-	    onCaptureLost(args);
-    }
-    catch (UnknownObjectException)
-    {
-        // Guess fix for scrollbar throwing UnknownObjectException("WindowManager::getWindow ...") inside FalagardScrollbar::getValueFromThumb()
-        // (When called from Window::destroy())
-    }
+    WindowEventArgs args(this);
+	onCaptureLost(args);
 }
 
 
@@ -1325,35 +1257,13 @@ void Window::setInheritsAlpha(bool setting)
 /*************************************************************************
 	Signal the System object to redraw (at least) this Window on the next
 	render cycle.
-
-    lil_Toady: A bit hacky here, had to clone the const function,
-               so it doesn't give linker errors in mta, there must
-               be a cleaner way to do that
 *************************************************************************/
-void Window::requestRedraw(void)
-{
-    WindowEventArgs args(this);
-    onRedrawRequested(args);
-
-    /* lil_Toady: This was the original cegui code
-    d_needsRedraw = true;
-	System::getSingleton().signalRedraw();
-    */
-}
-
-
 void Window::requestRedraw(void) const
 {
-    //d_needsRedraw = true;
-	//System::getSingleton().signalRedraw();
-}
-
-
-void Window::forceRedraw(void)
-{
     d_needsRedraw = true;
 	System::getSingleton().signalRedraw();
 }
+
 
 /*************************************************************************
 	Convert the given X co-ordinate from absolute to relative metrics.
@@ -1855,8 +1765,7 @@ float Window::windowToScreenY(const UDim& y) const
 *************************************************************************/
 Vector2 Window::windowToScreen(const UVector2& vec) const
 {
-    Vector2 base(0, 0);
-    base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
+    Vector2 base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
 
     switch(d_horzAlign)
     {
@@ -1890,8 +1799,7 @@ Vector2 Window::windowToScreen(const UVector2& vec) const
 *************************************************************************/
 Rect Window::windowToScreen(const URect& rect) const
 {
-    Vector2 base(0, 0);
-    base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
+    Vector2 base = d_parent ? d_parent->windowToScreen(base) + getAbsolutePosition() : getAbsolutePosition();
 
     switch(d_horzAlign)
     {
@@ -2072,66 +1980,26 @@ Size Window::getParentSize(void) const
 /*************************************************************************
 	Add standard Window events
 *************************************************************************/
-void Window::addStandardEvents( bool bCommon )
+void Window::addStandardEvents(void)
 {
-    if ( bCommon == false )
-    {
-        // window events
-        addEvent(EventFontChanged);
-        addEvent(EventAlphaChanged);
-        addEvent(EventIDChanged);
-        addEvent(EventActivated);
-        addEvent(EventDeactivated);
-        addEvent(EventShown);
-        addEvent(EventHidden);
-        addEvent(EventEnabled);
-        addEvent(EventDisabled);
-        addEvent(EventMetricsModeChanged);
-        addEvent(EventClippedByParentChanged);
-        addEvent(EventDestroyedByParentChanged);
-        addEvent(EventInheritsAlphaChanged);
-        addEvent(EventAlwaysOnTopChanged);
-        addEvent(EventInputCaptureGained);
-        addEvent(EventInputCaptureLost);
-        addEvent(EventRenderingStarted);
-        addEvent(EventRenderingEnded);
-        addEvent(EventChildAdded);
-        addEvent(EventChildRemoved);
-        addEvent(EventDestructionStarted);
-        addEvent(EventZOrderChanged);
-        addEvent(EventParentSized);
-        addEvent(EventDragDropItemEnters);
-        addEvent(EventDragDropItemLeaves);
-        addEvent(EventDragDropItemDropped);
-        addEvent(EventVerticalAlignmentChanged);
-        addEvent(EventHorizontalAlignmentChanged);
+	// window events
+	addEvent(EventSized);					addEvent(EventMoved);					addEvent(EventTextChanged);
+	addEvent(EventFontChanged);				addEvent(EventAlphaChanged);			addEvent(EventIDChanged);
+	addEvent(EventActivated);				addEvent(EventDeactivated);				addEvent(EventShown);
+	addEvent(EventHidden);					addEvent(EventEnabled);					addEvent(EventDisabled);
+	addEvent(EventMetricsModeChanged);		addEvent(EventClippedByParentChanged);	addEvent(EventDestroyedByParentChanged);
+	addEvent(EventInheritsAlphaChanged);	addEvent(EventAlwaysOnTopChanged);		addEvent(EventInputCaptureGained);
+	addEvent(EventInputCaptureLost);		addEvent(EventRenderingStarted);		addEvent(EventRenderingEnded);
+	addEvent(EventChildAdded);				addEvent(EventChildRemoved);			addEvent(EventDestructionStarted);
+	addEvent(EventZOrderChanged);			addEvent(EventParentSized);             addEvent(EventDragDropItemEnters);
+    addEvent(EventDragDropItemLeaves);      addEvent(EventDragDropItemDropped);     addEvent(EventVerticalAlignmentChanged);
+    addEvent(EventHorizontalAlignmentChanged);
 
-        // general input handling
-        addEvent(EventMouseMove);
-        addEvent(EventMouseWheel);
-        addEvent(EventMouseButtonUp);
-        addEvent(EventMouseDoubleClick);
-        addEvent(EventMouseTripleClick);
-        addEvent(EventKeyUp);
-        addEvent(EventCharacterKey);
-
-        // MTA event
-        addEvent(EventRedrawRequested);
-    }
-    else
-    {
-        // window events
-        addEvent(EventSized);
-        addEvent(EventMoved);
-        addEvent(EventTextChanged);
-
-        // general input handling
-        addEvent(EventMouseEnters);
-        addEvent(EventMouseLeaves);
-        addEvent(EventMouseButtonDown);
-        addEvent(EventMouseClick);
-        addEvent(EventKeyDown);
-    }
+	// general input handling
+	addEvent(EventMouseEnters);				addEvent(EventMouseLeaves);				addEvent(EventMouseMove);
+	addEvent(EventMouseWheel);				addEvent(EventMouseButtonDown);			addEvent(EventMouseButtonUp);
+	addEvent(EventMouseClick);				addEvent(EventMouseDoubleClick);		addEvent(EventMouseTripleClick);
+	addEvent(EventKeyDown);					addEvent(EventKeyUp);					addEvent(EventCharacterKey);
 }
 
 
@@ -2166,6 +2034,7 @@ void Window::addChild_impl(Window* wnd)
 	// if window is already attached, detach it first (will fire normal events)
 	if (wnd->getParent() != NULL)
 		wnd->getParent()->removeChildWindow(wnd);
+
     addWindowToDrawList(*wnd);
 
     // add window to child list
@@ -2859,74 +2728,67 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 /*************************************************************************
 	Add standard CEGUI::Window properties.
 *************************************************************************/
-void Window::addStandardProperties( bool bCommon )
+void Window::addStandardProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_absHeightProperty);
-        addProperty(&d_absMaxSizeProperty);
-        addProperty(&d_absMinSizeProperty);
-        addProperty(&d_absPositionProperty);
-        addProperty(&d_absRectProperty);
-        addProperty(&d_absSizeProperty);
-        addProperty(&d_absWidthProperty);
-        addProperty(&d_absXPosProperty);
-        addProperty(&d_absYPosProperty);
-        addProperty(&d_alphaProperty);
-        addProperty(&d_clippedByParentProperty);
-        addProperty(&d_destroyedByParentProperty);
-        addProperty(&d_fontProperty);
-        addProperty(&d_heightProperty);
-        addProperty(&d_IDProperty);
-        addProperty(&d_inheritsAlphaProperty);
-        addProperty(&d_metricsModeProperty);
-        addProperty(&d_mouseCursorProperty);
-        addProperty(&d_positionProperty);
-        addProperty(&d_rectProperty);
-        addProperty(&d_relHeightProperty);
-        addProperty(&d_relMaxSizeProperty);
-        addProperty(&d_relMinSizeProperty);
-        addProperty(&d_relPositionProperty);
-        addProperty(&d_relRectProperty);
-        addProperty(&d_relSizeProperty);
-        addProperty(&d_relWidthProperty);
-        addProperty(&d_relXPosProperty);
-        addProperty(&d_relYPosProperty);
-        addProperty(&d_restoreOldCaptureProperty);
-        addProperty(&d_sizeProperty);
-        addProperty(&d_textProperty);
-        addProperty(&d_visibleProperty);
-        addProperty(&d_widthProperty);
-        addProperty(&d_xPosProperty);
-        addProperty(&d_yPosProperty);
-        addProperty(&d_zOrderChangeProperty);
-        addProperty(&d_autoRepeatProperty);
-        addProperty(&d_autoRepeatDelayProperty);
-        addProperty(&d_autoRepeatRateProperty);
-        addProperty(&d_distInputsProperty);
-        addProperty(&d_tooltipTypeProperty);
-        addProperty(&d_tooltipProperty);
-        addProperty(&d_inheritsTooltipProperty);
-        addProperty(&d_riseOnClickProperty);
-        addProperty(&d_vertAlignProperty);
-        addProperty(&d_horzAlignProperty);
-        addProperty(&d_unifiedAreaRectProperty);
-        addProperty(&d_unifiedPositionProperty);
-        addProperty(&d_unifiedXPositionProperty);
-        addProperty(&d_unifiedYPositionProperty);
-        addProperty(&d_unifiedSizeProperty);
-        addProperty(&d_unifiedWidthProperty);
-        addProperty(&d_unifiedHeightProperty);
-        addProperty(&d_unifiedMinSizeProperty);
-        addProperty(&d_unifiedMaxSizeProperty);
-        addProperty(&d_mousePassThroughEnabledProperty);
-    }
-    else
-    {
-        addProperty(&d_alwaysOnTopProperty);
-        addProperty(&d_disabledProperty);
-        addProperty(&d_wantsMultiClicksProperty);
-    }
+	addProperty(&d_absHeightProperty);
+	addProperty(&d_absMaxSizeProperty);
+	addProperty(&d_absMinSizeProperty);
+	addProperty(&d_absPositionProperty);
+	addProperty(&d_absRectProperty);
+	addProperty(&d_absSizeProperty);
+	addProperty(&d_absWidthProperty);
+	addProperty(&d_absXPosProperty);
+	addProperty(&d_absYPosProperty);
+	addProperty(&d_alphaProperty);
+	addProperty(&d_alwaysOnTopProperty);
+	addProperty(&d_clippedByParentProperty);
+	addProperty(&d_destroyedByParentProperty);
+	addProperty(&d_disabledProperty);
+	addProperty(&d_fontProperty);
+	addProperty(&d_heightProperty);
+	addProperty(&d_IDProperty);
+	addProperty(&d_inheritsAlphaProperty);
+	addProperty(&d_metricsModeProperty);
+	addProperty(&d_mouseCursorProperty);
+	addProperty(&d_positionProperty);
+	addProperty(&d_rectProperty);
+	addProperty(&d_relHeightProperty);
+	addProperty(&d_relMaxSizeProperty);
+	addProperty(&d_relMinSizeProperty);
+	addProperty(&d_relPositionProperty);
+	addProperty(&d_relRectProperty);
+	addProperty(&d_relSizeProperty);
+	addProperty(&d_relWidthProperty);
+	addProperty(&d_relXPosProperty);
+	addProperty(&d_relYPosProperty);
+	addProperty(&d_restoreOldCaptureProperty);
+	addProperty(&d_sizeProperty);
+	addProperty(&d_textProperty);
+	addProperty(&d_visibleProperty);
+	addProperty(&d_widthProperty);
+	addProperty(&d_xPosProperty);
+	addProperty(&d_yPosProperty);
+	addProperty(&d_zOrderChangeProperty);
+    addProperty(&d_wantsMultiClicksProperty);
+    addProperty(&d_autoRepeatProperty);
+    addProperty(&d_autoRepeatDelayProperty);
+    addProperty(&d_autoRepeatRateProperty);
+    addProperty(&d_distInputsProperty);
+    addProperty(&d_tooltipTypeProperty);
+    addProperty(&d_tooltipProperty);
+    addProperty(&d_inheritsTooltipProperty);
+    addProperty(&d_riseOnClickProperty);
+    addProperty(&d_vertAlignProperty);
+    addProperty(&d_horzAlignProperty);
+    addProperty(&d_unifiedAreaRectProperty);
+    addProperty(&d_unifiedPositionProperty);
+    addProperty(&d_unifiedXPositionProperty);
+    addProperty(&d_unifiedYPositionProperty);
+    addProperty(&d_unifiedSizeProperty);
+    addProperty(&d_unifiedWidthProperty);
+    addProperty(&d_unifiedHeightProperty);
+    addProperty(&d_unifiedMinSizeProperty);
+    addProperty(&d_unifiedMaxSizeProperty);
 }
 
 
@@ -3579,20 +3441,12 @@ int Window::writePropertiesXML(OutStream& out_stream) const
 
     while(!iter.isAtEnd())
     {
-			try
-			{
         // only write property if it's not at the default state
         if (!iter.getCurrentValue()->isDefault(this))
         {
             iter.getCurrentValue()->writeXMLToStream(this, out_stream);
             ++propertiesWritten;
         }
-			}
-			catch (InvalidRequestException)
-			{
-				// This catches error(s) from the MultiLineColumnList for example
-				Logger::getSingleton().logEvent("Window::writePropertiesXML - property receiving failed. Continuing...", Errors);
-			}
 
         ++iter;
     }
@@ -3693,62 +3547,6 @@ Window* Window::getActiveSibling()
     return activeWnd;
 }
 
-void Window::rename(const String& new_name)
-{
-    WindowManager& winMgr = WindowManager::getSingleton();
-    /*
-     * Client code should never call this, but again, since we know people do
-     * not read and stick to the API reference, here is some built-in protection
-     * which ensures that things are handled via the WindowManager anyway.
-     */
-    if (winMgr.isWindowPresent(d_name))
-    {
-        winMgr.renameWindow(this, new_name);
-        // now we return, since the work was already done when WindowManager
-        // re-called this function in the proper manner.
-        return;
-    }
-
-    if (winMgr.isWindowPresent(new_name))
-        throw AlreadyExistsException("Window::rename - a Window named '" +
-                new_name + "' already exists within the system.");
-
-    // rename Falagard created child windows
-    if (!d_lookName.empty())
-    {
-        const WidgetLookFeel& wlf =
-                WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-
-        // get WidgetLookFeel to rename the children it created
-        wlf.renameChildren(*this, new_name);
-    }
-
-    // how to detect other auto created windows.
-    const String autoPrefix(d_name + "__auto_");
-    // length of current name
-    const size_t oldNameLength = d_name.length();
-
-    // now rename all remaining auto-created windows attached
-    for (size_t i = 0; i < getChildCount(); ++i)
-    {
-        // is this an auto created window that we created?
-        if (!d_children[i]->d_name.compare(0, autoPrefix.length(), autoPrefix))
-        {
-            winMgr.renameWindow(d_children[i],
-                                new_name +
-                                d_children[i]->d_name.substr(oldNameLength));
-        }
-    }
-
-    // log this under insane level
-    Logger::getSingleton().logEvent("Renamed window: " + d_name +
-                                    " as: " + new_name,
-                                    Informative);
-
-    // finally, set our new name
-    d_name = new_name;
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -3836,9 +3634,6 @@ void Window::onHidden(WindowEventArgs& e)
 {
 	requestRedraw();
 	fireEvent(EventHidden, e, EventNamespace);
-
-    // Fix by MTA: Deactivate to stop retrieving input
-    deactivate();
 }
 
 
@@ -4176,11 +3971,6 @@ void Window::onVerticalAlignmentChanged(WindowEventArgs& e)
 void Window::onHorizontalAlignmentChanged(WindowEventArgs& e)
 {
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
-}
-
-void Window::onRedrawRequested(WindowEventArgs& e)
-{
-    fireEvent(EventRedrawRequested, e, EventNamespace);
 }
 
 } // End of  CEGUI namespace section

@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUISlider.h"
 #include "elements/CEGUIThumb.h"
 
@@ -141,17 +140,11 @@ void Slider::setCurrentValue(float value)
 /*************************************************************************
 	Add slider specific events	
 *************************************************************************/
-void Slider::addSliderEvents(bool bCommon)
+void Slider::addSliderEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventValueChanged);
-    }
-    else
-    {
-        addEvent(EventThumbTrackStarted);
-        addEvent(EventThumbTrackEnded);
-    }
+	addEvent(EventValueChanged);
+	addEvent(EventThumbTrackStarted);
+	addEvent(EventThumbTrackEnded);
 }
 
 
@@ -262,14 +255,11 @@ bool Slider::handleThumbTrackEnded(const EventArgs& e)
 /*************************************************************************
 	Add properties for the slider
 *************************************************************************/
-void Slider::addSliderProperties( bool bCommon )
+void Slider::addSliderProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_currentValueProperty);
-        addProperty(&d_clickStepSizeProperty);
-        addProperty(&d_maximumValueProperty);
-    }
+	addProperty(&d_currentValueProperty);
+	addProperty(&d_clickStepSizeProperty);
+	addProperty(&d_maximumValueProperty);
 }
 
 

@@ -399,8 +399,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addStaticTextProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addStaticTextProperties(false); }
+	void	addStaticTextProperties(void);
 };
 
 } // End of  CEGUI namespace section

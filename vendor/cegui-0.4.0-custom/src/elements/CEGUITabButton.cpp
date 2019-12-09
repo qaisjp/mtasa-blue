@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUITabButton.h"
 
 // Start of CEGUI namespace section
@@ -61,9 +60,9 @@ TabButton::~TabButton(void)
 /*************************************************************************
 	Add button specific events	
 *************************************************************************/
-void TabButton::addTabButtonEvents(bool bCommon)
+void TabButton::addTabButtonEvents(void)
 {
-	if ( bCommon == true )	addEvent(EventClicked);
+	addEvent(EventClicked);
 }
 
 

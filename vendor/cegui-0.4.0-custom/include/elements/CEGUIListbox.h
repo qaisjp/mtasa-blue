@@ -539,8 +539,7 @@ protected:
 	\brief
 		Add list box specific events
 	*/
-	void	addListboxEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addListboxEvents(false); }
+	void	addListboxEvents(void);
 
 
 	/*!
@@ -714,8 +713,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addListboxProperties( bool bCommon = true );
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addListboxProperties(false); }
+	void	addListboxProperties(void);
 };
 
 

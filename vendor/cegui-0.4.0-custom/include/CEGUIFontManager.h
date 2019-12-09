@@ -138,7 +138,7 @@ public:
 	\exception	RendererException			thrown if the Renderer can't support a texture large enough to hold the requested glyph imagery.
 	\exception	MemoryException				thrown if allocation of imagery construction buffer fails.
 	*/
-	Font*	createFont(const String& name, const String& fontname, uint size, uint flags, bool bAutoScale, float fNativeResX, float fNativeResY, const String& resourceGroup = "" );
+	Font*	createFont(const String& name, const String& fontname, uint size, uint flags, const String& resourceGroup = "");
 
 
 	/*!
@@ -233,33 +233,16 @@ public:
     */
     void writeFontToStream(const String& name, OutStream& out_stream) const;
 
-    /*!
-    \brief
-        Sets a substitute font of the given name
-
-    \param name
-        String holding the name of the Font to be used as the substitute.
-
-    \return
-        Nothing.
-    */
-    void setSubstituteFont(Font* subfont) { d_subfont = subfont; d_subfont->setIsSubstituteFont(true); };
-    Font* getSubstituteFont(void) { return d_subfont; };
 
 private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    Font*   d_subfont;
-
 	typedef	std::map<String, Font*>		FontRegistry;
 	FontRegistry		d_fonts;
 
 	struct FontManagerImplData;
 	FontManagerImplData*	d_implData;
-
-    struct CEGUI::Font::FontImplData;
-    CEGUI::Font::FontImplData*	d_subfntdata;	//!< Implementation data
 
 
 public:

@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIProgressBar.h"
 
 // Start of CEGUI namespace section
@@ -71,9 +70,6 @@ ProgressBar::~ProgressBar(void)
 *************************************************************************/
 void ProgressBar::setProgress(float progress)
 {
-    if ( std::isnan( progress ) )
-        progress = 0;
-
 	// legal progress rangeis : 0.0f <= progress <= 1.0f
 	progress = (progress < 0.0f) ? 0.0f : (progress > 1.0f) ? 1.0f : progress;
 
@@ -98,13 +94,10 @@ void ProgressBar::setProgress(float progress)
 /*************************************************************************
 	Add progress bar specific events to the window	
 *************************************************************************/
-void ProgressBar::addProgressBarEvents(bool bCommon)
+void ProgressBar::addProgressBarEvents(void)
 {
-    if ( bCommon == false )
-    {
-        addEvent(EventProgressChanged);
-        addEvent(EventProgressDone);
-    }
+	addEvent(EventProgressChanged);
+	addEvent(EventProgressDone);
 }
 
 /*************************************************************************
@@ -129,13 +122,10 @@ void ProgressBar::onProgressDone(WindowEventArgs& e)
 /*************************************************************************
 	add properties defined for this class
 *************************************************************************/
-void ProgressBar::addProgressBarProperties( bool bCommon )
+void ProgressBar::addProgressBarProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_stepSizeProperty);
-        addProperty(&d_currentProgressProperty);
-    }
+	addProperty(&d_stepSizeProperty);
+	addProperty(&d_currentProgressProperty);
 }
 
 

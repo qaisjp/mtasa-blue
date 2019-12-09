@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIImage.h"
 #include "CEGUIExceptions.h"
 #include "CEGUITexture.h"
@@ -40,18 +39,17 @@ namespace CEGUI
 /*************************************************************************
 	Constructor
 *************************************************************************/
-Image::Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling, float vertScaling, unsigned long ulCodepoint, Font* pFont ) :
+Image::Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling, float vertScaling) :
 	d_owner(owner),
 	d_area(area),
 	d_offset(render_offset),
-	d_name(name),
-    d_codepoint(ulCodepoint),
-    d_font(pFont)
+	d_name(name)
 {
 	if (d_owner == NULL)
 	{
 		throw NullObjectException((utf8*)"Image::Image - Imageset pointer passed to Image constructor must not be null.");
 	}
+
 	// setup initial image scaling
 	setHorzScaling(horzScaling);
 	setVertScaling(vertScaling);
@@ -69,9 +67,7 @@ Image::Image(const Image& image) :
 	d_scaledWidth(image.d_scaledWidth),
 	d_scaledHeight(image.d_scaledHeight),
 	d_scaledOffset(image.d_scaledOffset),
-	d_name(image.d_name),
-    d_codepoint(image.d_codepoint),
-    d_font(image.d_font)
+	d_name(image.d_name)
 {
 }
 
@@ -80,7 +76,6 @@ Image::Image(const Image& image) :
 *************************************************************************/
 Image::~Image(void)
 {
-    System::getSingleton().getRenderer ()->NotifyImageInvalid ( this );
 }
 
 
@@ -115,7 +110,7 @@ void Image::draw(const Rect& dest_rect, float z, const Rect& clip_rect, const Co
 	dest.offset(d_scaledOffset);
 
 	// draw
-	d_owner->draw(d_area, dest, z, clip_rect, colours, quad_split_mode, this );
+	d_owner->draw(d_area, dest, z, clip_rect, colours, quad_split_mode);
 }
 
 
@@ -142,15 +137,6 @@ const String& Image::getImagesetName(void) const
 const Rect& Image::getSourceTextureArea(void) const
 {
     return d_area;
-}
-
-/*************************************************************************
-    Sets Rect describing the source texture area used by this Image.
-    !!! ADDED BY MTA !!!
-*************************************************************************/
-void Image::setSourceTextureArea(const Rect& area)
-{
-    d_area = area;
 }
 
 

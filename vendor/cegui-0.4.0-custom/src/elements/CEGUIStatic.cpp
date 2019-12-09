@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIStatic.h"
 #include "CEGUIImagesetManager.h"
 #include "CEGUIImageset.h"
@@ -402,27 +401,21 @@ void Static::setImageForFrameLocation(FrameLocation location, const Image* image
 /*************************************************************************
 	Adds properties for the static widget base class
 *************************************************************************/
-void Static::addStaticProperties( bool bCommon )
+void Static::addStaticProperties(void)
 {
-    if ( bCommon == true )
-    {
-        addProperty(&d_frameEnabledProperty);
-        addProperty(&d_backgroundEnabledProperty);
-    }
-    else
-    {
-        addProperty(&d_frameColoursProperty);
-        addProperty(&d_backgroundColoursProperty);
-        addProperty(&d_backgroundImageProperty);
-        addProperty(&d_topLeftFrameProperty);
-        addProperty(&d_topRightFrameProperty);
-        addProperty(&d_bottomLeftFrameProperty);
-        addProperty(&d_bottomRightFrameProperty);
-        addProperty(&d_leftFrameProperty);
-        addProperty(&d_topFrameProperty);
-        addProperty(&d_rightFrameProperty);
-        addProperty(&d_bottomFrameProperty);
-    }
+	addProperty(&d_frameEnabledProperty);
+	addProperty(&d_backgroundEnabledProperty);
+	addProperty(&d_frameColoursProperty);
+	addProperty(&d_backgroundColoursProperty);
+	addProperty(&d_backgroundImageProperty);
+	addProperty(&d_topLeftFrameProperty);
+	addProperty(&d_topRightFrameProperty);
+	addProperty(&d_bottomLeftFrameProperty);
+	addProperty(&d_bottomRightFrameProperty);
+	addProperty(&d_leftFrameProperty);
+	addProperty(&d_topFrameProperty);
+	addProperty(&d_rightFrameProperty);
+	addProperty(&d_bottomFrameProperty);
 }
 
 } // End of  CEGUI namespace section

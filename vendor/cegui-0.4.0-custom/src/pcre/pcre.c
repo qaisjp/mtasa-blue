@@ -40,7 +40,6 @@ POSSIBILITY OF SUCH DAMAGE.
 -----------------------------------------------------------------------------
 */
 
-#undef DEBUG    // DEBUG will not work due to missing files
 
 /* Define DEBUG to get debugging output on stdout. */
 /* #define DEBUG */

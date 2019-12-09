@@ -322,8 +322,7 @@ protected:
 	\brief
 		Add menuitem specific events
 	*/
-	void	addMenuItemEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addMenuItemEvents(false); }
+	void	addMenuItemEvents(void);
 
 
 	/*!
@@ -389,8 +388,7 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void addMenuItemProperties( bool bCommon = true );
-	void addUncommonProperties( void )							{ __super::addUncommonProperties(); addMenuItemProperties(false); }
+	void addMenuItemProperties(void);
 
 
 	/*!

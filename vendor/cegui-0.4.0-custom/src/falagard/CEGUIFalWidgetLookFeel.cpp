@@ -21,11 +21,9 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "falagard/CEGUIFalWidgetLookFeel.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
-#include "CEGUIWindowManager.h"
 #include <iostream>
 
 // Start of CEGUI namespace section
@@ -241,15 +239,6 @@ namespace CEGUI
         }
 
         out_stream << "</WidgetLook>" << std::endl;
-    }
-
-    void WidgetLookFeel::renameChildren(const Window& widget, const String& newBaseName) const
-    {
-        WindowManager& winMgr = WindowManager::getSingleton();
-
-        for(WidgetList::const_iterator curr = d_childWidgets.begin(); curr != d_childWidgets.end(); ++curr)
-            winMgr.renameWindow(widget.getName() + (*curr).getWidgetNameSuffix(),
-                                newBaseName + (*curr).getWidgetNameSuffix());
     }
 
 } // End of  CEGUI namespace section

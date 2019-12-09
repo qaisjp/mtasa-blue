@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIPushButton.h"
 
 // Start of CEGUI namespace section
@@ -208,9 +207,9 @@ void PushButton::setTextXOffset(float offset)
 /*************************************************************************
 	Add button specific events	
 *************************************************************************/
-void PushButton::addPushButtonEvents(bool bCommon)
+void PushButton::addPushButtonEvents(void)
 {
-	if ( bCommon == true )	addEvent(EventClicked);
+	addEvent(EventClicked);
 }
 
 
@@ -270,20 +269,14 @@ void PushButton::onSized(WindowEventArgs& e)
 
 }
 
-void PushButton::addPushButtonProperties( bool bCommon )
+void PushButton::addPushButtonProperties(void)
 {
-    if ( bCommon == true )
-    {
-        addProperty(&d_normalImageProperty);
-        addProperty(&d_pushedImageProperty);
-        addProperty(&d_hoverImageProperty);
-        addProperty(&d_useStandardImageryProperty);
-    }
-    else
-    {
-        addProperty(&d_disabledImageProperty);
-        addProperty(&d_textXOffsetProperty);
-    }
+    addProperty(&d_normalImageProperty);
+    addProperty(&d_pushedImageProperty);
+    addProperty(&d_hoverImageProperty);
+    addProperty(&d_disabledImageProperty);
+    addProperty(&d_useStandardImageryProperty);
+    addProperty(&d_textXOffsetProperty);
 }
 
 } // End of  CEGUI namespace section

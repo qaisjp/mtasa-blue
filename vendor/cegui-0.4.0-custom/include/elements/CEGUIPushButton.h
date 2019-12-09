@@ -41,7 +41,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Base class to provide logic for push button type widgets.
+
 */
 class CEGUIEXPORT PushButton : public ButtonBase
 {
@@ -268,8 +268,7 @@ protected:
 	\brief
 		Add button specific events
 	*/
-	void	addPushButtonEvents(bool bCommon=true);
-	void	addUncommonEvents( void )							{ __super::addUncommonEvents(); addPushButtonEvents(false); }
+	void	addPushButtonEvents(void);
 
 
 	/*!
@@ -323,9 +322,7 @@ private:
     /*************************************************************************
         Private methods
     *************************************************************************/
-    void	addPushButtonProperties( bool bCommon = true );
-protected:
-	void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addPushButtonProperties(false); }
+    void	addPushButtonProperties(void);
 };
 
 

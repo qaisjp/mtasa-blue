@@ -380,9 +380,8 @@ namespace CEGUI
         \brief
             Add ScrollablePane specific events
         */
-        void addScrollablePaneEvents(bool bCommon=true);
-	    void addUncommonEvents( void )							{ __super::addUncommonEvents(); addScrollablePaneEvents(false); }
-    
+        void addScrollablePaneEvents(void);
+
         /*!
 	    \brief
 		    display required integrated scroll bars according to current size of
@@ -569,8 +568,7 @@ namespace CEGUI
 	    /*************************************************************************
 		    Private methods
 	    *************************************************************************/
-	    void addScrollablePaneProperties( bool bCommon = true );
-		void addUncommonProperties( void )							{ __super::addUncommonProperties(); addScrollablePaneProperties(false); }
+	    void addScrollablePaneProperties(void);
     };
 
 } // End of  CEGUI namespace section

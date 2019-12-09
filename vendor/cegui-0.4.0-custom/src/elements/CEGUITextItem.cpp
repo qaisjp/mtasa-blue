@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUITextItem.h"
 #include "elements/CEGUIItemListBase.h"
 #include "CEGUIFont.h"
@@ -103,12 +102,7 @@ void TextItem::populateRenderCache()
 
     float zBase = System::getSingleton().getRenderer()->getZLayer(2) - System::getSingleton().getRenderer()->getCurrentZ();
 
-    const Font* font = getFont();
-
-    if ( font )
-    {
-        d_renderCache.cacheText(getText(true), font, d_textFormatting, absrect, zBase, colours);
-    }
+    d_renderCache.cacheText(getText(), getFont(), d_textFormatting, absrect, zBase, colours);
 }
 
 
@@ -126,14 +120,11 @@ Size TextItem::getItemPixelSize()
 /*************************************************************************
 	Add TextItem specific properties
 *************************************************************************/
-void TextItem::addTextItemProperties( bool bCommon )
+void TextItem::addTextItemProperties(void)
 {
-	if ( bCommon == false )
-    {
-        addProperty(&d_textColourProperty);
-	    addProperty(&d_textFormattingProperty);
-	    addProperty(&d_textXOffsetProperty);
-    }
+	addProperty(&d_textColourProperty);
+	addProperty(&d_textFormattingProperty);
+	addProperty(&d_textXOffsetProperty);
 }
 
 } // End of  CEGUI namespace section

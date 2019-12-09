@@ -232,8 +232,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void addSpinnerEvents(bool bCommon=true);
-	    void addUncommonEvents( void )							{ __super::addUncommonEvents(); addSpinnerEvents(false); }
+        void addSpinnerEvents(void);
 
         /*!
         \brief
@@ -417,8 +416,7 @@ namespace CEGUI
         \return
             Nothing.
         */
-        void    addSpinnerProperties( bool bCommon = true );
-	    void	addUncommonProperties( void )							{ __super::addUncommonProperties(); addSpinnerProperties(false); }
+        void    addSpinnerProperties(void);
     };
 
 } // End of  CEGUI namespace section

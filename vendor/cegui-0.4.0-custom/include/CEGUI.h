@@ -79,8 +79,6 @@
 #include "elements/CEGUIStaticImage.h"
 #include "elements/CEGUIGUISheet.h"
 #include "elements/CEGUIListboxTextItem.h"
-#include "elements/CEGUIListboxNumberItem.h"
-#include "elements/CEGUIListboxImageItem.h"
 #include "elements/CEGUIComboDropList.h"
 #include "elements/CEGUIMultiLineEditbox.h"
 #include "elements/CEGUITabButton.h"

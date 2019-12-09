@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIGUILayout_xmlHandler.h"
 #include "CEGUIExceptions.h"
 #include "CEGUISystem.h"
@@ -152,33 +151,21 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 	// handle layout import element (attach a layout to the window at the top of the stack)
 	else if (element == LayoutImportElement)
 	{
-        // build prefix to use for loading imported layout
-        String prefixName(d_namingPrefix);
+		String prefixName(d_namingPrefix);
         prefixName += attributes.getValueAsString(LayoutImportPrefixAttribute);
 
-        try
-        {
-            // attempt to load the imported sub-layout
-            Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
-                    attributes.getValueAsString( LayoutImportFilenameAttribute),
-                    prefixName,
-                    attributes.getValueAsString(LayoutImportResourceGroupAttribute),
-                    d_propertyCallback,
-                    d_userData);
+		Window* subLayout = WindowManager::getSingleton().loadWindowLayout(
+                attributes.getValueAsString( LayoutImportFilenameAttribute),
+				prefixName,
+                attributes.getValueAsString(LayoutImportResourceGroupAttribute),
+				d_propertyCallback,
+				d_userData);
 
-            // Attach loaded sub-layout to appropriate window within this layout
-            if ((subLayout != NULL) && (!d_stack.empty()))
-                d_stack.back()->addChildWindow(subLayout);
-        }
-        // something failed when loading the sub-layout
-        catch (Exception& /*exc*/)
-        {
-            // delete all windows created so far
-            cleanupLoadedWindows();
+		if ((subLayout != NULL) && (!d_stack.empty()))
+		{
+			d_stack.back()->addChildWindow(subLayout);
+		}
 
-            // signal error - with more info about what we have done.
-            throw GenericException("GUILayout_xmlHandler::startElement - layout loading aborted due to imported layout load failure (see error(s) above).");
-        }
 	}
 	// handle event subscription element
 	else if (element == EventElement)

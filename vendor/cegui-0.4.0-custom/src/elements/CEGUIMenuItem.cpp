@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIMenuItem.h"
 #include "elements/CEGUIMenubar.h"
 #include "elements/CEGUIPopupMenu.h"
@@ -340,17 +339,18 @@ void MenuItem::closeAllMenuItemPopups()
 	{
 		// is this parent popup attached to a menu item?
 		MenuItem* item = (MenuItem*)pop->getParent();
-		if (item!=NULL && pop->getParent()->testClassName("MenuItem"))
+		if (item!=NULL && item->testClassName("MenuItem"))
 		{
 			// close popup
 			item->closePopupMenu();
 			// recurse
 			item->closeAllMenuItemPopups();
 		}
-		// otherwise we just hide the parent popup
+		// otherwise we just hide ourselves
 		else
 		{
-			pop->closePopupMenu();
+			//pop->closePopupMenu();
+			item->closePopupMenu();
 		}
 	}
 }
@@ -359,9 +359,9 @@ void MenuItem::closeAllMenuItemPopups()
 /*************************************************************************
 	Add menuitem specific events	
 *************************************************************************/
-void MenuItem::addMenuItemEvents(bool bCommon)
+void MenuItem::addMenuItemEvents(void)
 {
-	if ( bCommon == true )	addEvent(EventClicked);
+	addEvent(EventClicked);
 }
 
 
@@ -501,19 +501,13 @@ void MenuItem::addChild_impl(Window* wnd)
 /*************************************************************************
 	Add MenuItem specific properties
 *************************************************************************/
-void MenuItem::addMenuItemProperties( bool bCommon )
+void MenuItem::addMenuItemProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_hoverColourProperty);
-        addProperty(&d_pushedColourProperty);
-        addProperty(&d_openedColourProperty);
-    }
-    else
-    {
-        addProperty(&d_normalTextColourProperty);
-        addProperty(&d_disabledTextColourProperty);
-    }
+	addProperty(&d_hoverColourProperty);
+	addProperty(&d_pushedColourProperty);
+	addProperty(&d_openedColourProperty);
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_disabledTextColourProperty);
 }
 
 } // End of  CEGUI namespace section

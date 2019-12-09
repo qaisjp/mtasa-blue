@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIFrameWindow.h"
 #include "elements/CEGUITitlebar.h"
 #include "elements/CEGUIPushButton.h"
@@ -573,10 +572,10 @@ void FrameWindow::moveBottomEdge(float delta)
 /*************************************************************************
 	Add frame window specific events	
 *************************************************************************/
-void FrameWindow::addFrameWindowEvents(bool bCommon)
+void FrameWindow::addFrameWindowEvents(void)
 {
-	if ( bCommon == false )	addEvent(EventRollupToggled);
-	if ( bCommon == true )	addEvent(EventCloseClicked);
+	addEvent(EventRollupToggled);
+	addEvent(EventCloseClicked);
 }
 
 
@@ -793,9 +792,7 @@ void FrameWindow::onCaptureLost(WindowEventArgs& e)
 void FrameWindow::onTextChanged(WindowEventArgs& e)
 {
     // pass this onto titlebar component.
-    WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setText(getText());
-    // redo child layout
-    performChildWindowLayout();
+    WindowManager::getSingleton().getWindow(getName() + "__auto_titlebar__")->setText(d_text);
 }
 
 
@@ -858,28 +855,22 @@ const Font* FrameWindow::getTitlebarFont(void) const
 /*************************************************************************
 	Add properties for this class
 *************************************************************************/
-void FrameWindow::addFrameWindowProperties( bool bCommon )
+void FrameWindow::addFrameWindowProperties(void)
 {
-    if ( bCommon == false )
-    {
-        addProperty(&d_sizingEnabledProperty);
-        addProperty(&d_frameEnabledProperty);
-        addProperty(&d_titlebarEnabledProperty);
-        addProperty(&d_closeButtonEnabledProperty);
-        addProperty(&d_rollUpStateProperty);
-        addProperty(&d_dragMovingEnabledProperty);
-        addProperty(&d_sizingBorderThicknessProperty);
-        addProperty(&d_titlebarFontProperty);
-        addProperty(&d_captionColourProperty);
-    }
-    else
-    {
-        addProperty(&d_rollUpEnabledProperty);
-        addProperty(&d_nsSizingCursorProperty);
-        addProperty(&d_ewSizingCursorProperty);
-        addProperty(&d_nwseSizingCursorProperty);
-        addProperty(&d_neswSizingCursorProperty);
-    }
+	addProperty(&d_sizingEnabledProperty);
+	addProperty(&d_frameEnabledProperty);
+	addProperty(&d_titlebarEnabledProperty);
+	addProperty(&d_closeButtonEnabledProperty);
+	addProperty(&d_rollUpEnabledProperty);
+	addProperty(&d_rollUpStateProperty);
+	addProperty(&d_dragMovingEnabledProperty);
+	addProperty(&d_sizingBorderThicknessProperty);
+	addProperty(&d_titlebarFontProperty);
+	addProperty(&d_captionColourProperty);
+    addProperty(&d_nsSizingCursorProperty);
+    addProperty(&d_ewSizingCursorProperty);
+    addProperty(&d_nwseSizingCursorProperty);
+    addProperty(&d_neswSizingCursorProperty);
 }
 
 

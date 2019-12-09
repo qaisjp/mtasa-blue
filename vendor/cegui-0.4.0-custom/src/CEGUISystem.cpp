@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
@@ -65,7 +64,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-bool System::ms_bBidiEnabled = true;
 const String System::EventNamespace("System");
 
 /*!
@@ -95,7 +93,6 @@ struct MouseClickTracker
 	SimpleTimer		d_timer;			//!< Timer used to track clicks for this button.
 	int				d_click_count;		//!< count of clicks made so far.
 	Rect			d_click_area;		//!< area used to detect multi-clicks
-    Window*         d_target_window;    //!< target window for any events generated.
 };
 
 
@@ -231,7 +228,6 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 	d_rctrl		= false;
     d_ralt      = false;
     d_lalt      = false;
-    d_started   = false;
 
 	d_click_timeout		= DefaultSingleClickTimeout;
 	d_dblclick_timeout	= DefaultMultiClickTimeout;
@@ -325,7 +321,7 @@ void System::constructor_impl(Renderer* renderer, ResourceProvider* resourceProv
 
 	// cause creation of other singleton objects
 	new ImagesetManager();
-	d_fontManager = new FontManager();
+	new FontManager();
 	new WindowFactoryManager();
 	new WindowManager();
 	new SchemeManager();
@@ -479,7 +475,7 @@ System::~System(void)
 /*************************************************************************
 	Render the GUI for this frame
 *************************************************************************/
-bool System::renderGUI(void)
+void System::renderGUI(void)
 {
 	//////////////////////////////////////////////////////////////////////////
 	// This makes use of some tricks the Renderer can do so that we do not
@@ -491,19 +487,11 @@ bool System::renderGUI(void)
 	// drawn directly to the display every frame.
 	//////////////////////////////////////////////////////////////////////////
 
-    // Update cache timer
-    for ( FontManager::FontIterator fontIt = d_fontManager->getIterator() ; !fontIt.isAtEnd() ; ++fontIt )
-        (*fontIt)->pulse ();
-
 	if (d_gui_redraw)
 	{
 		d_renderer->resetZValue();
 		d_renderer->setQueueingEnabled(true);
 		d_renderer->clearRenderList();
-
-        // Build fonts while the render list is empty
-        for ( FontManager::FontIterator fontIt = d_fontManager->getIterator() ; !fontIt.isAtEnd() ; ++fontIt )
-            (*fontIt)->onClearRenderList ();
 
 		if (d_activeSheet != NULL)
 		{
@@ -513,23 +501,14 @@ bool System::renderGUI(void)
 		d_gui_redraw = false;
 	}
 
-	bool bRenderOk = d_renderer->doRender();
+	d_renderer->doRender();
 
 	// draw mouse
 	d_renderer->setQueueingEnabled(false);
-	// MouseCursor::getSingleton().draw();  This is done by MTA later
+	MouseCursor::getSingleton().draw();
 
     // do final destruction on dead-pool windows
     WindowManager::getSingleton().cleanDeadPool();
-
-    // Flag for redraw to rebuild fonts if needed
-    for ( FontManager::FontIterator fontIt = d_fontManager->getIterator() ; !fontIt.isAtEnd() ; ++fontIt )
-        if ( (*fontIt)->needsRebuild () )
-            d_gui_redraw = true;
-
-    d_started = true;
-
-    return bRenderOk;
 }
 
 
@@ -592,38 +571,16 @@ void System::setDefaultFont(Font* font)
 *************************************************************************/
 void System::setDefaultMouseCursor(const Image* image)
 {
-    // the default, default, is for nothing!
-    if (image == (const Image*)DefaultMouseCursor)
-        image = 0;
+	if (image == (const Image*)DefaultMouseCursor)
+	{
+		image = NULL;
+	}
 
-    // if mouse cursor is set to the current default we *may* need to
-    // update its Image immediately (first, we will investigate further!)
-    //
-    // NB: The reason we do this check, is to allow code to modify the cursor
-    // image directly without a call to this member changing the image back
-    // again.  However, 'normal' updates to the cursor when the mouse enters
-    // a window will, of course, update the mouse image as expected.
-#if 0
-    if (MouseCursor::getSingleton().getImage() == d_defaultMouseCursor)
-    {
-        // does the window containing the mouse use the default cursor?
-        if ((d_wndWithMouse) && (0 == d_wndWithMouse->getMouseCursor(false)))
-        {
-            // default cursor is active, update the image immediately
-            MouseCursor::getSingleton().setImage(image);
-        }
-    }
-#else
-    // Hope fix for #8017: Crash on changing GUI skin.
-    MouseCursor::getSingleton().setImage(image);
-#endif
+	d_defaultMouseCursor = image;
 
-    // update our pointer for the default mouse cursor image.
-    d_defaultMouseCursor = image;
-
-    // fire off event.
-    EventArgs args;
-    onDefaultMouseCursorChanged(args);
+	// fire off event.
+	EventArgs args;
+	onDefaultMouseCursorChanged(args);
 }
 
 
@@ -781,11 +738,9 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 			if (d_wndWithMouse != NULL)
 			{
 				ma.window = d_wndWithMouse;
-                ma.switchedWindow = dest_window;
 				d_wndWithMouse->onMouseLeaves(ma);
 			}
 
-            ma.switchedWindow = d_wndWithMouse;
 			d_wndWithMouse = dest_window;
 			ma.window = dest_window;
 			dest_window->onMouseEnters(ma);
@@ -850,36 +805,31 @@ bool System::injectMouseButtonDown(MouseButton button)
 	ma.sysKeys = d_sysKeys;
 	ma.wheelChange = 0;
 
-    // find the likely destination for generated events.
-    Window* dest_window = getTargetWindow(ma.position);
-	
-    //
+	//
 	// Handling for multi-click generation
 	//
 	MouseClickTracker& tkr = d_clickTrackerPimpl->click_trackers[button];
 
 	tkr.d_click_count++;
 
-    // if multi-click requirements are not met
-    if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
-        (!tkr.d_click_area.isPointInRect(ma.position)) ||
-        (tkr.d_target_window != dest_window) ||
-        (tkr.d_click_count > 3))
-    {
-        // reset to single down event.
-        tkr.d_click_count = 1;
+	// see if we meet multi-click timing
+	if ((tkr.d_timer.elapsed() > d_dblclick_timeout) ||
+		(!tkr.d_click_area.isPointInRect(ma.position)) ||
+		(tkr.d_click_count > 3))
+	{
+		// single down event.
+		tkr.d_click_count = 1;
 
-        // build new allowable area for multi-clicks
-        tkr.d_click_area.setPosition(ma.position);
-        tkr.d_click_area.setSize(d_dblclick_size);
-        tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
-
-        // set target window for click events on this tracker
-        tkr.d_target_window = dest_window;
-    }
+		// build allowable area for multi-clicks
+		tkr.d_click_area.setPosition(ma.position);
+		tkr.d_click_area.setSize(d_dblclick_size);
+		tkr.d_click_area.offset(Point(-(d_dblclick_size.d_width / 2), -(d_dblclick_size.d_height / 2)));
+	}
 
 	// set click count in the event args
 	ma.clickCount = tkr.d_click_count;
+
+	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
 	while ((!ma.handled) && (dest_window != NULL))
@@ -940,8 +890,7 @@ bool System::injectMouseButtonUp(MouseButton button)
     // set click count in the event args
     ma.clickCount = tkr.d_click_count;
 
-    Window* const initial_dest_window = getTargetWindow(ma.position);
-	Window* dest_window = initial_dest_window;
+	Window* dest_window = getTargetWindow(ma.position);
 
 	// loop backwards until event is handled or we run out of windows.
 	while ((!ma.handled) && (dest_window != NULL))
@@ -953,13 +902,11 @@ bool System::injectMouseButtonUp(MouseButton button)
 
 	bool wasUpHandled = ma.handled;
 
-    // if requirements for click events are met
-    if ((tkr.d_timer.elapsed() <= d_click_timeout) &&
-        (tkr.d_click_area.isPointInRect(ma.position)) &&
-        (tkr.d_target_window == initial_dest_window))
-    {
+	// check timer for 'button' to see if this up event also constitutes a single 'click'
+	if (tkr.d_timer.elapsed() <= d_click_timeout)
+	{
 		ma.handled = false;
-        dest_window = initial_dest_window;
+		dest_window = getTargetWindow(ma.position);
 
 		// loop backwards until event is handled or we run out of windows.
 		while ((!ma.handled) && (dest_window != NULL))
@@ -1039,7 +986,6 @@ bool System::injectKeyUp(uint key_code)
 
 /*************************************************************************
 	Method that injects a typed character event into the system.
-    > Make sure the glyph is loaded for this font by calling setText on the place where it is used
 *************************************************************************/
 bool System::injectChar(utf32 code_point)
 {
@@ -1134,7 +1080,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 
 		if (dest_window == NULL)
 		{
-			dest_window = d_activeSheet->getTargetChildAtPosition(pt);
+			dest_window = d_activeSheet->getChildAtPosition(pt);
 
 			if (dest_window == NULL)
 			{
@@ -1146,7 +1092,7 @@ Window*	System::getTargetWindow(const Point& pt) const
 		{
             if (dest_window->distributesCapturedInputs())
             {
-                Window* child_window = dest_window->getTargetChildAtPosition(pt);
+                Window* child_window = dest_window->getChildAtPosition(pt);
 
                 if (child_window != NULL)
                 {

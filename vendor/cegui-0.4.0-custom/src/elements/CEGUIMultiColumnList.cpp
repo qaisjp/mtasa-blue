@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIMultiColumnList.h"
 #include "CEGUIExceptions.h"
 #include "elements/CEGUIScrollbar.h"
@@ -81,9 +80,7 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	d_forceHorzScroll(false),
 	d_nominatedSelectCol(0),
 	d_nominatedSelectRow(0),
-	d_lastSelected(NULL),
-	d_firstVisibleRow(-1),
-	d_lastVisibleRow(-1)
+	d_lastSelected(NULL)
 {
 	// add multi-column list box specific events
 	addMultiColumnListboxEvents();
@@ -124,15 +121,6 @@ bool MultiColumnList::isUserColumnSizingEnabled(void) const
 {
 	return d_header->isColumnSizingEnabled();
 }
-
-/*************************************************************************
-	Return whether the user may size specific column segment.	Added by Talidan for MTA.
-*************************************************************************/
-bool MultiColumnList::isUserColumnSegmentSizingEnabled(uint col_idx) const
-{
-	return getHeaderSegmentForColumn(col_idx).isSizingEnabled();
-}
-
 
 
 /*************************************************************************
@@ -515,13 +503,6 @@ ListboxItem* MultiColumnList::getNextSelected(const ListboxItem* start_item) con
 	{
 		startRef = getItemGridReference(start_item);
 		++startRef.column;
-
-        // lil_Toady: fix for this func not working
-        if ( startRef.column == getColumnCount() )
-        {
-            startRef.column = 0;
-            ++startRef.row;
-        } 
 	}
 
 	// perform the search
@@ -706,7 +687,7 @@ void MultiColumnList::insertColumn(const String& text, uint col_id, float width,
 	// Insert a blank entry at the appropriate position in each row.
 	for (uint i = 0; i < getRowCount(); ++i)
 	{
-		d_grid[i].d_items.insert(d_grid[i].d_items.begin() + position, reinterpret_cast < CEGUI::ListboxItem * > ( NULL ) );
+		d_grid[i].d_items.insert(d_grid[i].d_items.begin() + position, NULL);
 	}
 
 	// update stored nominated selection column if that has changed.
@@ -759,10 +740,6 @@ void MultiColumnList::removeColumn(uint col_idx)
 		// remove header segment
 		d_header->removeColumn(col_idx);
 
-        // remove all rows entirely if no column is remaining (mta fix)
-        if (getColumnCount() == 0)
-            d_grid.clear();
-
 		// signal a change to the list contents
 		WindowEventArgs args(this);
 		onListContentsChanged(args);
@@ -802,16 +779,16 @@ void MultiColumnList::moveColumnWithID(uint col_id, uint position)
 /*************************************************************************
 	Add a row to the bottom of the table
 *************************************************************************/
-uint MultiColumnList::addRow(uint row_id, bool fast)
+uint MultiColumnList::addRow(uint row_id)
 {
-	return addRow(NULL, 0, row_id, fast);
+	return addRow(NULL, 0, row_id);
 }
 
 
 /*************************************************************************
 	Add a row to the bottom of the table
 *************************************************************************/
-uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id, bool fast)
+uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id)
 {
 	uint col_idx = 0;
 
@@ -834,21 +811,10 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id, bool f
 	uint pos;
 
 	// if sorting is enabled, insert at an appropriate position
-    ListHeaderSegment::SortDirection dir = getSortDirection();
-	if ( dir == ListHeaderSegment::Descending || dir == ListHeaderSegment::Ascending )
+	if (getSortDirection() != ListHeaderSegment::None)
 	{
         // calculate where the row should be inserted
-        ListItemGrid::iterator ins_pos;
-
-	    if ( dir == ListHeaderSegment::Descending )
-	    {
-            ins_pos = std::upper_bound(d_grid.begin(), d_grid.end(), row);
-	    }
-	    else
-	    {
-            ins_pos = std::upper_bound(d_grid.begin(), d_grid.end(), row, pred_descend);
-	    }
-
+        ListItemGrid::iterator ins_pos = std::upper_bound(d_grid.begin(), d_grid.end(), row);
         // insert item and get final inserted position.
         ListItemGrid::iterator final_pos = d_grid.insert(ins_pos, row);
 		// get final inserted position as an uint.
@@ -861,16 +827,9 @@ uint MultiColumnList::addRow(ListboxItem* item, uint col_id, uint row_id, bool f
 		d_grid.push_back(row);
 	}
 
-    if ( !fast )
-    {
-	    // signal a change to the list contents
-	    WindowEventArgs args(this);
-	    onListContentsChanged(args);
-    }
-    else
-    {
-        requestRedraw();
-    }
+	// signal a change to the list contents
+	WindowEventArgs args(this);
+	onListContentsChanged(args);
 
 	return pos;
 }
@@ -912,7 +871,7 @@ uint MultiColumnList::insertRow(ListboxItem* item, uint col_id, uint row_idx, ui
 		d_grid.insert(d_grid.begin() + row_idx, row);
 
 		// set the initial item in the new row
-		//setItem(item, col_id, row_idx);
+		setItem(item, col_id, row_idx);
 
 		// signal a change to the list contents
 		WindowEventArgs args(this);
@@ -964,17 +923,12 @@ void MultiColumnList::removeRow(uint row_idx)
 
 }
 
-void MultiColumnList::forceUpdate() 
-{
-    WindowEventArgs args(this);
-    onListContentsChanged(args);
-}
 
 /*************************************************************************
 	Replace the item at grid-ref 'position' with 'item'.
 	The old item is deleted according to the items auto-delete setting
 *************************************************************************/
-void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position, bool fast)
+void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position)
 {
 	// validate grid ref
 	if (position.column >= getColumnCount())
@@ -1001,16 +955,9 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position, boo
 	d_grid[position.row][position.column] = item;
 
 
-    if ( !fast )
-    {
-	    // signal a change to the list contents
-	    WindowEventArgs args(this);
-	    onListContentsChanged(args);
-    }
-    else
-    {
-        requestRedraw();
-    }
+	// signal a change to the list contents
+	WindowEventArgs args(this);
+	onListContentsChanged(args);
 }
 
 
@@ -1018,9 +965,9 @@ void MultiColumnList::setItem(ListboxItem* item, const MCLGridRef& position, boo
 	Replace the item in row 'row_idx', in the column with ID 'col_id'
 	with 'item'.  The old item is deleted as required.
 *************************************************************************/
-void MultiColumnList::setItem(ListboxItem* item, uint col_id, uint row_idx, bool fast)
+void MultiColumnList::setItem(ListboxItem* item, uint col_id, uint row_idx)
 {
-	setItem(item, MCLGridRef(row_idx, getColumnWithID(col_id)), fast);
+	setItem(item, MCLGridRef(row_idx, getColumnWithID(col_id)));
 }
 
 
@@ -1183,8 +1130,12 @@ void MultiColumnList::setNominatedSelectionRow(uint row_idx)
 *************************************************************************/
 void MultiColumnList::setSortDirection(ListHeaderSegment::SortDirection direction)
 {
-	// set the sort direction on the header, events will make sure everything else is updated.
-	d_header->setSortDirection(direction);
+	if (getSortDirection() != direction)
+	{
+		// set the sort direction on the header, events will make sure everything else is updated.
+		d_header->setSortDirection(direction);
+	}
+
 }
 
 
@@ -1193,8 +1144,12 @@ void MultiColumnList::setSortDirection(ListHeaderSegment::SortDirection directio
 *************************************************************************/
 void MultiColumnList::setSortColumn(uint col_idx)
 {
-	// set the sort column on the header, events will make sure everything else is updated.
-	d_header->setSortColumn(col_idx);
+	if (getSortColumn() != col_idx)
+	{
+		// set the sort column on the header, events will make sure everything else is updated.
+		d_header->setSortColumn(col_idx);
+	}
+
 }
 
 
@@ -1306,62 +1261,28 @@ void MultiColumnList::handleUpdatedItemData(void)
 	Set the width of the specified column header (and therefore the
 	column itself).	
 *************************************************************************/
-void MultiColumnList::setColumnHeaderWidth(uint col_idx, float width, bool relative)
+void MultiColumnList::setColumnHeaderWidth(uint col_idx, float width)
 {
-    if ( relative )
-    {
-	    if (getMetricsMode() == Relative)
-	    {
-		    width = relativeToAbsoluteX(width);
-	    }
-    }
-       
+	if (getMetricsMode() == Relative)
+	{
+		width = relativeToAbsoluteX(width);
+	}
 
 	d_header->setColumnPixelWidth(col_idx, width);
 }
 
 
 /*************************************************************************
-	Set the title of the specified column header (and therefore the
-	column itself).	
-*************************************************************************/
-void MultiColumnList::setColumnHeaderTitle(uint col_idx, const char* szTitle)
-{
-    d_header->setColumnTitle(col_idx, szTitle);
-}
-
-
-/*************************************************************************
-	Get the title of the specified column header (and therefore the
-	column itself).	
-*************************************************************************/
-const char* MultiColumnList::getColumnHeaderTitle(uint col_idx)
-{
-	return d_header->getColumnTitle(col_idx);
-}
-
-/*************************************************************************
 	Add multi column list box specific events	
 *************************************************************************/
-void MultiColumnList::addMultiColumnListboxEvents(bool bCommon)
+void MultiColumnList::addMultiColumnListboxEvents(void)
 {
-	if ( bCommon == false )
-    {
-        addEvent(EventSelectionModeChanged);
-	    addEvent(EventNominatedSelectColumnChanged);
-	    addEvent(EventNominatedSelectRowChanged);
-	    addEvent(EventVertScrollbarModeChanged);
-	    addEvent(EventHorzScrollbarModeChanged);
-	    addEvent(EventSelectionChanged);
-	    addEvent(EventListContentsChanged);
-        addEvent(EventListColumnMoved);
-        addEvent(EventListColumnSized);
-    }
-    else
-    {
-	    addEvent(EventSortColumnChanged);
-	    addEvent(EventSortDirectionChanged);
-    }
+	addEvent(EventSelectionModeChanged);			addEvent(EventNominatedSelectColumnChanged);
+	addEvent(EventNominatedSelectRowChanged);		addEvent(EventVertScrollbarModeChanged);
+	addEvent(EventHorzScrollbarModeChanged);		addEvent(EventSelectionChanged);
+	addEvent(EventListContentsChanged);				addEvent(EventSortColumnChanged);
+	addEvent(EventSortDirectionChanged);			addEvent(EventListColumnMoved);
+	addEvent(EventListColumnSized);
 }
 
 
@@ -1609,16 +1530,6 @@ bool MultiColumnList::clearAllSelections_impl(void)
 
 
 /*************************************************************************
-	Return the range of visible rows	
-*************************************************************************/
-void MultiColumnList::getVisibleRowRange(int &first, int& last) const
-{
-    first = d_firstVisibleRow;
-    last = d_lastVisibleRow;
-}
-
-
-/*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.	
 *************************************************************************/
 ListboxItem* MultiColumnList::getItemAtPoint(const Point& pt) const
@@ -1835,9 +1746,6 @@ void MultiColumnList::populateRenderCache()
 
     float alpha = getEffectiveAlpha();
 
-    d_firstVisibleRow = -1;
-    d_lastVisibleRow = -1;
-
     // loop through the items
     for (uint i = 0; i < getRowCount(); ++i)
     {
@@ -1864,10 +1772,6 @@ void MultiColumnList::populateRenderCache()
                 itemRect.setSize(itemSize);
                 itemClipper = itemRect.getIntersection(itemsArea);
 
-                // Leave a gap between columns
-                if ( !item->isSelected() && j < getColumnCount() - 1 )
-                    itemClipper.setWidth( std::max ( 0.f, itemClipper.getWidth() - 5 ) );
-
                 // skip this item if totally clipped
                 if (itemClipper.getWidth() == 0)
                 {
@@ -1877,10 +1781,6 @@ void MultiColumnList::populateRenderCache()
 
                 // draw this item
                 item->draw(d_renderCache, itemRect, itemPos.d_z, alpha, &itemClipper);
-
-                if ( d_firstVisibleRow == -1 )
-                    d_firstVisibleRow = i;
-                d_lastVisibleRow = i;
             }
 
             // update position for next column.
@@ -2176,11 +2076,11 @@ bool MultiColumnList::handleSortColumnChange(const EventArgs& e)
 
 	if (dir == ListHeaderSegment::Descending)
 	{
-		std::stable_sort(d_grid.begin(), d_grid.end());
+		std::sort(d_grid.begin(), d_grid.end());
 	}
 	else if (dir == ListHeaderSegment::Ascending)
 	{
-		std::stable_sort(d_grid.begin(), d_grid.end(), pred_descend);
+		std::sort(d_grid.begin(), d_grid.end(), pred_descend);
 	}
 
 	// else, no direction, so do not sort.
@@ -2203,13 +2103,12 @@ bool MultiColumnList::handleSortDirectionChange(const EventArgs& e)
 
 	if (dir == ListHeaderSegment::Descending)
 	{
-		std::stable_sort(d_grid.begin(), d_grid.end());
+		std::sort(d_grid.begin(), d_grid.end());
 	}
 	else if (dir == ListHeaderSegment::Ascending)
 	{
-		std::stable_sort(d_grid.begin(), d_grid.end(), pred_descend);
+		std::sort(d_grid.begin(), d_grid.end(), pred_descend);
 	}
-
 
 	// else, no direction, so do not sort.
 
@@ -2251,14 +2150,6 @@ void MultiColumnList::setUserSortControlEnabled(bool setting)
 void MultiColumnList::setUserColumnSizingEnabled(bool setting)
 {
 	d_header->setColumnSizingEnabled(setting);
-}
-
-/*************************************************************************
-	Set whether the user may size a specific column segment.  Added by Talidan for MTA
-*************************************************************************/
-void MultiColumnList::setUserColumnSegmentSizingEnabled(uint col_idx, bool setting)
-{
-    getHeaderSegmentForColumn(col_idx).setSizingEnabled(setting);
 }
 
 
@@ -2345,23 +2236,20 @@ bool MultiColumnList::isHorzScrollbarAlwaysShown(void) const
 /*************************************************************************
 	Adds properties for MCL
 *************************************************************************/
-void MultiColumnList::addMultiColumnListProperties( bool bCommon )
+void MultiColumnList::addMultiColumnListProperties(void)
 {
-	if ( bCommon == false )
-    {
-        addProperty(&d_columnsSizableProperty);
-	    addProperty(&d_columnsMovableProperty);
-	    addProperty(&d_forceHorzScrollProperty);
-	    addProperty(&d_forceVertScrollProperty);
-	    addProperty(&d_nominatedSelectColProperty);
-	    addProperty(&d_nominatedSelectRowProperty);
-	    addProperty(&d_selectModeProperty);
-	    addProperty(&d_sortColumnIDProperty);
-	    addProperty(&d_sortDirectionProperty);
-	    addProperty(&d_sortSettingProperty);
-	    addProperty(&d_columnHeaderProperty);
-	    addProperty(&d_rowCountProperty);
-    }
+	addProperty(&d_columnsSizableProperty);
+	addProperty(&d_columnsMovableProperty);
+	addProperty(&d_forceHorzScrollProperty);
+	addProperty(&d_forceVertScrollProperty);
+	addProperty(&d_nominatedSelectColProperty);
+	addProperty(&d_nominatedSelectRowProperty);
+	addProperty(&d_selectModeProperty);
+	addProperty(&d_sortColumnIDProperty);
+	addProperty(&d_sortDirectionProperty);
+	addProperty(&d_sortSettingProperty);
+	addProperty(&d_columnHeaderProperty);
+	addProperty(&d_rowCountProperty);
 }
 
 
@@ -2486,21 +2374,13 @@ int MultiColumnList::writePropertiesXML(OutStream& out_stream) const
         ++propCnt;
     }
 
-    // write out SortColumnID property, if any(!)
-		try
-		{
-			uint sortColumnID = getColumnWithID(getSortColumn());
-			if (sortColumnID != 0)
-			{
-				  out_stream << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
-					++propCnt;
-			}
-		}
-		catch (InvalidRequestException)
-		{
-			// This catches error(s) from the MultiLineColumnList for example
-			Logger::getSingleton().logEvent("MultiColumnList::writePropertiesXML - invalid sort column requested. Continuing...", Errors);
-		}
+    // write out SortColumnID property
+    uint sortColumnID = getColumnWithID(getSortColumn());
+    if (sortColumnID != 0)
+    {
+        out_stream << "<Property Name=\"SortColumnID\" Value=\"" << PropertyHelper::uintToString(sortColumnID).c_str() << "\" />" << std::endl;
+        ++propCnt;
+    }
 
     return propCnt;
 }
@@ -2530,7 +2410,7 @@ bool MultiColumnList::ListRow::operator<(const ListRow& rhs) const
 	}
 	else
 	{
-		return *a < *b;
+		return a->getText() < b->getText();
 	}
 
 }
@@ -2555,7 +2435,7 @@ bool MultiColumnList::ListRow::operator>(const ListRow& rhs) const
 	}
 	else
 	{
-		return *a > *b;
+		return a->getText() > b->getText();
 	}
 
 }

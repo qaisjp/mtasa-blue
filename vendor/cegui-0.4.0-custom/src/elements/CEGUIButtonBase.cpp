@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIButtonBase.h"
 #include "CEGUIMouseCursor.h"
 
@@ -292,15 +291,12 @@ void ButtonBase::onMouseLeaves(MouseEventArgs& e)
 /*************************************************************************
 	Add properties for this class
 *************************************************************************/
-void ButtonBase::addButtonBaseProperties( bool bCommon )
+void ButtonBase::addButtonBaseProperties(void)
 {
-    if ( bCommon == true )
-    {
-        addProperty(&d_normalTextColourProperty);
-        addProperty(&d_hoverTextColourProperty);
-        addProperty(&d_pushedTextColourProperty);
-        addProperty(&d_disabledTextColourProperty);
-    }
+	addProperty(&d_normalTextColourProperty);
+	addProperty(&d_hoverTextColourProperty);
+	addProperty(&d_pushedTextColourProperty);
+	addProperty(&d_disabledTextColourProperty);
 }
 
 } // End of  CEGUI namespace section

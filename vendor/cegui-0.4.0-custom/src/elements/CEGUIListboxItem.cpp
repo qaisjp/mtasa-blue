@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIListboxItem.h"
 #include "CEGUISystem.h"
 #include "CEGUIImagesetManager.h"
@@ -36,13 +35,13 @@ namespace CEGUI
 /*************************************************************************
 	Constants
 *************************************************************************/
-const colour	ListboxItem::DefaultSelectionColour	= 0xFF607FFF;
+const colour	ListboxItem::DefaultSelectionColour	= 0xFF4444AA;
 
 /*************************************************************************
 	Base class constructor
 *************************************************************************/
 ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool disabled, bool auto_delete) :
-	d_itemText_raw(text),
+	d_itemText(text),
 	d_itemID(item_id),
 	d_itemData(item_data),
     d_selected(false),
@@ -50,23 +49,8 @@ ListboxItem::ListboxItem(const String& text, uint item_id, void* item_data, bool
     d_autoDelete(auto_delete),
 	d_owner(NULL),
     d_selectCols(DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour, DefaultSelectionColour),
-	d_selectBrush(NULL),
-    d_bSizeChanged(true),
-    d_savedPixelSize(10,10)
+	d_selectBrush(NULL)
 {
-	d_itemText = d_itemText_raw.bidify();
-}
-
-
-void ListboxItem::setText(const String& text, const char* sortText)
-{
-    d_bSizeChanged |= (d_itemText_raw != text);
-    d_itemText_raw = text;
-	d_itemText = d_itemText_raw.bidify();
-    if ( sortText )
-        d_itemSortText.assign ( sortText );
-    else
-        d_itemSortText.clear ();
 }
 
 

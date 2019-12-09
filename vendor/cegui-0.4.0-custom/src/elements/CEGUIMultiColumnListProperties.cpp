@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "elements/CEGUIMultiColumnListProperties.h"
 #include "elements/CEGUIMultiColumnList.h"
 #include "CEGUIPropertyHelper.h"
@@ -278,77 +277,19 @@ String ColumnHeader::get(const PropertyReceiver* receiver) const
 
 void ColumnHeader::set(PropertyReceiver* receiver, const String& value)
 {
-	// Format: "text:[caption] width:[float] id:[uint]"
-	// Note: Components may appear in any order
-    String caption, width("0.33"), id("0");
+	// extract data from the value string
 
-	// Extract data from the value string
-	size_t idstart = value.rfind("id:");
-	size_t wstart = value.rfind("width:");
-    size_t capstart = value.find("text:");
+	size_t wstart = value.find("width:");
+	size_t idstart = value.find("id:");
 
-	if (capstart != String::npos)
-	{
-        capstart = value.find_first_of(":", capstart) + 1;
+	String caption(value.substr(0, wstart));
+	caption = caption.substr(caption.find_first_of(":") + 1);
 
-		if (idstart == String::npos) // Missing 'id' component
-		{
-			if (wstart == String::npos || capstart > wstart)
-			{
-                // Missing 'width' component or caption comes after 'width' component
-                caption = value.substr(capstart);
-			}
-			else
-			{
-				// Caption is before the 'width' component
-                caption = value.substr(capstart, wstart - capstart);
-			}
-		}
-		else
-		{
-			if (wstart == String::npos) // Missing 'width' component
-			{
-                if (capstart > idstart)
-                {
-					// Caption is after the 'id' component
-                    caption = value.substr(capstart);
-                }
-                else
-                {
-					// Caption is before the 'id' component
-                    caption = value.substr(capstart, idstart - capstart);
-                }
-			}
-			else
-			{
-				if (capstart < wstart && capstart < idstart)
-				{
-					// Caption is before the 'id' and 'width' component ([caption][id/width])
-                    caption = value.substr(capstart, std::min<size_t>(idstart, wstart) - capstart);
-				}
-                else if (capstart > wstart && capstart > idstart)
-                {
-                    // Caption is after 'width' and 'id' component ([id/width][caption])
-                    caption = value.substr(capstart);
-                }
-				else
-				{
-                    // Caption is between the 'id' and 'width' components ([id or width][caption][[id or width])
-                    caption = value.substr(capstart, std::max<size_t>(idstart, wstart) - capstart);
-				}
-			}
-		}
-	}
+	String width(value.substr(wstart, idstart));
+	width = width.substr(width.find_first_of(":") + 1);
 
-	if (wstart != String::npos)
-	{
-        width = value.substr(value.find_first_of(":", wstart) + 1);
-	}
-
-	if (idstart != String::npos)
-	{
-        id = value.substr(value.find_first_of(":", idstart) + 1);
-	}
+	String id(value.substr(idstart));
+	id = id.substr(id.find_first_of(":") + 1);
 
 	static_cast<MultiColumnList*>(receiver)->addColumn(
 		caption, PropertyHelper::stringToUint(id), PropertyHelper::stringToFloat(width));

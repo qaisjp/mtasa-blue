@@ -45,7 +45,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Implementation struct that tracks and controls multiclick for mouse buttons.
+// forward reference of impl struct
 struct MouseClickTrackerImpl;
 
 
@@ -237,15 +237,6 @@ public:
 	*/
 	Renderer*	getRenderer(void) const			{return d_renderer;}
 
-	/*!
-	\brief
-		Return a pointer to the FontManager object being used by the system
-
-	\return
-		Pointer to the Renderer object used by the system.
-	*/
-	FontManager*	getFontManager(void) const			{return d_fontManager;}
-
 
 	/*!
 	\brief
@@ -330,9 +321,9 @@ public:
 		Depending upon the internal state, this may either re-use rendering from last time, or trigger a full re-draw from all elements.
 
 	\return
-		False if render failed
+		Nothing
 	*/
-	bool	renderGUI(void);
+	void	renderGUI(void);
 
 
 	/*!
@@ -826,14 +817,7 @@ public:
 	*/
 	bool	injectTimePulse(float timeElapsed);
 
-    bool    isStarted(void) { return d_started; }
 
-    void                            SetGuiWorkingDirectory      ( const String& strDir )    { d_guiWorkingDirectory = strDir; }
-    String                          GetGuiWorkingDirectory      ( void )                    { return d_guiWorkingDirectory; }
-
-    bool                            d_started;
-    static void                     SetBidiEnabled              ( bool bEnabled ) { ms_bBidiEnabled = bEnabled; }
-    static bool                     ms_bBidiEnabled;
 private:
     // unimplemented constructors / assignment
     System(const System& obj);
@@ -996,7 +980,6 @@ private:
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
 	Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
-    FontManager* d_fontManager;     //!< Holds a pointer to the FontManager object in the constructor
 	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
 
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
@@ -1025,8 +1008,6 @@ private:
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
 	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
-
-    String          d_guiWorkingDirectory;
 
 	float	d_mouseScalingFactor;			//!< Scaling applied to mouse movement inputs.
 

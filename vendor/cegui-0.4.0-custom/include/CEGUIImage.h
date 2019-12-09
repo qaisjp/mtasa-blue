@@ -141,17 +141,6 @@ public:
     */
     const Rect& getSourceTextureArea(void) const;
 
-    /*!
-    \brief
-        Sets area describing the source texture area used by this Image.
-        !!! ADDED BY MTA !!!
-
-    \param
-        area object that describes, in pixels, the area upon the source texture
-        which is used when rendering this Image.
-    */
-    void setSourceTextureArea(const Rect& area);
-
 	/*!
 	\brief
 		Queue the image to be drawn. 
@@ -390,10 +379,6 @@ public:
     */
     void writeXMLToStream(OutStream& out_stream) const;
 
-    //Talihax
-    Font* getFont(void) const { return d_font; }
-    unsigned long getCodepoint(void) const { return d_codepoint; }
-
 
 	friend class std::map<String, Image>;
 	friend struct std::pair<const String, Image>;
@@ -433,7 +418,7 @@ public:
 
 	\exception NullObjectException	Thrown if \a owner was NULL.
 	*/
-	Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f, unsigned long ulCodepoint = 0, Font* pFont = NULL );
+	Image(const Imageset* owner, const String& name, const Rect& area, const Point& render_offset, float horzScaling = 1.0f, float vertScaling = 1.0f);
 
 
 
@@ -499,8 +484,6 @@ private:
 	float	d_scaledHeight;		//!< scaled image height.
 	Point	d_scaledOffset;		//!< scaled rendering offset.
 	String	d_name;				//!< name of this image.
-    Font* d_font;
-    unsigned long d_codepoint;
 };
 
 } // End of  CEGUI namespace section

@@ -23,7 +23,6 @@
     License along with this library; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 *************************************************************************/
-#include "StdInc.h"
 #include "CEGUIFontManager.h"
 #include "CEGUIExceptions.h"
 #include "CEGUILogger.h"
@@ -53,7 +52,6 @@ template<> FontManager* Singleton<FontManager>::ms_Singleton	= NULL;
 FontManager::FontManager(void)
 {
 	d_implData = new FontManagerImplData;
-    d_subfntdata = new Font::FontImplData(d_implData->d_ftlib);
 
 	if (FT_Init_FreeType(&d_implData->d_ftlib))
 	{
@@ -71,12 +69,6 @@ FontManager::~FontManager(void)
 {
 	Logger::getSingleton().logEvent((utf8*)"---- Begining cleanup of Font system ----");
 	destroyAllFonts();
-
-#if 0   // Crash
-    System::getSingleton().getResourceProvider()->unloadRawDataContainer(d_subfntdata->fontData);
-	FT_Done_Face(d_subfntdata->fontFace);
-	delete d_subfntdata;
-#endif
 
 	FT_Done_FreeType(d_implData->d_ftlib);
 	delete d_implData;
@@ -118,7 +110,7 @@ Font* FontManager::createFont(const String& filename, const String& resourceGrou
 /*************************************************************************
 	Create a font from an installed OS font
 *************************************************************************/
-Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags, bool bAutoScale, float fNativeResX, float fNativeResY, const String& resourceGroup)
+Font* FontManager::createFont(const String& name, const String& fontname, uint size, uint flags, const String& resourceGroup)
 {
 	char strbuf[16];
 	sprintf(strbuf, "%d", size);
@@ -130,7 +122,7 @@ Font* FontManager::createFont(const String& name, const String& fontname, uint s
 		throw AlreadyExistsException((utf8*)"FontManager::createFont - A font named '" + name + "' already exists.");
 	}
 
-	Font* temp = new Font(name, fontname, resourceGroup, size, flags, new Font::FontImplData(d_implData->d_ftlib), bAutoScale, fNativeResX, fNativeResY );
+	Font* temp = new Font(name, fontname, resourceGroup, size, flags, new Font::FontImplData(d_implData->d_ftlib));
 	d_fonts[name] = temp;
 
     // if this was the first font created, set it as the default font
