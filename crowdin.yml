@@ -1,0 +1,9 @@
+files:
+  - source: '*.cpp'
+    ignore:
+      - /vendor
+    translation: /Shared/data/MTA San Andreas/MTA/locale/%two_letters_code%/client.po
+  - source: '*.h'
+    ignore:
+      - /vendor
+    translation: /Shared/data/MTA San Andreas/MTA/locale/%two_letters_code%/client.po
