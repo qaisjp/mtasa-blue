@@ -51,7 +51,7 @@ jobs:
     runs-on: macOS-latest
     steps:
       - name: Install MySQL
-        run: brew install -f mysql
+        run: "brew unlink openssl@1.1; brew install mysql"
       - uses: actions/checkout@v1
         with:
           fetch-depth: 10
