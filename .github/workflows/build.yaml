@@ -49,7 +49,7 @@ jobs:
     runs-on: macOS-latest
     steps:
       - name: Install MySQL
-        run: brew install mysql
+        run: brew link --overwrite mysql
       - uses: actions/checkout@v1
         with:
           fetch-depth: 10
