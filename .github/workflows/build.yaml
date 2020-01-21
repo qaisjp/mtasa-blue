@@ -50,8 +50,11 @@ jobs:
     name: macOS
     runs-on: macOS-latest
     steps:
-        #- name: Install MySQL
-        #run: "brew install mysql; brew link --overwrite mysql"
+      - name: Install MySQL
+        run: "brew install mysql"
+      - name: Link MySQL
+        run: "brew link --overwrite mysql"
+        if: always()
       - uses: actions/checkout@v1
         with:
           fetch-depth: 10
