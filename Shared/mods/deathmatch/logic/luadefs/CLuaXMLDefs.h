@@ -19,7 +19,7 @@ public:
 
     LUA_DECLARE(xmlCreateFile);
     LUA_DECLARE(xmlLoadFile);
-    LUA_DECLARE(xmlLoadString);
+    static std::variant<CXMLNode*, bool> xmlLoadString(lua_State* luaVM, std::string_view strXmlContent);
     LUA_DECLARE(xmlCopyFile);
     LUA_DECLARE(xmlSaveFile);
     LUA_DECLARE(xmlUnloadFile);

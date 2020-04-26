@@ -9,13 +9,14 @@
  *****************************************************************************/
 
 #include "StdInc.h"
+#include "lua/CLuaFunctionParser.h"
 
 void CLuaXMLDefs::LoadFunctions()
 {
     std::map<const char*, lua_CFunction> functions{
         {"xmlCreateFile", xmlCreateFile},
         {"xmlLoadFile", xmlLoadFile},
-        {"xmlLoadString", xmlLoadString},
+        {"xmlLoadString", ArgumentParser<xmlLoadString>},
         {"xmlCopyFile", xmlCopyFile},
         {"xmlSaveFile", xmlSaveFile},
         {"xmlUnloadFile", xmlUnloadFile},
@@ -216,33 +217,21 @@ int CLuaXMLDefs::xmlLoadFile(lua_State* luaVM)
     return 1;
 }
 
-int CLuaXMLDefs::xmlLoadString(lua_State* luaVM)
+std::variant<CXMLNode*, bool> CLuaXMLDefs::xmlLoadString(lua_State* luaVM, std::string_view strXmlContent)
 {
-    SString strXmlContent;
-
-    CScriptArgReader argStream(luaVM);
-    argStream.ReadString(strXmlContent);
-
-    if (argStream.HasErrors())
-        return luaL_error(luaVM, argStream.GetFullErrorMessage());
-
     // Grab our resource
     CLuaMain* pLuaMain = m_pLuaManager->GetVirtualMachine(luaVM);
-    if (pLuaMain)
-    {
-        CXMLNode* rootNode = pLuaMain->ParseString(strXmlContent);
+    if (!pLuaMain)
+        throw std::invalid_argument("MTA:SA Bug inside xmlLoadString, pLuaMain was not set. Please file an issue at https://git.io/blue-issues!");
 
-        if (rootNode && rootNode->IsValid())
-        {
-            lua_pushxmlnode(luaVM, rootNode);
-            return 1;
-        }
-        else
-            m_pScriptDebugging->LogCustom(luaVM, "Unable to load XML string");
+    CXMLNode* rootNode = pLuaMain->ParseString(strXmlContent.data());
+    if (!(rootNode && rootNode->IsValid()))
+    {
+        m_pScriptDebugging->LogCustom(luaVM, "Unable to load XML string");
+        return false;
     }
 
-    lua_pushboolean(luaVM, false);
-    return 1;
+    return rootNode;
 }
 
 int CLuaXMLDefs::xmlCopyFile(lua_State* luaVM)
