@@ -10,14 +10,13 @@
 *
 *****************************************************************************/
 
-#if 0
-class CMainMenuScene;
+#pragma once
 
-#ifndef __CMAINMENUSCENE_H
-#define __CMAINMENUSCENE_H
+class CMainMenuScene;
 
 #include "CCore.h"
 #include "CSingleton.h"
+#include "d3d/include/CD3DMGE_D3D9.h"
 
 class CMainMenuScene : public CSingleton < CMainMenuScene >
 {
@@ -71,6 +70,3 @@ private:
     std::vector < LPDIRECT3DTEXTURE9 >   pMeshTextures;
     std::vector < bool >                 pbMeshTextures;
 };
-
-#endif
-#endif
