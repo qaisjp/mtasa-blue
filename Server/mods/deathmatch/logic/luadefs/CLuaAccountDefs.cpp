@@ -38,7 +38,7 @@ void CLuaAccountDefs::LoadFunctions()
         {"addAccount", AddAccount},
         {"removeAccount", RemoveAccount},
         {"setAccountPassword", SetAccountPassword},
-        {"setAccountData", SetAccountData},
+        {"setAccountData", ArgumentParserWarn<false, SetAccountData>},
         {"setAccountName", SetAccountName},
         {"copyAccountData", CopyAccountData},
     };
@@ -549,31 +549,19 @@ int CLuaAccountDefs::SetAccountPassword(lua_State* luaVM)
     return 1;
 }
 
-int CLuaAccountDefs::SetAccountData(lua_State* luaVM)
+bool CLuaAccountDefs::SetAccountData(CAccount* account, std::string key, CLuaArgument value)
 {
-    //  bool setAccountData ( account theAccount, string key, string value )
-    CAccount*    pAccount;
-    SString      strKey;
-    CLuaArgument Variable;
+    SString strArgumentAsString;
+    if (!value.GetAsString(strArgumentAsString))
+        return false;
 
-    CScriptArgReader argStream(luaVM);
-    argStream.ReadUserData(pAccount);
-    argStream.ReadString(strKey);
-    argStream.ReadLuaArgument(Variable);
-
-    if (!argStream.HasErrors())
-    {
-        if (CStaticFunctionDefinitions::SetAccountData(pAccount, strKey, &Variable))
-        {
-            lua_pushboolean(luaVM, true);
-            return 1;
-        }
-    }
-    else
-        m_pScriptDebugging->LogCustom(luaVM, argStream.GetFullErrorMessage());
-
-    lua_pushboolean(luaVM, false);
-    return 1;
+    CLuaArguments Arguments;
+    Arguments.PushAccount(account);
+    Arguments.PushString(key);
+    Arguments.PushString(strArgumentAsString);
+    if (g_pGame->GetMapManager()->GetRootElement()->CallEvent("onAccountDataChange", Arguments))
+        return g_pGame->GetAccountManager()->SetAccountData(account, key.c_str(), strArgumentAsString, value.GetType());
+    return false;
 }
 
 int CLuaAccountDefs::CopyAccountData(lua_State* luaVM)

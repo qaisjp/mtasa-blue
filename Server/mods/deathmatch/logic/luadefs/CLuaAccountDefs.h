@@ -43,6 +43,6 @@ public:
     LUA_DECLARE(RemoveAccount);
     LUA_DECLARE(SetAccountName);
     LUA_DECLARE(SetAccountPassword);
-    LUA_DECLARE(SetAccountData);
+    static bool SetAccountData(CAccount* account, std::string key, CLuaArgument value);
     LUA_DECLARE(CopyAccountData);
 };

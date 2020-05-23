@@ -691,7 +691,6 @@ public:
     static bool      RemoveAccount(CAccount* pAccount);
     static bool      SetAccountName(CAccount* pAccount, SString strNewName, bool bAllowCaseVariations, SString& strOutError);
     static bool      SetAccountPassword(CAccount* pAccount, SString szPassword, CAccountPassword::EAccountPasswordType ePasswordType);
-    static bool      SetAccountData(CAccount* pAccount, const char* szKey, CLuaArgument* pArgument);
     static bool      CopyAccountData(CAccount* pAccount, CAccount* pFromAccount);
 
     // Log in/out funcs

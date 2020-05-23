@@ -11367,23 +11367,6 @@ bool CStaticFunctionDefinitions::SetAccountPassword(CAccount* pAccount, SString 
     return false;
 }
 
-bool CStaticFunctionDefinitions::SetAccountData(CAccount* pAccount, const char* szKey, CLuaArgument* pArgument)
-{
-    assert(pAccount);
-    assert(szKey);
-
-    SString strArgumentAsString;
-    pArgument->GetAsString(strArgumentAsString);
-
-    CLuaArguments Arguments;
-    Arguments.PushAccount(pAccount);
-    Arguments.PushString(szKey);
-    Arguments.PushString(strArgumentAsString);
-    if (m_pMapManager->GetRootElement()->CallEvent("onAccountDataChange", Arguments))
-        return m_pAccountManager->SetAccountData(pAccount, szKey, strArgumentAsString, pArgument->GetType());
-    return false;
-}
-
 bool CStaticFunctionDefinitions::CopyAccountData(CAccount* pAccount, CAccount* pFromAccount)
 {
     assert(pAccount);
