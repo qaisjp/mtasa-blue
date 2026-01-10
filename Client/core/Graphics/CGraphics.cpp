@@ -21,9 +21,9 @@
 #include "CPrimitive3DBatcher.h"
 #include "CMaterialPrimitive3DBatcher.h"
 #include "CAspectRatioConverter.h"
-extern CCore* g_pCore;
-extern std::atomic<bool>   g_bInGTAScene;
-extern std::atomic<bool>   g_bInMTAScene;
+extern CCore*            g_pCore;
+extern std::atomic<bool> g_bInGTAScene;
+extern std::atomic<bool> g_bInMTAScene;
 
 using namespace std;
 
@@ -53,45 +53,45 @@ CGraphics::CGraphics(CLocalGUI* pGUI)
     m_ActiveBlendMode = EBlendMode::BLEND;
     m_CurDrawMode = EDrawMode::NONE;
     m_CurBlendMode = EBlendMode::BLEND;
-        auto renderItemManager = std::make_unique<CRenderItemManager>();
-        auto tileBatcher = std::make_unique<CTileBatcher>();
-        auto line3DPreGUI = std::make_unique<CLine3DBatcher>(true);
-        auto line3DPostFX = std::make_unique<CLine3DBatcher>(true);
-        auto line3DPostGUI = std::make_unique<CLine3DBatcher>(false);
-        auto materialLinePreGUI = std::make_unique<CMaterialLine3DBatcher>(true);
-        auto materialLinePostFX = std::make_unique<CMaterialLine3DBatcher>(true);
-        auto materialLinePostGUI = std::make_unique<CMaterialLine3DBatcher>(false);
-        auto primitive3DPreGUI = std::make_unique<CPrimitive3DBatcher>(true);
-        auto primitive3DPostFX = std::make_unique<CPrimitive3DBatcher>(true);
-        auto primitive3DPostGUI = std::make_unique<CPrimitive3DBatcher>(false);
-        auto materialPrimitivePreGUI = std::make_unique<CMaterialPrimitive3DBatcher>(true, this);
-        auto materialPrimitivePostFX = std::make_unique<CMaterialPrimitive3DBatcher>(true, this);
-        auto materialPrimitivePostGUI = std::make_unique<CMaterialPrimitive3DBatcher>(false, this);
-        auto primitiveBatcher = std::make_unique<CPrimitiveBatcher>();
-        auto primitiveMaterialBatcher = std::make_unique<CPrimitiveMaterialBatcher>(this);
-        auto screenGrabber = std::unique_ptr<CScreenGrabberInterface>(NewScreenGrabber());
-        auto pixelsManager = std::unique_ptr<CPixelsManagerInterface>(NewPixelsManager());
-        auto aspectRatioConverter = std::make_unique<CAspectRatioConverter>();
+    auto renderItemManager = std::make_unique<CRenderItemManager>();
+    auto tileBatcher = std::make_unique<CTileBatcher>();
+    auto line3DPreGUI = std::make_unique<CLine3DBatcher>(true);
+    auto line3DPostFX = std::make_unique<CLine3DBatcher>(true);
+    auto line3DPostGUI = std::make_unique<CLine3DBatcher>(false);
+    auto materialLinePreGUI = std::make_unique<CMaterialLine3DBatcher>(true);
+    auto materialLinePostFX = std::make_unique<CMaterialLine3DBatcher>(true);
+    auto materialLinePostGUI = std::make_unique<CMaterialLine3DBatcher>(false);
+    auto primitive3DPreGUI = std::make_unique<CPrimitive3DBatcher>(true);
+    auto primitive3DPostFX = std::make_unique<CPrimitive3DBatcher>(true);
+    auto primitive3DPostGUI = std::make_unique<CPrimitive3DBatcher>(false);
+    auto materialPrimitivePreGUI = std::make_unique<CMaterialPrimitive3DBatcher>(true, this);
+    auto materialPrimitivePostFX = std::make_unique<CMaterialPrimitive3DBatcher>(true, this);
+    auto materialPrimitivePostGUI = std::make_unique<CMaterialPrimitive3DBatcher>(false, this);
+    auto primitiveBatcher = std::make_unique<CPrimitiveBatcher>();
+    auto primitiveMaterialBatcher = std::make_unique<CPrimitiveMaterialBatcher>(this);
+    auto screenGrabber = std::unique_ptr<CScreenGrabberInterface>(NewScreenGrabber());
+    auto pixelsManager = std::unique_ptr<CPixelsManagerInterface>(NewPixelsManager());
+    auto aspectRatioConverter = std::make_unique<CAspectRatioConverter>();
 
-        m_pRenderItemManager = renderItemManager.release();
-        m_pTileBatcher = tileBatcher.release();
-        m_pLine3DBatcherPreGUI = line3DPreGUI.release();
-        m_pLine3DBatcherPostFX = line3DPostFX.release();
-        m_pLine3DBatcherPostGUI = line3DPostGUI.release();
-        m_pMaterialLine3DBatcherPreGUI = materialLinePreGUI.release();
-        m_pMaterialLine3DBatcherPostFX = materialLinePostFX.release();
-        m_pMaterialLine3DBatcherPostGUI = materialLinePostGUI.release();
-        m_pPrimitive3DBatcherPreGUI = primitive3DPreGUI.release();
-        m_pPrimitive3DBatcherPostFX = primitive3DPostFX.release();
-        m_pPrimitive3DBatcherPostGUI = primitive3DPostGUI.release();
-        m_pMaterialPrimitive3DBatcherPreGUI = materialPrimitivePreGUI.release();
-        m_pMaterialPrimitive3DBatcherPostFX = materialPrimitivePostFX.release();
-        m_pMaterialPrimitive3DBatcherPostGUI = materialPrimitivePostGUI.release();
-        m_pPrimitiveBatcher = primitiveBatcher.release();
-        m_pPrimitiveMaterialBatcher = primitiveMaterialBatcher.release();
-        m_pScreenGrabber = screenGrabber.release();
-        m_pPixelsManager = pixelsManager.release();
-        m_pAspectRatioConverter = aspectRatioConverter.release();
+    m_pRenderItemManager = renderItemManager.release();
+    m_pTileBatcher = tileBatcher.release();
+    m_pLine3DBatcherPreGUI = line3DPreGUI.release();
+    m_pLine3DBatcherPostFX = line3DPostFX.release();
+    m_pLine3DBatcherPostGUI = line3DPostGUI.release();
+    m_pMaterialLine3DBatcherPreGUI = materialLinePreGUI.release();
+    m_pMaterialLine3DBatcherPostFX = materialLinePostFX.release();
+    m_pMaterialLine3DBatcherPostGUI = materialLinePostGUI.release();
+    m_pPrimitive3DBatcherPreGUI = primitive3DPreGUI.release();
+    m_pPrimitive3DBatcherPostFX = primitive3DPostFX.release();
+    m_pPrimitive3DBatcherPostGUI = primitive3DPostGUI.release();
+    m_pMaterialPrimitive3DBatcherPreGUI = materialPrimitivePreGUI.release();
+    m_pMaterialPrimitive3DBatcherPostFX = materialPrimitivePostFX.release();
+    m_pMaterialPrimitive3DBatcherPostGUI = materialPrimitivePostGUI.release();
+    m_pPrimitiveBatcher = primitiveBatcher.release();
+    m_pPrimitiveMaterialBatcher = primitiveMaterialBatcher.release();
+    m_pScreenGrabber = screenGrabber.release();
+    m_pPixelsManager = pixelsManager.release();
+    m_pAspectRatioConverter = aspectRatioConverter.release();
 }
 
 CGraphics::~CGraphics()
@@ -2231,7 +2231,8 @@ void CGraphics::DrawProgressMessage(bool bPreserveBackbuffer)
     if (m_LastLostDeviceTimer.Get() < 1000)
         return;
 
-    const auto determineOwner = []() -> ESceneOwner {
+    const auto determineOwner = []() -> ESceneOwner
+    {
         if (g_bInMTAScene.load(std::memory_order_acquire))
             return ESceneOwner::MTA;
         if (g_bInGTAScene.load(std::memory_order_acquire))
@@ -2244,7 +2245,8 @@ void CGraphics::DrawProgressMessage(bool bPreserveBackbuffer)
 
     auto inScene = [&]() { return currentOwner != ESceneOwner::None; };
 
-    auto endCurrentScene = [&](const char* context) -> bool {
+    auto endCurrentScene = [&](const char* context) -> bool
+    {
         if (!inScene())
             return true;
         if (!EndSceneWithoutProxy(m_pDevice, currentOwner))
@@ -2258,7 +2260,8 @@ void CGraphics::DrawProgressMessage(bool bPreserveBackbuffer)
         return true;
     };
 
-    auto beginSceneAs = [&](ESceneOwner owner, const char* context) -> bool {
+    auto beginSceneAs = [&](ESceneOwner owner, const char* context) -> bool
+    {
         if (owner == ESceneOwner::None)
             return true;
         if (!BeginSceneWithoutProxy(m_pDevice, owner))

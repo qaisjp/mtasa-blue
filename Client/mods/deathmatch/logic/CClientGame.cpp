@@ -6900,7 +6900,7 @@ void CClientGame::Restream(std::optional<RestreamOption> option)
 
         m_pManager->GetVehicleManager()->RestreamAllVehicles();
     }
-    
+
     if (option == RestreamOption::ALL || option == RestreamOption::PEDS)
     {
         for (const auto& model : m_pManager->GetModelManager()->GetModelsByType(eClientModelType::PED))

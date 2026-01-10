@@ -23,9 +23,9 @@
 #include <ehs/ehs.h>
 #include <time.h>
 
-#define MAX_AUTHOR_LENGTH           255
-#define MAX_RESOURCE_NAME_LENGTH    255
-#define MAX_FUNCTION_NAME_LENGTH    50
+#define MAX_AUTHOR_LENGTH        255
+#define MAX_RESOURCE_NAME_LENGTH 255
+#define MAX_FUNCTION_NAME_LENGTH 50
 
 class CDummy;
 class CElement;
@@ -136,7 +136,7 @@ enum class EResourceState : unsigned char
 // It's a process-like environment for scripts, maps, images and other files.
 class CResource : public EHS
 {
-    friend class CResourceManager;  // Allow CResourceManager access to protected members
+    friend class CResourceManager;            // Allow CResourceManager access to protected members
     using KeyValueMap = CFastHashMap<SString, SString>;
 
 public:
@@ -253,11 +253,11 @@ public:
     bool CheckIfStartable();
     void DisplayInfo();
 
-    bool                        GetFilePath(const char* szFilename, std::string& strPath);
-    std::vector<std::string>    GetFilePaths(const char* szFilename);
+    bool                     GetFilePath(const char* szFilename, std::string& strPath);
+    std::vector<std::string> GetFilePaths(const char* szFilename);
 
-    const std::string&          GetResourceDirectoryPath() const { return m_strResourceDirectoryPath; }
-    const std::string&          GetResourceCacheDirectoryPath() const { return m_strResourceCachePath; }
+    const std::string& GetResourceDirectoryPath() const { return m_strResourceDirectoryPath; }
+    const std::string& GetResourceCacheDirectoryPath() const { return m_strResourceCachePath; }
 
     std::list<CResourceFile*>& GetFiles() { return m_ResourceFiles; }
     size_t                     GetFileCount() const noexcept { return m_ResourceFiles.size(); }

@@ -17,8 +17,8 @@
 class CObjectSAInterface;
 class CObjectSA;
 
-#define FUNC_GIVEUSAPICKUP      0x4567e0
-#define FUNC_CPickup_Remove     0x4556C0
+#define FUNC_GIVEUSAPICKUP  0x4567e0
+#define FUNC_CPickup_Remove 0x4556C0
 
 class CPickupSAInterface
 {
@@ -54,22 +54,22 @@ public:
     CVector* GetPosition(CVector* vecPosition);
 
     PickupType  GetType();
-    void         SetType(PickupType type);
-    float        GetCurrentValue();
-    void         SetCurrentValue(float fCurrentValue);
-    void         SetRegenerationTime(DWORD dwTime);
-    void         SetMoneyPerDay(WORD wMoneyPerDay);
-    WORD         GetMoneyPerDay();
-    WORD         GetModel();
-    void         SetModel(WORD wModelIndex);            // do not export
+    void        SetType(PickupType type);
+    float       GetCurrentValue();
+    void        SetCurrentValue(float fCurrentValue);
+    void        SetRegenerationTime(DWORD dwTime);
+    void        SetMoneyPerDay(WORD wMoneyPerDay);
+    WORD        GetMoneyPerDay();
+    WORD        GetModel();
+    void        SetModel(WORD wModelIndex);            // do not export
     PickupState GetState();
-    void         SetState(PickupState bState);
-    BYTE         GetAmmo();
-    void         SetAmmo(BYTE bAmmo);
-    long         GetMonetaryValue();
-    void         SetMonetaryValue(long lMonetaryValue);
-    BYTE         IsNearby();
-    void         GiveUsAPickUpObject(int ForcedObjectIndex = -1);
-    void         GetRidOfObjects();
-    void         Remove();
+    void        SetState(PickupState bState);
+    BYTE        GetAmmo();
+    void        SetAmmo(BYTE bAmmo);
+    long        GetMonetaryValue();
+    void        SetMonetaryValue(long lMonetaryValue);
+    BYTE        IsNearby();
+    void        GiveUsAPickUpObject(int ForcedObjectIndex = -1);
+    void        GetRidOfObjects();
+    void        Remove();
 };

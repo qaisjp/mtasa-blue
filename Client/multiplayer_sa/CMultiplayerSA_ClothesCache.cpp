@@ -14,7 +14,7 @@
 #include "..\game_sa\gamesa_renderware.h"
 #include "..\game_sa\gamesa_renderware.hpp"
 
-#define CLOTHES_REF_TEST    1       // Debug clothes geometry refs
+#define CLOTHES_REF_TEST 1            // Debug clothes geometry refs
 
 ////////////////////////////////////////////////
 //
@@ -142,17 +142,17 @@ public:
         {
             if (!info.pClump || !info.pClump->atomics.root.next) [[unlikely]]
                 continue;
-            
+
             if (info.pClump->atomics.root.next == &info.pClump->atomics.root) [[unlikely]]
                 continue;
-            
+
             // Container_of pattern: RwLLLink at offset 0x8 in RpAtomic
-            char* pListNode = reinterpret_cast<char*>(info.pClump->atomics.root.next);
+            char*     pListNode = reinterpret_cast<char*>(info.pClump->atomics.root.next);
             RpAtomic* pAtomic = reinterpret_cast<RpAtomic*>(pListNode - 0x8);
-            
+
             if (!SharedUtil::IsReadablePointer(pAtomic, sizeof(RpAtomic))) [[unlikely]]
                 continue;
-            
+
             RpGeometry* pGeometry = pAtomic->geometry;
             if (!pGeometry) [[unlikely]]
                 continue;
@@ -203,10 +203,9 @@ public:
         SSavedClumpInfo info;
         info.pClump = pClumpCopy;
 #ifdef CLOTHES_REF_TEST
-        if (info.pClump && info.pClump->atomics.root.next && 
-            info.pClump->atomics.root.next != &info.pClump->atomics.root)
+        if (info.pClump && info.pClump->atomics.root.next && info.pClump->atomics.root.next != &info.pClump->atomics.root)
         {
-            char* pListNode = reinterpret_cast<char*>(info.pClump->atomics.root.next);
+            char*     pListNode = reinterpret_cast<char*>(info.pClump->atomics.root.next);
             RpAtomic* pAtomic = reinterpret_cast<RpAtomic*>(pListNode - 0x8);
             if (SharedUtil::IsReadablePointer(pAtomic, sizeof(RpAtomic)))
             {
@@ -281,10 +280,9 @@ public:
             return false;
 
 #ifdef CLOTHES_REF_TEST
-        if (info.pClump && info.pClump->atomics.root.next && 
-            info.pClump->atomics.root.next != &info.pClump->atomics.root)
+        if (info.pClump && info.pClump->atomics.root.next && info.pClump->atomics.root.next != &info.pClump->atomics.root)
         {
-            char* pListNode = reinterpret_cast<char*>(info.pClump->atomics.root.next);
+            char*     pListNode = reinterpret_cast<char*>(info.pClump->atomics.root.next);
             RpAtomic* pAtomic = reinterpret_cast<RpAtomic*>(pListNode - 0x8);
             if (SharedUtil::IsReadablePointer(pAtomic, sizeof(RpAtomic)))
             {
@@ -376,9 +374,9 @@ void _cdecl OnCClothesBuilderCreateSkinnedClumpPost(RpClump* pRpClumpResult, RpC
 }
 
 // Hook info
-#define HOOKPOS_CClothesBuilderCreateSkinnedClump        0x5A69D0
-#define HOOKSIZE_CClothesBuilderCreateSkinnedClump       6
-DWORD RETURN_CClothesBuilderCreateSkinnedClump = 0x5A69D6;
+#define HOOKPOS_CClothesBuilderCreateSkinnedClump  0x5A69D0
+#define HOOKSIZE_CClothesBuilderCreateSkinnedClump 6
+DWORD                         RETURN_CClothesBuilderCreateSkinnedClump = 0x5A69D6;
 static void __declspec(naked) HOOK_CClothesBuilderCreateSkinnedClump()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;

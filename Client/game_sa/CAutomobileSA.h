@@ -16,10 +16,10 @@
 #include "CDoorSA.h"
 #include "CVehicleSA.h"
 
-#define FUNC_CAutomobile_SetTaxiLight               0x6A3740
+#define FUNC_CAutomobile_SetTaxiLight 0x6A3740
 
-#define MAX_PASSENGER_COUNT     8
-#define MAX_DOORS               6 // also in CDamageManager
+#define MAX_PASSENGER_COUNT 8
+#define MAX_DOORS           6            // also in CDamageManager
 
 class CBouncingPanelSAInterface
 {
@@ -44,7 +44,7 @@ public:
 
     CObjectSAInterface* SpawnFlyingComponent(const eCarNodes& nodeId, const eCarComponentCollisionTypes& collType)
     {
-        return ((CObjectSAInterface*(__thiscall*)(CAutomobileSAInterface*, eCarNodes, eCarComponentCollisionTypes))0x6a8580)(this, nodeId, collType);
+        return ((CObjectSAInterface * (__thiscall*)(CAutomobileSAInterface*, eCarNodes, eCarComponentCollisionTypes))0x6a8580)(this, nodeId, collType);
     }
 
     CDamageManagerSAInterface m_damageManager;

@@ -110,10 +110,7 @@ namespace
 
 [[nodiscard]] CefRefPtr<CefResourceHandler> CWebApp::HandleError(const SString& strError, unsigned int uiError)
 {
-    auto stream = CefStreamReader::CreateForData(
-        (void*)strError.c_str(), 
-        strError.length()
-    );
+    auto stream = CefStreamReader::CreateForData((void*)strError.c_str(), strError.length());
     if (!stream)
         return nullptr;
     return CefRefPtr<CefResourceHandler>(new CefStreamResourceHandler(uiError, strError, "text/plain", CefResponse::HeaderMap(), stream));
@@ -131,7 +128,7 @@ void CWebApp::OnBeforeChildProcessLaunch(CefRefPtr<CefCommandLine> command_line)
 
     const CefString processType = command_line->GetSwitchValue("type");
     ConfigureCommandLineSwitches(command_line, processType);
-    
+
     // Attach IPC validation code for render processes
     // This runs in browser process context where g_pCore and webCore are valid
     // The auth code is generated in CWebCore constructor and passed to subprocesses
@@ -186,7 +183,7 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
         path = path.substr(1);            // Remove slash at the front
         if (const auto slashPos = path.find('/'); slashPos == std::string::npos)
         {
-            static constexpr auto ERROR_404 = "404 - Not found";
+            static constexpr auto         ERROR_404 = "404 - Not found";
             static constexpr unsigned int CODE_404 = 404;
             return HandleError(ERROR_404, CODE_404);
         }
@@ -197,7 +194,7 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
 
             if (resourcePath.empty())
             {
-                static constexpr auto ERROR_404 = "404 - Not found";
+                static constexpr auto         ERROR_404 = "404 - Not found";
                 static constexpr unsigned int CODE_404 = 404;
                 return HandleError(ERROR_404, CODE_404);
             }
@@ -223,7 +220,7 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
                 {
                     const SString        strGet = UTF16ToMbUTF8(urlParts.query.str);
                     std::vector<SString> vecTmp;
-                    vecTmp.reserve(8);  // Reserve space for common query parameter count
+                    vecTmp.reserve(8);            // Reserve space for common query parameter count
                     strGet.Split("&", vecTmp);
 
                     const size_t paramCount = vecTmp.size();
@@ -251,7 +248,7 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
                     {
                         // Limit to 5MiB and allow byte data only
                         constexpr size_t MAX_POST_SIZE = 5 * 1024 * 1024;
-                        size_t bytesCount = post->GetBytesCount();
+                        size_t           bytesCount = post->GetBytesCount();
                         if (bytesCount > MAX_POST_SIZE || post->GetType() != CefPostDataElement::Type::PDE_TYPE_BYTES)
                             continue;
 
@@ -294,7 +291,7 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
                 // Calculate absolute path
                 if (!pWebView->GetFullPathFromLocal(path))
                 {
-                    static constexpr auto ERROR_404 = "404 - Not found";
+                    static constexpr auto         ERROR_404 = "404 - Not found";
                     static constexpr unsigned int CODE_404 = 404;
                     return HandleError(ERROR_404, CODE_404);
                 }
@@ -303,7 +300,7 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
                 CBuffer fileData;
                 if (!pWebView->VerifyFile(path, fileData))
                 {
-                    static constexpr auto ERROR_403 = "403 - Access Denied";
+                    static constexpr auto         ERROR_403 = "403 - Access Denied";
                     static constexpr unsigned int CODE_403 = 403;
                     return HandleError(ERROR_403, CODE_403);
                 }
@@ -315,17 +312,14 @@ CefRefPtr<CefResourceHandler> CWebApp::Create(CefRefPtr<CefBrowser> browser, Cef
                     fileData = CBuffer(emptyStr, std::size(emptyStr));
                 }
 
-                auto stream = CefStreamReader::CreateForData(
-                    fileData.GetData(),
-                    fileData.GetSize()
-                );
+                auto stream = CefStreamReader::CreateForData(fileData.GetData(), fileData.GetSize());
                 if (!stream)
                 {
-                    static constexpr auto ERROR_404 = "404 - Not found";
+                    static constexpr auto         ERROR_404 = "404 - Not found";
                     static constexpr unsigned int CODE_404 = 404;
                     return HandleError(ERROR_404, CODE_404);
                 }
-                    
+
                 return CefRefPtr<CefResourceHandler>(new CefStreamResourceHandler(mimeType, stream));
             }
         }

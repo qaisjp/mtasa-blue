@@ -48,7 +48,7 @@ bool    IsCursesActive()
     return m_wndInput != NULL;
 }
 #else
-bool g_isChildProcess = false;
+bool   g_isChildProcess = false;
 HANDLE g_readyEvent = nullptr;
 #endif
 
@@ -58,13 +58,13 @@ CServerImpl::CServerImpl(CThreadCommandQueue* pThreadCommandQueue)
 CServerImpl::CServerImpl()
 #endif
 {
-    #ifdef WIN32
+#ifdef WIN32
     m_pThreadCommandQueue = pThreadCommandQueue;
     m_hConsole = NULL;
-    #else
+#else
     m_wndMenu = NULL;
     m_wndInput = NULL;
-    #endif
+#endif
 
     // Init
     m_pNetwork = NULL;
@@ -331,7 +331,7 @@ int CServerImpl::Run(int iArgumentCount, char* szArguments[])
     {
         // Network module compatibility check
         typedef unsigned long (*PFNCHECKCOMPATIBILITY)(unsigned long, unsigned long*);
-        #pragma warning(suppress: 4191)
+#pragma warning(suppress : 4191)
         auto pfnCheckCompatibility = reinterpret_cast<PFNCHECKCOMPATIBILITY>(m_NetworkLibrary.GetProcedureAddress("CheckCompatibility"));
         if (!pfnCheckCompatibility || !pfnCheckCompatibility(MTA_DM_SERVER_NET_MODULE_VERSION, (unsigned long*)MTASA_VERSION_TYPE))
         {
@@ -352,12 +352,12 @@ int CServerImpl::Run(int iArgumentCount, char* szArguments[])
 
         if (m_XMLLibrary.Load(PathJoin(m_strServerPath, SERVER_BIN_PATH, szXMLLibName)))
         {
-            #pragma warning(push)
-            #pragma warning(disable: 4191)
+#pragma warning(push)
+#pragma warning(disable : 4191)
             auto pfnInitNetServerInterface = (InitNetServerInterface)(m_NetworkLibrary.GetProcedureAddress("InitNetServerInterface"));
             auto pfnReleaseNetServerInterface = (ReleaseNetServerInterface)(m_NetworkLibrary.GetProcedureAddress("ReleaseNetServerInterface"));
             auto pfnInitXMLInterface = (InitXMLInterface)(m_XMLLibrary.GetProcedureAddress("InitXMLInterface"));
-            #pragma warning(pop)
+#pragma warning(pop)
 
             if (pfnInitNetServerInterface && pfnInitXMLInterface)
             {
@@ -478,10 +478,10 @@ void CServerImpl::MainLoop()
         // Handle the interpreter input
         HandleInput();
 
-        // Handle input from the secondary thread
-        #ifdef WIN32
+// Handle input from the secondary thread
+#ifdef WIN32
         m_pThreadCommandQueue->Process(m_bRequestedQuit, m_pModManager);
-        #endif
+#endif
 
         // Pulse the modmanager
         m_pModManager->DoPulse();
@@ -837,7 +837,7 @@ void CServerImpl::HandleInput()
             if (m_uiInputCount == 0)
                 break;
 
-                // Insert a blank space + backspace
+            // Insert a blank space + backspace
 #ifdef WIN32
             Printf("%c %c", 0x08, 0x08);
 #else
@@ -848,7 +848,7 @@ void CServerImpl::HandleInput()
             m_szInputBuffer[m_uiInputCount] = 0;
             break;
 
-#ifdef WIN32    // WIN32: we have to use a prefix code, this routine opens an extra switch
+#ifdef WIN32            // WIN32: we have to use a prefix code, this routine opens an extra switch
         case KEY_EXTENDED:
             // Color the text
             if (!g_bSilent && HasConsole())
@@ -930,7 +930,7 @@ void CServerImpl::HandleInput()
 
                     break;
                 }
-#ifdef WIN32    // WIN32: Close the switch again
+#ifdef WIN32            // WIN32: Close the switch again
             }
             // Restore the color
             if (!g_bSilent && HasConsole())

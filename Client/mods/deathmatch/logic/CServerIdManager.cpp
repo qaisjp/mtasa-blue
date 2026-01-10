@@ -13,8 +13,8 @@
 #include "StdInc.h"
 #include "CServerIdManager.h"
 
-#define MTA_SERVERID_LOOKUP_DIR       "priv"
-#define MTA_SERVERID_LOOKUP_XML       "priv/server-ids.xml"
+#define MTA_SERVERID_LOOKUP_DIR "priv"
+#define MTA_SERVERID_LOOKUP_XML "priv/server-ids.xml"
 
 namespace
 {
@@ -188,8 +188,7 @@ void CServerIdManagerImpl::SaveServerIdMap(bool bWait)
     ms_ServerIdMap = m_ServerIdMap;
 
     // Start save thread
-    HANDLE hThread = CreateThread(NULL, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(CServerIdManagerImpl::StaticThreadProc),
-                                  NULL, CREATE_SUSPENDED, NULL);
+    HANDLE hThread = CreateThread(NULL, 0, reinterpret_cast<LPTHREAD_START_ROUTINE>(CServerIdManagerImpl::StaticThreadProc), NULL, CREATE_SUSPENDED, NULL);
     if (!hThread)
     {
         g_pCore->GetConsole()->Printf("Could not create server-ids save thread.");

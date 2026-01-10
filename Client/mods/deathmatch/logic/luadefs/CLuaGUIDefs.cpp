@@ -2424,7 +2424,7 @@ int CLuaGUIDefs::GUIGridListInsertRowAfter(lua_State* luaVM)
         else
         {
             // Vector containing our string arguments.  We add a bool to store whether it was originally a number.
-            std::vector<std::pair<SString, bool> >     m_items;
+            std::vector<std::pair<SString, bool>> m_items;
             for (CLuaArgument* pArgument : Arguments)
             {
                 SString strItemText;

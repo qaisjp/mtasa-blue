@@ -1601,20 +1601,34 @@ eStats CWeaponStatManager::GetSkillStatIndex(eWeaponType weapon)
 {
     switch (weapon)
     {
-        case WEAPONTYPE_PISTOL:          return STAT_PISTOL_SKILL;
-        case WEAPONTYPE_PISTOL_SILENCED: return STAT_SILENCED_PISTOL_SKILL;
-        case WEAPONTYPE_DESERT_EAGLE:    return STAT_DESERT_EAGLE_SKILL;
-        case WEAPONTYPE_SHOTGUN:         return STAT_SHOTGUN_SKILL;
-        case WEAPONTYPE_SAWNOFF_SHOTGUN: return STAT_SAWN_OFF_SHOTGUN_SKILL;
-        case WEAPONTYPE_SPAS12_SHOTGUN:  return STAT_COMBAT_SHOTGUN_SKILL;
-        case WEAPONTYPE_MICRO_UZI:       return STAT_MACHINE_PISTOL_SKILL;
-        case WEAPONTYPE_MP5:             return STAT_SMG_SKILL;
-        case WEAPONTYPE_AK47:            return STAT_AK_47_SKILL;
-        case WEAPONTYPE_M4:              return STAT_M4_SKILL;
-        case WEAPONTYPE_TEC9:            return STAT_MACHINE_PISTOL_SKILL;
-        case WEAPONTYPE_COUNTRYRIFLE:    return STAT_RIFLE_SKILL;
-        case WEAPONTYPE_SNIPERRIFLE:     return STAT_RIFLE_SKILL;
-        default:                         return static_cast<eStats>(0);
+        case WEAPONTYPE_PISTOL:
+            return STAT_PISTOL_SKILL;
+        case WEAPONTYPE_PISTOL_SILENCED:
+            return STAT_SILENCED_PISTOL_SKILL;
+        case WEAPONTYPE_DESERT_EAGLE:
+            return STAT_DESERT_EAGLE_SKILL;
+        case WEAPONTYPE_SHOTGUN:
+            return STAT_SHOTGUN_SKILL;
+        case WEAPONTYPE_SAWNOFF_SHOTGUN:
+            return STAT_SAWN_OFF_SHOTGUN_SKILL;
+        case WEAPONTYPE_SPAS12_SHOTGUN:
+            return STAT_COMBAT_SHOTGUN_SKILL;
+        case WEAPONTYPE_MICRO_UZI:
+            return STAT_MACHINE_PISTOL_SKILL;
+        case WEAPONTYPE_MP5:
+            return STAT_SMG_SKILL;
+        case WEAPONTYPE_AK47:
+            return STAT_AK_47_SKILL;
+        case WEAPONTYPE_M4:
+            return STAT_M4_SKILL;
+        case WEAPONTYPE_TEC9:
+            return STAT_MACHINE_PISTOL_SKILL;
+        case WEAPONTYPE_COUNTRYRIFLE:
+            return STAT_RIFLE_SKILL;
+        case WEAPONTYPE_SNIPERRIFLE:
+            return STAT_RIFLE_SKILL;
+        default:
+            return static_cast<eStats>(0);
     }
 }
 

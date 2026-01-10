@@ -17,7 +17,7 @@
 #pragma once
 
 // ignore the return type warning for the -> operator when we are potentially using pointers themselves
-#pragma warning(disable:4284)
+#pragma warning(disable : 4284)
 
 #include <windows.h>
 

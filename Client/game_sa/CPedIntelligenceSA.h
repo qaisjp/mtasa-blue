@@ -16,7 +16,7 @@
 class CPedSAInterface;
 class CTaskManagerSA;
 
-#define FUNC_CPedIntelligence_TestForStealthKill    0x601E00
+#define FUNC_CPedIntelligence_TestForStealthKill 0x601E00
 
 class CFightManagerInterface
 {

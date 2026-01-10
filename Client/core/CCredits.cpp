@@ -315,7 +315,6 @@ CCredits::CCredits()
         "UnRAR (https://www.rarlab.com/)\n"
         "zlib (https://zlib.net/)\n";
 
-
     // SA credits
     m_strCredits += "\n\n\n== Grand Theft Auto: San Andreas (TM) (c) 2005 Rockstar Games, Inc. ==\n\n\n";
 
@@ -1092,8 +1091,7 @@ CCredits::CCredits()
         "Sarah Oram\n"
         "Smoke Stack\n"
         "Trattoria Siciliana\n"
-        "Black Bull\n"
-    ;
+        "Black Bull\n";
 
     // Create our window
     CVector2D RelativeWindow = CVector2D(fWindowX / pManager->GetResolution().fX, fWindowY / pManager->GetResolution().fY);

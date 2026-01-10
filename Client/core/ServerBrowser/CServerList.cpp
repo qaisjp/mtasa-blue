@@ -126,8 +126,8 @@ void CServerList::Pulse()
         CServerListItem* pServer = *i;
         if (!pServer)
             continue;
-        uint             uiPrevRevision = pServer->uiRevision;
-        std::string      strResult = pServer->Pulse((int)(uiQueriesSent /*+ uiQueriesResent*/) < iNumQueries, bRemoveNonResponding);
+        uint        uiPrevRevision = pServer->uiRevision;
+        std::string strResult = pServer->Pulse((int)(uiQueriesSent /*+ uiQueriesResent*/) < iNumQueries, bRemoveNonResponding);
         if (uiPrevRevision != pServer->uiRevision)
             m_bUpdated |= true;            // Flag GUI update
         if (strResult == "SentQuery")
@@ -239,7 +239,7 @@ void CServerListInternet::Refresh()
     // This populates the list with cached server data before fetching fresh data
     if (m_Servers.size() == 0)
     {
-        GetServerCache()->GenerateServerList(this, true);  // true = allow all cached servers
+        GetServerCache()->GenerateServerList(this, true);            // true = allow all cached servers
         GetServerCache()->GetServerListCachedInfo(this);
     }
 
@@ -250,7 +250,7 @@ void CServerListInternet::Refresh()
     m_pMasterServerManager->Refresh();
     m_iPass = 1;
     m_bUpdated = true;
-    m_bMasterServerOffline = false;  // Reset offline flag on refresh attempt
+    m_bMasterServerOffline = false;            // Reset offline flag on refresh attempt
 
     // Don't clear the list - keep cached servers available while fetching fresh data
     // Only reset servers for refresh without losing the cache
@@ -339,7 +339,7 @@ void CServerListInternet::Pulse()
         {
             // If query failed, mark master server as offline and load from backup
             m_bMasterServerOffline = true;
-            GetServerCache()->GenerateServerList(this, true);  // true = allow all cached servers
+            GetServerCache()->GenerateServerList(this, true);            // true = allow all cached servers
             GetServerCache()->GetServerListCachedInfo(this);
 
             // Reset no-reply counters for cached servers to give them another chance
@@ -951,14 +951,14 @@ namespace
             return cmp > 0;
         return a->strNameSortKey < b->strNameSortKey;
     }
-}
+}            // namespace
 
 void CServerListItemList::Sort(unsigned int uiColumn, int direction)
 {
-    if (direction == 0)  // SortDirections::None
+    if (direction == 0)            // SortDirections::None
         return;
 
-    bool asc = (direction == 1);  // SortDirections::Ascending
+    bool asc = (direction == 1);            // SortDirections::Ascending
 
     switch (uiColumn)
     {

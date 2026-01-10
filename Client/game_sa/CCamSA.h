@@ -17,7 +17,7 @@
 #include "CPedSA.h"
 
 const int NUMBER_OF_VECTORS_FOR_AVERAGE = 2;
-#define CAM_NUM_TARGET_HISTORY          4
+#define CAM_NUM_TARGET_HISTORY 4
 
 class CCamSAInterface
 {
@@ -162,74 +162,53 @@ private:
     CCamSAInterface* m_pInterface;
 
 public:
-    CCamSA(CCamSAInterface* pInterface) : m_pInterface(pInterface) 
+    CCamSA(CCamSAInterface* pInterface) : m_pInterface(pInterface)
     {
         if (!pInterface)
         {
             m_pInterface = nullptr;
         }
     }
-    
+
     CCamSAInterface* GetInterface() { return m_pInterface; }
 
-    CVector* GetFront() const override 
-    { 
-        return m_pInterface ? &m_pInterface->Front : nullptr; 
-    }
-    
-    CVector* GetUp() const override 
-    { 
-        return m_pInterface ? &m_pInterface->Up : nullptr; 
-    }
-    
-    CVector* GetSource() const override 
-    { 
-        return m_pInterface ? &m_pInterface->Source : nullptr; 
-    }
-    
-    unsigned int GetMode() const override 
-    { 
-        return m_pInterface ? static_cast<unsigned int>(m_pInterface->Mode) : 0; 
-    }
-    
-    float GetFOV() const override 
-    { 
+    CVector* GetFront() const override { return m_pInterface ? &m_pInterface->Front : nullptr; }
+
+    CVector* GetUp() const override { return m_pInterface ? &m_pInterface->Up : nullptr; }
+
+    CVector* GetSource() const override { return m_pInterface ? &m_pInterface->Source : nullptr; }
+
+    unsigned int GetMode() const override { return m_pInterface ? static_cast<unsigned int>(m_pInterface->Mode) : 0; }
+
+    float GetFOV() const override
+    {
         if (!m_pInterface)
-            return 70.0f; // Default FOV
-            
+            return 70.0f;            // Default FOV
+
         float fov = m_pInterface->FOV;
         return std::isfinite(fov) ? fov : 70.0f;
     }
-    
-    void SetFOV(float fFOV) override 
-    { 
+
+    void SetFOV(float fFOV) override
+    {
         if (!m_pInterface)
             return;
-            
+
         // Validate FOV range
         if (!std::isfinite(fFOV) || fFOV <= 0.0f || fFOV >= 180.0f)
             return;
-            
-        m_pInterface->FOV = fFOV; 
+
+        m_pInterface->FOV = fFOV;
     }
 
     void GetDirection(float& fHorizontal, float& fVertical) override;
     void SetDirection(float fHorizontal, float fVertical) override;
 
-    CVector* GetFixedModeSource() const override 
-    { 
-        return m_pInterface ? &m_pInterface->m_cvecCamFixedModeSource : nullptr; 
-    }
-    
-    CVector* GetFixedModeVector() const override 
-    { 
-        return m_pInterface ? &m_pInterface->m_cvecCamFixedModeVector : nullptr; 
-    }
-    
-    CVector* GetTargetHistoryPos() const override 
-    { 
-        return m_pInterface ? m_pInterface->m_aTargetHistoryPos : nullptr; 
-    }
+    CVector* GetFixedModeSource() const override { return m_pInterface ? &m_pInterface->m_cvecCamFixedModeSource : nullptr; }
+
+    CVector* GetFixedModeVector() const override { return m_pInterface ? &m_pInterface->m_cvecCamFixedModeVector : nullptr; }
+
+    CVector* GetTargetHistoryPos() const override { return m_pInterface ? m_pInterface->m_aTargetHistoryPos : nullptr; }
 
     CEntity* GetTargetEntity() const override;
     void     SetTargetEntity(CEntity* pEntity) override;

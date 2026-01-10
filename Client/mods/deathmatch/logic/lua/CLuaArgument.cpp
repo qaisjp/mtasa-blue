@@ -11,15 +11,15 @@
 #include "StdInc.h"
 #include "net/SyncStructures.h"
 
-#define ARGUMENT_TYPE_INT       9
-#define ARGUMENT_TYPE_FLOAT     10
+#define ARGUMENT_TYPE_INT   9
+#define ARGUMENT_TYPE_FLOAT 10
 
 #ifndef VERIFY_ENTITY
-#define VERIFY_ENTITY(entity) (CStaticFunctionDefinitions::GetRootElement()->IsMyChild(entity,true)&&!entity->IsBeingDeleted())
+    #define VERIFY_ENTITY(entity) (CStaticFunctionDefinitions::GetRootElement()->IsMyChild(entity, true) && !entity->IsBeingDeleted())
 #endif
 
 #ifndef VERIFY_RESOURCE
-#define VERIFY_RESOURCE(resource) (g_pClientGame->GetResourceManager()->Exists(resource))
+    #define VERIFY_RESOURCE(resource) (g_pClientGame->GetResourceManager()->Exists(resource))
 #endif
 
 extern CClientGame* g_pClientGame;
@@ -27,7 +27,7 @@ extern CClientGame* g_pClientGame;
 using namespace std;
 
 // Prevent the warning issued when doing unsigned short -> void*
-#pragma warning(disable:4312)
+#pragma warning(disable : 4312)
 
 CLuaArgument::CLuaArgument()
 {

@@ -17,7 +17,7 @@
 #include <list>
 
 #ifndef NULL
-#define NULL 0
+    #define NULL 0
 #endif
 
 typedef int       CGUIHandle;

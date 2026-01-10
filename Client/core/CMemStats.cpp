@@ -664,27 +664,27 @@ void CMemStats::CreateTables()
     CGame* pGame = g_pCore->GetGame();
     m_TableList.clear();
 
-//
-// Color setups
-//
-    #define YELLOW "#FFFF00"
-    #define RED "#FF0000"
-    #define BLUE "#0000FF"
-    #define WHITE "#FFFFFF"
+    //
+    // Color setups
+    //
+#define YELLOW "#FFFF00"
+#define RED    "#FF0000"
+#define BLUE   "#0000FF"
+#define WHITE  "#FFFFFF"
 
-    #define LT_RED "#FF5050"
-    #define DK_RED "#CF0000"
-    #define GREY "#808080"
-    #define LT_GREY "#C0C0C0"
-    #define INVIS "#000000"
-    #define DK_GREEN "#00CF00"
-    #define LT_GREEN "#30FF30"
-    #define PURPLE "#FF00FF"
-    #define CYAN "#00FFFF"
-    #define LT_CYAN "#00C0F0"
+#define LT_RED   "#FF5050"
+#define DK_RED   "#CF0000"
+#define GREY     "#808080"
+#define LT_GREY  "#C0C0C0"
+#define INVIS    "#000000"
+#define DK_GREEN "#00CF00"
+#define LT_GREEN "#30FF30"
+#define PURPLE   "#FF00FF"
+#define CYAN     "#00FFFF"
+#define LT_CYAN  "#00C0F0"
 
-    // Table header
-    #define HEADER1(text) LT_CYAN text WHITE
+// Table header
+#define HEADER1(text) LT_CYAN text WHITE
 
     // Cell colour depending upon the value
     SString strNumberColorsCreat = GREY "0," CYAN "999999,";

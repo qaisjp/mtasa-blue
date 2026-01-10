@@ -187,7 +187,7 @@ bool CModManager::TryStart()
         return false;
     }
 
-    using InitClientFn = CClientBase* (__cdecl*)();
+    using InitClientFn = CClientBase*(__cdecl*)();
     InitClientFn initClient = nullptr;
     if (!SharedUtil::TryGetProcAddress(library, "InitClient", initClient))
     {

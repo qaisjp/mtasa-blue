@@ -1143,7 +1143,8 @@ void CPacketHandler::Packet_PlayerSpawn(NetBitStreamInterface& bitStream)
         pPlayer->SetDeadOnNetwork(false);
 
         // Reset death processing flag for new life
-        if (pPlayer->IsLocalPlayer()) {
+        if (pPlayer->IsLocalPlayer())
+        {
             g_pClientGame->ResetDeathProcessingFlag();
         }
 
@@ -1228,7 +1229,8 @@ void CPacketHandler::Packet_PlayerWasted(NetBitStreamInterface& bitStream)
 
             // Clear stale damage data if this is the local player
             // This prevents DoWastedCheck from firing with stale data when server processes death
-            if (pPed->IsLocalPlayer()) {
+            if (pPed->IsLocalPlayer())
+            {
                 g_pClientGame->ClearDamageData();
             }
 
@@ -1827,25 +1829,27 @@ void CPacketHandler::Packet_Vehicle_InOut(NetBitStreamInterface& bitStream)
                             CClientPed* pJacked = pVehicle->GetOccupant(ucSeat);
 
                             // If it's the local player or syncing ped getting jacked, reset some stuff
-                            if (pJacked) {
-                                if (pJacked->IsLocalPlayer() || pJacked->IsSyncing()) {
+                            if (pJacked)
+                            {
+                                if (pJacked->IsLocalPlayer() || pJacked->IsSyncing())
+                                {
                                     pJacked->ResetVehicleInOut();
                                 }
-                                else {
+                                else
+                                {
                                     // Desynced? Outside but supposed to be in
                                     // For local player or synced peds this is taken care of in CClientPed::UpdateVehicleInOut()
-                                    if (pJacked->GetOccupiedVehicle() && !pJacked->GetRealOccupiedVehicle()) {
+                                    if (pJacked->GetOccupiedVehicle() && !pJacked->GetRealOccupiedVehicle())
+                                    {
                                         // Warp him back in
                                         pJacked->WarpIntoVehicle(pJacked->GetOccupiedVehicle(), pJacked->GetOccupiedVehicleSeat());
 
                                         // For bikes and cars where jacked through passenger door, warp the passenger back in if desynced
-                                        if (ucSeat == 0) {
+                                        if (ucSeat == 0)
+                                        {
                                             CClientPed* pPassenger = pJacked->GetOccupiedVehicle()->GetOccupant(1);
                                             // Is the passenger a remote player or ped and is he physically outside but supposed to be in
-                                            if (pPassenger &&
-                                                !pPassenger->IsLocalPlayer() &&
-                                                !pPassenger->IsSyncing() &&
-                                                pPassenger->GetOccupiedVehicle() &&
+                                            if (pPassenger && !pPassenger->IsLocalPlayer() && !pPassenger->IsSyncing() && pPassenger->GetOccupiedVehicle() &&
                                                 !pPassenger->GetRealOccupiedVehicle())
                                             {
                                                 pPassenger->WarpIntoVehicle(pPassenger->GetOccupiedVehicle(), pPassenger->GetOccupiedVehicleSeat());
@@ -2193,9 +2197,9 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
                 pTrailer->SetRotationDegrees(rotation.data.vecRotation);
                 pTrailer->SetTurnSpeed(turn.data.vecVelocity);
 
-                #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: attaching trailer %d to vehicle %d", TrailerID, ID);
-                #endif
+#endif
                 pVehicle->SetTowedVehicle(pTrailer);
 
                 // Call the onClientTrailerAttach
@@ -2205,9 +2209,9 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
             }
             else
             {
-                #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: detaching trailer %d from vehicle %d", TrailerID, ID);
-                #endif
+#endif
                 pVehicle->SetTowedVehicle(NULL);
 
                 // Call the onClientTrailerDetach
@@ -2218,12 +2222,12 @@ void CPacketHandler::Packet_VehicleTrailer(NetBitStreamInterface& bitStream)
         }
         else
         {
-            #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
             if (!pVehicle)
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: vehicle (id %d) not found", ID);
             if (!pTrailer)
                 g_pCore->GetConsole()->Printf("Packet_VehicleTrailer: trailer (id %d) not found", TrailerID);
-            #endif
+#endif
         }
     }
 }
@@ -2366,7 +2370,7 @@ void CPacketHandler::Packet_MapInfo(NetBitStreamInterface& bitStream)
     // Apply world sea level (to world sea level water only)
     g_pClientGame->GetManager()->GetWaterManager()->SetWorldWaterLevel(fSeaLevel, nullptr, false, true, false);
 
-    std::uint16_t fps = 36; // Default to 36
+    std::uint16_t fps = 36;            // Default to 36
     bitStream.ReadCompressed(fps);
     CStaticFunctionDefinitions::SetServerFPSLimit(fps);
 
@@ -2716,104 +2720,104 @@ void CPacketHandler::Packet_EntityAdd(NetBitStreamInterface& bitStream)
     if (g_pClientGame)
         g_pClientGame->NotifyBigPacketProgress(0, 0);
 
-        // This packet contains a list over entities to add to the world.
-        // There's a byte seperating the entities saying what type it is (vehicle spawn,object,weapon pickup)
+    // This packet contains a list over entities to add to the world.
+    // There's a byte seperating the entities saying what type it is (vehicle spawn,object,weapon pickup)
 
-        // Common:
-        // ElementID            (2)     - entity id
-        // unsigned char        (1)     - entity type id
-        // ElementID            (2)     - parent entity id
-        // unsigned char        (1)     - entity interior
-        // unsigned short       (2)     - entity dimension
-        // ElementID            (2)     - attached to entity id
-        // bool                 (1)     - collisions enabled
-        // ???                  (?)     - custom data
+    // Common:
+    // ElementID            (2)     - entity id
+    // unsigned char        (1)     - entity type id
+    // ElementID            (2)     - parent entity id
+    // unsigned char        (1)     - entity interior
+    // unsigned short       (2)     - entity dimension
+    // ElementID            (2)     - attached to entity id
+    // bool                 (1)     - collisions enabled
+    // ???                  (?)     - custom data
 
-        // Objects:
-        // CVector              (12)    - position
-        // CVector              (12)    - rotation
-        // unsigned short       (2)     - object model id
-        // unsigned char        (1)     - alpha
-        // CVector              (12)    - scale
-        // bool                 (1)     - static
-        // SObjectHealthSync    (?)     - health
-        // bool                 (1)     - is break
-        // bool                 (1)     - respawnable
+    // Objects:
+    // CVector              (12)    - position
+    // CVector              (12)    - rotation
+    // unsigned short       (2)     - object model id
+    // unsigned char        (1)     - alpha
+    // CVector              (12)    - scale
+    // bool                 (1)     - static
+    // SObjectHealthSync    (?)     - health
+    // bool                 (1)     - is break
+    // bool                 (1)     - respawnable
 
-        // Pickups:
-        // CVector              (12)    - position
-        // unsigned char        (1)     - type
-        // bool                         - visible?
-        // unsigned char        (1)     - weapon type (if type is weapon)
+    // Pickups:
+    // CVector              (12)    - position
+    // unsigned char        (1)     - type
+    // bool                         - visible?
+    // unsigned char        (1)     - weapon type (if type is weapon)
 
-        // Vehicles:
-        // CMatrix              (48)    - matrix
-        // unsigned char        (1)     - vehicle id
-        // float                (4)     - health
-        // unsigned char        (1)     - blow state (if supported)
-        // unsigned char        (1)     - color 1
-        // unsigned char        (1)     - color 2
-        // unsigned char        (1)     - color 3
-        // unsigned char        (1)     - color 4
-        // unsigned char        (1)     - paintjob
-        // float                (4)     - turret position x (if applies)
-        // float                (4)     - turret position y (if applies)
-        // unsigned short       (2)     - adjustable property (if applies)
-        // SDoorAngleSync       (?)     - Door #0 angle ratio.
-        // SDoorAngleSync       (?)     - Door #1 angle ratio.
-        // SDoorAngleSync       (?)     - Door #2 angle ratio.
-        // SDoorAngleSync       (?)     - Door #3 angle ratio.
-        // SDoorAngleSync       (?)     - Door #4 angle ratio.
-        // SDoorAngleSync       (?)     - Door #5 angle ratio.
-        // bool                         - landing gear down?  (if applies)
-        // bool                         - sirenes on?  (if applies)
-        // unsigned char        (1)     - no. of upgrades
-        // unsigned char        (1++)   - list of upgrades
-        // unsigned char        (1)     - reg-plate length
-        // char[]               (?)     - reg-plate
-        // unsigned char        (1)     - light override
-        // bool                         - can shoot petrol tank
-        // bool                         - engine on
-        // bool                         - locked
-        // bool                         - doors damageable
+    // Vehicles:
+    // CMatrix              (48)    - matrix
+    // unsigned char        (1)     - vehicle id
+    // float                (4)     - health
+    // unsigned char        (1)     - blow state (if supported)
+    // unsigned char        (1)     - color 1
+    // unsigned char        (1)     - color 2
+    // unsigned char        (1)     - color 3
+    // unsigned char        (1)     - color 4
+    // unsigned char        (1)     - paintjob
+    // float                (4)     - turret position x (if applies)
+    // float                (4)     - turret position y (if applies)
+    // unsigned short       (2)     - adjustable property (if applies)
+    // SDoorAngleSync       (?)     - Door #0 angle ratio.
+    // SDoorAngleSync       (?)     - Door #1 angle ratio.
+    // SDoorAngleSync       (?)     - Door #2 angle ratio.
+    // SDoorAngleSync       (?)     - Door #3 angle ratio.
+    // SDoorAngleSync       (?)     - Door #4 angle ratio.
+    // SDoorAngleSync       (?)     - Door #5 angle ratio.
+    // bool                         - landing gear down?  (if applies)
+    // bool                         - sirenes on?  (if applies)
+    // unsigned char        (1)     - no. of upgrades
+    // unsigned char        (1++)   - list of upgrades
+    // unsigned char        (1)     - reg-plate length
+    // char[]               (?)     - reg-plate
+    // unsigned char        (1)     - light override
+    // bool                         - can shoot petrol tank
+    // bool                         - engine on
+    // bool                         - locked
+    // bool                         - doors damageable
 
-        // Blips:
-        // bool                         - attached to an entity?
-        // -- following if attached:
-        // unsigned char        (1)     - attached entity type
-        // unsigned char/short  (1/2)   - attached entity id (char if player, otherwize short)
-        // -- following if not attached:
-        // CVector              (12)    - position
-        // -- end
-        // unsigned char        (1)     - icon
-        // -- if icon is 0
-        // unsigned char        (1)     - size
-        // unsigned long        (4)     - color
+    // Blips:
+    // bool                         - attached to an entity?
+    // -- following if attached:
+    // unsigned char        (1)     - attached entity type
+    // unsigned char/short  (1/2)   - attached entity id (char if player, otherwize short)
+    // -- following if not attached:
+    // CVector              (12)    - position
+    // -- end
+    // unsigned char        (1)     - icon
+    // -- if icon is 0
+    // unsigned char        (1)     - size
+    // unsigned long        (4)     - color
 
-        // Radar areas:
-        // CVector2D            (8)     - position
-        // CVector2D            (8)     - size
-        // unsigned long        (4)     - color
-        // bool                         - flashing?
+    // Radar areas:
+    // CVector2D            (8)     - position
+    // CVector2D            (8)     - size
+    // unsigned long        (4)     - color
+    // bool                         - flashing?
 
-        // Path Nodes:
-        // CVector              (12)    - position
-        // CVector              (12)    - rotation
-        // int                  (4)     - time
-        // unsigned char        (1)     - style
-        // ElementID            (2)     - next-node id
+    // Path Nodes:
+    // CVector              (12)    - position
+    // CVector              (12)    - rotation
+    // int                  (4)     - time
+    // unsigned char        (1)     - style
+    // ElementID            (2)     - next-node id
 
-        // World meshes
-        // unsigned short       (2)     - name length
-        // char[]               (?)     - name
-        // CVector              (12)    - position
-        // CVector              (12)    - rotation
+    // World meshes
+    // unsigned short       (2)     - name length
+    // char[]               (?)     - name
+    // CVector              (12)    - position
+    // CVector              (12)    - rotation
 
-        // Teams
-        // unsigned short       (2)     - name length
-        // char[]               (?)     - name
-        // unsigned char[3]     (3)     - cols
-        // unsigned char        (1)     - friendly-fire
+    // Teams
+    // unsigned short       (2)     - name length
+    // char[]               (?)     - name
+    // unsigned char[3]     (3)     - cols
+    // unsigned char        (1)     - friendly-fire
 
 #if MTA_DEBUG
 retry:
@@ -2893,7 +2897,7 @@ retry:
                     }
                     else
                     {
-                        #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
                         char buf[256] = {0};
                         bitStream.Read(buf, ucNameLength);
                         // Raise a special assert, as we have to try and figure out this error.
@@ -2901,7 +2905,7 @@ retry:
                         // Replay the problem for debugging
                         bitStream.ResetReadPointer();
                         goto retry;
-                        #endif
+#endif
 
                         delete pCustomData;
                         pCustomData = NULL;
@@ -2912,11 +2916,11 @@ retry:
                 }
                 else
                 {
-                    #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
                     // Jax: had this with a colshape (ucNameLength=109,us=0,usNumData=4)
                     // Raise a special assert, as we have to try and figure out this error.
                     assert(0);
-                    #endif
+#endif
 
                     delete pCustomData;
                     pCustomData = NULL;
@@ -3054,7 +3058,7 @@ retry:
                         }
 
                         CVector vecScale;
-                        bool bIsUniform;
+                        bool    bIsUniform;
                         bitStream.ReadBit(bIsUniform);
                         if (bIsUniform)
                         {
@@ -3966,10 +3970,10 @@ retry:
                     if (bitStream.ReadBit())
                     {
                         std::string blockName, animName;
-                        int time, blendTime;
-                        bool looped, updatePosition, interruptable, freezeLastFrame, taskRestore;
-                        float speed;
-                        double startTime;
+                        int         time, blendTime;
+                        bool        looped, updatePosition, interruptable, freezeLastFrame, taskRestore;
+                        float       speed;
+                        double      startTime;
 
                         // Read data
                         bitStream.ReadString(blockName);
@@ -3985,7 +3989,8 @@ retry:
                         bitStream.Read(speed);
 
                         // Run anim
-                        CStaticFunctionDefinitions::SetPedAnimation(*pPed, blockName, animName.c_str(), time, blendTime, looped, updatePosition, interruptable, freezeLastFrame);
+                        CStaticFunctionDefinitions::SetPedAnimation(*pPed, blockName, animName.c_str(), time, blendTime, looped, updatePosition, interruptable,
+                                                                    freezeLastFrame);
                         pPed->m_AnimationCache.startTime = static_cast<std::int64_t>(startTime);
                         pPed->m_AnimationCache.speed = speed;
                         pPed->m_AnimationCache.progress = 0.0f;
@@ -4189,7 +4194,8 @@ retry:
                         modelId = 1700;
 
                     bitStream.Read(LowLodObjectID);
-                    CClientBuilding* pBuilding = new CClientBuilding(g_pClientGame->m_pManager, EntityID, modelId, position.data.vecPosition, rotationRadians.data.vecRotation, ucInterior);
+                    CClientBuilding* pBuilding = new CClientBuilding(g_pClientGame->m_pManager, EntityID, modelId, position.data.vecPosition,
+                                                                     rotationRadians.data.vecRotation, ucInterior);
 
                     pBuilding->SetUsesCollision(bCollisonsEnabled);
                     break;
@@ -4522,7 +4528,7 @@ void CPacketHandler::Packet_TextItem(NetBitStreamInterface& bitStream)
 
                 // Does the text not already exist? Create it
                 std::shared_ptr<CClientTextDisplay> textDisplay = nullptr;
-                std::shared_ptr<CClientDisplay> display = g_pClientGame->m_pDisplayManager->Get(ulID);
+                std::shared_ptr<CClientDisplay>     display = g_pClientGame->m_pDisplayManager->Get(ulID);
 
                 if (display && display->GetType() == DISPLAY_TEXT)
                 {

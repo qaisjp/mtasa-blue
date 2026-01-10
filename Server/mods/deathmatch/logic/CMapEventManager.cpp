@@ -168,9 +168,9 @@ bool CMapEventManager::Call(const char* szName, const CLuaArguments& Arguments, 
 
                     LUA_CHECKSTACK(pState, 1);            // Ensure some room
 
-                    #if MTA_DEBUG
+#if MTA_DEBUG
                     int luaStackPointer = lua_gettop(pState);
-                    #endif
+#endif
 
                     TIMEUS startTime = GetTimeUs();
 
@@ -267,9 +267,9 @@ bool CMapEventManager::Call(const char* szName, const CLuaArguments& Arguments, 
                     OldClient.Push(pState);
                     lua_setglobal(pState, "client");
 
-                    #if MTA_DEBUG
+#if MTA_DEBUG
                     assert(lua_gettop(pState) == luaStackPointer);
-                    #endif
+#endif
 
                     CPerfStatLuaTiming::GetSingleton()->UpdateLuaTiming(pMapEvent->GetVM(), szName, GetTimeUs() - startTime);
                 }

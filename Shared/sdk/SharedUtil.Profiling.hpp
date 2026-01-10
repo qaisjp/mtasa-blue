@@ -63,14 +63,14 @@ namespace SharedUtil
     public:
     };
 
-    ///////////////////////////////////////////////////////////////
-    //
-    // GetNextUnclockIndex
-    //
-    // Search forward from supplied index looking for an (unpaired) unclock marker
-    //
-    ///////////////////////////////////////////////////////////////
-    #define INVALID_INDEX -1
+///////////////////////////////////////////////////////////////
+//
+// GetNextUnclockIndex
+//
+// Search forward from supplied index looking for an (unpaired) unclock marker
+//
+///////////////////////////////////////////////////////////////
+#define INVALID_INDEX -1
     int GetNextUnclockIndex(std::vector<SFrameEvent>& eventList, int i)
     {
         if (i < 0 || i >= (int)eventList.size())
@@ -176,7 +176,10 @@ namespace SharedUtil
     //
     //
     ////////////////////////////////////////////////
-    CStatEvents::CStatEvents() : m_bEnabled(false), m_ItemBuffer(0), m_BufferPos(0), m_BufferPosMax(0), m_BufferPosMaxUsing(0) { ClearBuffer(true); }
+    CStatEvents::CStatEvents() : m_bEnabled(false), m_ItemBuffer(0), m_BufferPos(0), m_BufferPosMax(0), m_BufferPosMaxUsing(0)
+    {
+        ClearBuffer(true);
+    }
 
     ///////////////////////////////////////////////////////////////
     //
@@ -347,7 +350,10 @@ namespace SharedUtil
     //
     //
     ///////////////////////////////////////////////////////////////
-    CStatResults::CStatResults() { m_fNextMaxClearTime = 0; }
+    CStatResults::CStatResults()
+    {
+        m_fNextMaxClearTime = 0;
+    }
 
     ///////////////////////////////////////////////////////////////
     //

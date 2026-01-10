@@ -373,8 +373,7 @@ void CServerInfo::SetServerInformation(const char* szHost, unsigned short usPort
         strAddressHost = szHost;
     m_Server.strHost = strAddressHost;
     m_Server.strEndpoint = SString("%s:%u", *strAddressHost, m_Server.usGamePort);
-    m_Server.strEndpointSortKey =
-        SString("%02x%02x%02x%02x-%04x", addressBytes[0], addressBytes[1], addressBytes[2], addressBytes[3], m_Server.usGamePort);
+    m_Server.strEndpointSortKey = SString("%02x%02x%02x%02x-%04x", addressBytes[0], addressBytes[1], addressBytes[2], addressBytes[3], m_Server.usGamePort);
 
     if (pInitialServerListItem && CServerListItem::StaticIsValid(pInitialServerListItem))
     {
@@ -457,8 +456,7 @@ void CServerInfo::DoPulse()
         {
             ResetServerGUI(&m_Server);
 
-            if (m_pCurrentWindowType == eWindowTypes::SERVER_INFO_QUEUE && m_pCheckboxAutojoin->GetSelected() &&
-                m_Server.nPlayers < m_Server.nMaxPlayers)
+            if (m_pCurrentWindowType == eWindowTypes::SERVER_INFO_QUEUE && m_pCheckboxAutojoin->GetSelected() && m_Server.nPlayers < m_Server.nMaxPlayers)
             {
                 Connect();
                 return;
@@ -561,7 +559,7 @@ void CServerInfo::ResetServerGUI(CServerListItem* pServer)
     m_pGamemodeLabel->SetText(pServer->strGameMode.c_str());
     m_pMapLabel->SetText(pServer->strMap.c_str());
     m_pPlayersLabel->SetText(SString("%d / %d %s", pServer->nPlayers, pServer->nMaxPlayers, *strVerified).c_str());
-    
+
     m_pPasswordedLabel->SetText(pServer->bPassworded ? _("Yes") : _("No"));
     m_pLatencyLabel->SetText(SString("%i", pServer->nPing));
 

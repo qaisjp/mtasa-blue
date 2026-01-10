@@ -263,9 +263,12 @@ bool CAccount::IsValidSerial(const std::string& serial) const noexcept
 {
     const std::regex serialPattern("^[A-Fa-f0-9]{32}$");
 
-    try{
+    try
+    {
         return std::regex_match(serial, serialPattern);
-    } catch (...) {
+    }
+    catch (...)
+    {
         return false;
     }
 }

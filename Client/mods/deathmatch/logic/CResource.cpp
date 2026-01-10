@@ -114,11 +114,11 @@ CResource::~CResource()
 
     // Remove all keybinds on this VM
     g_pClientGame->GetScriptKeyBinds()->RemoveAllKeys(m_pLuaVM);
-    
+
     // Remove all resource-specific command bindings while preserving user bindings
     CKeyBindsInterface* pKeyBinds = g_pCore->GetKeyBinds();
     pKeyBinds->SetAllCommandsActive(m_strResourceName, false);
-    
+
     // Additional cleanup: remove any remaining resource bindings that weren't caught by SetAllCommandsActive
     for (auto& bind : *pKeyBinds)
     {

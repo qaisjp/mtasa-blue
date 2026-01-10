@@ -23,8 +23,8 @@
 #include "CDatabaseManager.h"
 #include "CRegistry.h"
 
-#define BLOCKED_DB_FILE_NAME    "fileblock.db"
-#define BLOCKED_DB_TABLE_NAME   "`block_reasons`"
+#define BLOCKED_DB_FILE_NAME  "fileblock.db"
+#define BLOCKED_DB_TABLE_NAME "`block_reasons`"
 
 // SResInfo - Item in list of potential resources - Used in Refresh()
 struct SResInfo

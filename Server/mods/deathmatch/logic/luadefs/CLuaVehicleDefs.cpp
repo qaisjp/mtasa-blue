@@ -2998,10 +2998,12 @@ int CLuaVehicleDefs::SetVehiclePlateText(lua_State* luaVM)
     return 1;
 }
 
-bool CLuaVehicleDefs::SpawnVehicleFlyingComponent(CVehicle* const vehicle, std::uint8_t nodeIndex, std::optional<std::uint8_t> componentCollisionType, std::optional<std::uint32_t> removalTime)
+bool CLuaVehicleDefs::SpawnVehicleFlyingComponent(CVehicle* const vehicle, std::uint8_t nodeIndex, std::optional<std::uint8_t> componentCollisionType,
+                                                  std::optional<std::uint32_t> removalTime)
 {
     auto partNodeIndex = static_cast<eCarNodes>(nodeIndex);
-    auto collisionType = componentCollisionType.has_value() ? static_cast<eCarComponentCollisionTypes>(componentCollisionType.value()) : eCarComponentCollisionTypes::COL_NODE_PANEL;
+    auto collisionType = componentCollisionType.has_value() ? static_cast<eCarComponentCollisionTypes>(componentCollisionType.value())
+                                                            : eCarComponentCollisionTypes::COL_NODE_PANEL;
 
     if (nodeIndex < 1 || partNodeIndex >= eCarNodes::NUM_NODES)
         throw std::invalid_argument("Invalid component index");

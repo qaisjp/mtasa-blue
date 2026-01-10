@@ -45,8 +45,8 @@ extern CClientGame* g_pClientGame;
 
 #define INVALID_VALUE 0xFFFFFFFF
 
-#define PED_INTERPOLATION_WARP_THRESHOLD            5   // Minimal threshold
-#define PED_INTERPOLATION_WARP_THRESHOLD_FOR_SPEED  5   // Units to increment the threshold per speed unit
+#define PED_INTERPOLATION_WARP_THRESHOLD           5            // Minimal threshold
+#define PED_INTERPOLATION_WARP_THRESHOLD_FOR_SPEED 5            // Units to increment the threshold per speed unit
 
 enum eAnimGroups
 {
@@ -2421,7 +2421,7 @@ eMovementState CClientPed::GetMovementState()
         const char* szSimpleTaskName = GetTaskManager()->GetSimplestActiveTask()->GetTaskName();
 
         // Check tasks
-        if (strcmp(szSimpleTaskName, "TASK_SIMPLE_CLIMB") == 0) // Is he climbing?
+        if (strcmp(szSimpleTaskName, "TASK_SIMPLE_CLIMB") == 0)            // Is he climbing?
         {
             CTaskSimpleClimb* climbingTask = dynamic_cast<CTaskSimpleClimb*>(GetTaskManager()->GetSimplestActiveTask());
             if (climbingTask && climbingTask->GetHeightForPos() == eClimbHeights::CLIMB_GRAB)
@@ -2429,13 +2429,13 @@ eMovementState CClientPed::GetMovementState()
 
             return MOVEMENTSTATE_CLIMB;
         }
-        else if (strcmp(szComplexTaskName, "TASK_COMPLEX_JUMP") == 0) // Is he jumping?
+        else if (strcmp(szComplexTaskName, "TASK_COMPLEX_JUMP") == 0)            // Is he jumping?
             return MOVEMENTSTATE_JUMP;
-        else if (strcmp(szSimpleTaskName, "TASK_SIMPLE_GO_TO_POINT") == 0) // Entering vehicle (walking to the doors)?
+        else if (strcmp(szSimpleTaskName, "TASK_SIMPLE_GO_TO_POINT") == 0)            // Entering vehicle (walking to the doors)?
             return MOVEMENTSTATE_WALK_TO_POINT;
-        else if (strcmp(szSimpleTaskName, "TASK_SIMPLE_SWIM") == 0) // Is he swimming?
+        else if (strcmp(szSimpleTaskName, "TASK_SIMPLE_SWIM") == 0)            // Is he swimming?
             return MOVEMENTSTATE_SWIM;
-        else if (strcmp(szSimpleTaskName, "TASK_SIMPLE_JETPACK") == 0) // Is he flying?
+        else if (strcmp(szSimpleTaskName, "TASK_SIMPLE_JETPACK") == 0)            // Is he flying?
         {
             if (cs.ButtonCross != 0)
                 return MOVEMENTSTATE_ASCENT_JETPACK;
@@ -2446,7 +2446,8 @@ eMovementState CClientPed::GetMovementState()
         }
 
         // Check movement state
-        if (!IsOnGround() && !GetContactEntity() && !m_pPlayerPed->IsStandingOnEntity() && !m_pPlayerPed->IsInWater() && (strcmp(szSimpleTaskName, "TASK_SIMPLE_IN_AIR") == 0 || strcmp(szSimpleTaskName, "TASK_SIMPLE_FALL") == 0)) // Is he falling?
+        if (!IsOnGround() && !GetContactEntity() && !m_pPlayerPed->IsStandingOnEntity() && !m_pPlayerPed->IsInWater() &&
+            (strcmp(szSimpleTaskName, "TASK_SIMPLE_IN_AIR") == 0 || strcmp(szSimpleTaskName, "TASK_SIMPLE_FALL") == 0))            // Is he falling?
             return MOVEMENTSTATE_FALL;
 
         // Sometimes it returns 'fall' or 'walk', so it's better to return false instead
@@ -2470,7 +2471,8 @@ eMovementState CClientPed::GetMovementState()
                 case PedMoveState::PEDMOVE_SPRINT:
                     return MOVEMENTSTATE_SPRINT;
                 case PedMoveState::PEDMOVE_RUN:
-                    return walking ? MOVEMENTSTATE_WALK : MOVEMENTSTATE_JOG; // FileEX: It should be MOVEMENTSTATE_RUN, but we're keeping JOG for backward compatibility (PEDMOVE_JOG is unused in SA)
+                    return walking ? MOVEMENTSTATE_WALK : MOVEMENTSTATE_JOG;            // FileEX: It should be MOVEMENTSTATE_RUN, but we're keeping JOG for
+                                                                                        // backward compatibility (PEDMOVE_JOG is unused in SA)
             }
         }
         else
@@ -3326,7 +3328,7 @@ float CClientPed::GetCurrentRotation()
         CVector vecRotation = m_matFrozen.GetRotation();
         return vecRotation.fZ;
     }
-    
+
     if (m_pPlayerPed)
     {
         return m_pPlayerPed->GetCurrentRotation();
@@ -4497,7 +4499,8 @@ void CClientPed::_GetIntoVehicle(CClientVehicle* pVehicle, unsigned int uiSeat, 
         pTask = m_pTaskManager->GetTask(TASK_PRIORITY_EVENT_RESPONSE_NONTEMP);
     auto usVehicleModel = static_cast<VehicleType>(pVehicle->GetModel());
     if (((pTask && pTask->GetTaskType() == TASK_COMPLEX_IN_WATER) || pVehicle->IsOnWater()) &&
-        (usVehicleModel == VehicleType::VT_SKIMMER || usVehicleModel == VehicleType::VT_SEASPAR || usVehicleModel == VehicleType::VT_LEVIATHN || usVehicleModel == VehicleType::VT_VORTEX))
+        (usVehicleModel == VehicleType::VT_SKIMMER || usVehicleModel == VehicleType::VT_SEASPAR || usVehicleModel == VehicleType::VT_LEVIATHN ||
+         usVehicleModel == VehicleType::VT_VORTEX))
     {
         CVector      vecDoorPos;
         unsigned int uiDoor;
@@ -5912,7 +5915,8 @@ void CClientPed::RunAnimationFromCache()
     std::string animName = m_AnimationCache.strName;
 
     // Run our animation
-    RunNamedAnimation(m_pAnimationBlock, animName.c_str(), m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop, m_AnimationCache.bUpdatePosition, m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
+    RunNamedAnimation(m_pAnimationBlock, animName.c_str(), m_AnimationCache.iTime, m_AnimationCache.iBlend, m_AnimationCache.bLoop,
+                      m_AnimationCache.bUpdatePosition, m_AnimationCache.bInterruptable, m_AnimationCache.bFreezeLastFrame);
 
     // Set anim progress & speed
     m_AnimationCache.progressWaitForStreamIn = true;
@@ -5932,7 +5936,7 @@ void CClientPed::UpdateAnimationProgressAndSpeed()
     float progress = 0.0f;
     float elapsedTime = static_cast<float>(GetTimestamp() - m_AnimationCache.startTime) / 1000.0f;
 
-    if (m_AnimationCache.bFreezeLastFrame) // time and loop is ignored if freezeLastFrame is true
+    if (m_AnimationCache.bFreezeLastFrame)            // time and loop is ignored if freezeLastFrame is true
         progress = (elapsedTime / animLength) * m_AnimationCache.speed;
     else
     {
@@ -6166,7 +6170,8 @@ bool CClientPed::ShouldBeStealthAiming()
                 {
                     // We need to be either crouched, walking or standing
                     SBindableGTAControl* pWalkControl = pKeyBinds->GetBindableFromControl("walk");
-                    if (m_pPlayerPed->GetMoveState() == PedMoveState::PEDMOVE_STILL || m_pPlayerPed->GetMoveState() == PedMoveState::PEDMOVE_WALK || pWalkControl && pWalkControl->bState)
+                    if (m_pPlayerPed->GetMoveState() == PedMoveState::PEDMOVE_STILL || m_pPlayerPed->GetMoveState() == PedMoveState::PEDMOVE_WALK ||
+                        pWalkControl && pWalkControl->bState)
                     {
                         // Do we have a target ped?
                         CClientPed* pTargetPed = GetTargetedPed();
@@ -6607,7 +6612,8 @@ bool CClientPed::EnterVehicle(CClientVehicle* pVehicle, bool bPassenger)
     // Stop if the ped is swimming and the vehicle model cannot be entered from water (fixes #1990)
     auto vehicleModel = static_cast<VehicleType>(pVehicle->GetModel());
 
-    if (IsInWater() && !(vehicleModel == VehicleType::VT_SKIMMER || vehicleModel == VehicleType::VT_SEASPAR || vehicleModel == VehicleType::VT_LEVIATHN || vehicleModel == VehicleType::VT_VORTEX))
+    if (IsInWater() && !(vehicleModel == VehicleType::VT_SKIMMER || vehicleModel == VehicleType::VT_SEASPAR || vehicleModel == VehicleType::VT_LEVIATHN ||
+                         vehicleModel == VehicleType::VT_VORTEX))
     {
         return false;
     }
@@ -6800,11 +6806,11 @@ bool CClientPed::ExitVehicle()
         // Call the onClientVehicleStartExit event for the ped
         // Check if it is cancelled before making the ped exit the vehicle
         CLuaArguments arguments;
-        arguments.PushElement(this);                    // player / ped
-        arguments.PushNumber(m_ucVehicleInOutSeat);     // seat
-        arguments.PushNumber(0);                        // door
+        arguments.PushElement(this);                           // player / ped
+        arguments.PushNumber(m_ucVehicleInOutSeat);            // seat
+        arguments.PushNumber(0);                               // door
 
-        if (!pOccupiedVehicle->CallEvent("onClientVehicleStartExit", arguments, true)) // Event has been cancelled
+        if (!pOccupiedVehicle->CallEvent("onClientVehicleStartExit", arguments, true))            // Event has been cancelled
             return false;
 
         // Make ped exit vehicle
@@ -6891,8 +6897,8 @@ void CClientPed::UpdateVehicleInOut()
             // Call the onClientVehicleEnter event for the ped
             // Check if it is cancelled before allowing the ped to enter the vehicle
             CLuaArguments arguments;
-            arguments.PushElement(this);                    // player / ped
-            arguments.PushNumber(m_ucVehicleInOutSeat);     // seat
+            arguments.PushElement(this);                           // player / ped
+            arguments.PushNumber(m_ucVehicleInOutSeat);            // seat
 
             if (!vehicle->CallEvent("onClientVehicleEnter", arguments, true))
             {
@@ -6917,8 +6923,8 @@ void CClientPed::UpdateVehicleInOut()
 
             // Call the onClientVehicleExit event for the ped
             CLuaArguments arguments;
-            arguments.PushElement(this);                    // player / ped
-            arguments.PushNumber(m_ucVehicleInOutSeat);     // seat
+            arguments.PushElement(this);                           // player / ped
+            arguments.PushNumber(m_ucVehicleInOutSeat);            // seat
             networkVehicle->CallEvent("onClientVehicleExit", arguments, true);
 
             m_bIsGettingOutOfVehicle = false;
@@ -7275,4 +7281,3 @@ void CClientPed::RunSwimTask() const
 
     inWaterTask->SetAsPedTask(m_pPlayerPed, TASK_PRIORITY_EVENT_RESPONSE_NONTEMP, true);
 }
-  

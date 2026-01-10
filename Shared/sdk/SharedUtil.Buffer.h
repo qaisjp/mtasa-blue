@@ -35,8 +35,8 @@ namespace SharedUtil
         operator T*() { return buffer.empty() ? nullptr : reinterpret_cast<T*>(&buffer.at(0)); }
     };
 
-    // Assuming compiled on little endian machine
-    #define CBUFFER_LITTLE_ENDIAN
+// Assuming compiled on little endian machine
+#define CBUFFER_LITTLE_ENDIAN
     // #define CBUFFER_BIG_ENDIAN
 
     //////////////////////////////////////////////////////

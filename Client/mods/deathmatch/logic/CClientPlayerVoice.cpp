@@ -21,7 +21,7 @@
 void CALLBACK BPMCallback(int handle, float bpm, void* user);
 void CALLBACK BeatCallback(DWORD chan, double beatpos, void* user);
 
-#define INVALID_FX_HANDLE (-1)  // Hope that BASS doesn't use this as a valid Fx handle
+#define INVALID_FX_HANDLE (-1)            // Hope that BASS doesn't use this as a valid Fx handle
 
 CClientPlayerVoice::CClientPlayerVoice(CClientPlayer* pPlayer, CVoiceRecorder* pVoiceRecorder)
 {

@@ -35,7 +35,7 @@ namespace LatentTransfer
     const static int MIN_SEND_RATE = 500;            // Bytes per second
     const static int MIN_PACKET_SIZE = 500;
     const static int MAX_PACKET_SIZE = 1100;            // Set to 1100 as MTU is hard coded at 1200 (as of 2012-01-28)
-};                                                      // namespace LatentTransfer
+};            // namespace LatentTransfer
 
 //
 // One complete item to send

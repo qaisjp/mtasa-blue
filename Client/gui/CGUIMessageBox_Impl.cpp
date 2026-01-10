@@ -12,10 +12,10 @@
 #include "StdInc.h"
 #include "../core/CFilePathTranslator.h"
 
-#define MESSAGEBOX_WIDTH        400.0f
-#define MESSAGEBOX_HEIGHT       150.0f
-#define MESSAGEBOX_SPACER       20
-#define MESSAGEBOX_ICON_SIZE    42
+#define MESSAGEBOX_WIDTH     400.0f
+#define MESSAGEBOX_HEIGHT    150.0f
+#define MESSAGEBOX_SPACER    20
+#define MESSAGEBOX_ICON_SIZE 42
 
 CGUIMessageBox_Impl::CGUIMessageBox_Impl(CGUI_Impl* pGUI, const char* szTitle, const char* szCaption, unsigned int uiFlags)
 {

@@ -1011,7 +1011,7 @@ CAccount* CAccountManager::AddConsoleAccount(const SString& strName)
 CAccount* CAccountManager::AddPlayerAccount(const SString& strName, const SString& strPassword, int iUserID, const SString& strIP, const SString& strSerial,
                                             const SString& strHttpPassAppend)
 {
-    CAccount* pAccount = new CAccount(this, EAccountType::Player, strName, strPassword, iUserID, strIP, strSerial, strHttpPassAppend);
+    CAccount*     pAccount = new CAccount(this, EAccountType::Player, strName, strPassword, iUserID, strIP, strSerial, strHttpPassAppend);
     CLuaArguments Arguments;
     Arguments.PushAccount(pAccount);
     g_pGame->GetMapManager()->GetRootElement()->CallEvent("onAccountCreate", Arguments);
@@ -1146,7 +1146,7 @@ bool CAccountManager::IsAuthorizedSerialRequired(CAccount* pAccount)
 bool CAccountManager::IsHttpLoginAllowed(CAccount* pAccount, const SString& strIp)
 {
     return !g_pGame->GetConfig()->GetAuthSerialHttpEnabled() || g_pGame->GetConfig()->IsAuthSerialHttpIpException(strIp) ||
-        !IsAuthorizedSerialRequired(pAccount) || pAccount->IsIpAuthorized(strIp);
+           !IsAuthorizedSerialRequired(pAccount) || pAccount->IsIpAuthorized(strIp);
 }
 
 //

@@ -17,8 +17,8 @@
     #include "packets/CPlayerDisconnectedPacket.h"
     #include "net/SyncStructures.h"
 
-    #include <sys/types.h>  // For stat().
-    #include <sys/stat.h>   // For stat().
+    #include <sys/types.h>            // For stat().
+    #include <sys/stat.h>             // For stat().
 
     #ifndef WIN32
         #include <sys/socket.h>
@@ -102,7 +102,7 @@ bool IsValidFilePath(const char* szDir, size_t length)
     // iterate through the char array
     for (size_t i = 0; i < length; i++)
     {
-        c = szDir[i];                                          // current character
+        c = szDir[i];                                           // current character
         c_d = (i < (length - 1)) ? szDir[i + 1] : 0;            // one character ahead, if any
         if (!IsVisibleCharacter(c) || c == ':' || (c == '.' && c_d == '.') || (c == '\\' && c_d == '\\'))
             return false;
@@ -119,9 +119,9 @@ void ReplaceOccurrencesInString(std::string& s, const char* a, const char* b)
 
 void RaiseFatalError(unsigned int uiCode)
 {
-#ifdef MTA_DEBUG
+    #ifdef MTA_DEBUG
     assert(0);
-#endif
+    #endif
 
     // Populate the message and show the box
     SString strBuffer(_("Fatal error (%u). If this problem persists, please check out multitheftauto.com for support."), uiCode);
@@ -202,16 +202,16 @@ void LongToDottedIP(unsigned long ulIP, char* szDottedIP)
 
 bool DoesDirectoryExist(const char* szPath)
 {
-#ifdef WIN32
+    #ifdef WIN32
     DWORD dwAtr = GetFileAttributes(szPath);
     if (dwAtr == INVALID_FILE_ATTRIBUTES)
         return false;
     return ((dwAtr & FILE_ATTRIBUTE_DIRECTORY) != 0);
-#else
+    #else
     struct stat Info;
     stat(szPath, &Info);
     return (S_ISDIR(Info.st_mode));
-#endif
+    #endif
 }
 
 bool CheckNickProvided(const char* szNick)
@@ -376,22 +376,22 @@ void DisconnectConnectionDesync(CGame* pGame, CPlayer& Player, unsigned int uiCo
 
 bool InitializeSockets()
 {
-#ifdef WIN32
+    #ifdef WIN32
     WSADATA wsaData;
     if (WSAStartup(0x202, &wsaData) == SOCKET_ERROR)
     {
         WSACleanup();
         return false;
     }
-#endif
+    #endif
     return true;
 }
 
 bool CleanupSockets()
 {
-#ifdef WIN32
+    #ifdef WIN32
     WSACleanup();
-#endif
+    #endif
     return true;
 }
 #endif

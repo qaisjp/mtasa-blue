@@ -15,11 +15,11 @@
 #include <game/CAEVehicleAudioEntity.h>
 #include "CAudioEngineSA.h"
 
-#define FUNC_CAEVehicleAudioEntity__JustGotInVehicleAsDriver                           0x4F5700
-#define FUNC_CAEVehicleAudioEntity__TurnOnRadioForVehicle                              0x4F5B20
-#define FUNC_CAEVehicleAudioEntity__JustGotOutOfVehicleAsDriver                        0x4FCF40
-#define FUNC_CAEVehicleAudioEntity__ProcessAIProp                                      0x4FDFD0
-#define FUNC_CAEVehicleAudioEntity__ProcessAIHeli                                      0x4FEE20
+#define FUNC_CAEVehicleAudioEntity__JustGotInVehicleAsDriver    0x4F5700
+#define FUNC_CAEVehicleAudioEntity__TurnOnRadioForVehicle       0x4F5B20
+#define FUNC_CAEVehicleAudioEntity__JustGotOutOfVehicleAsDriver 0x4FCF40
+#define FUNC_CAEVehicleAudioEntity__ProcessAIProp               0x4FDFD0
+#define FUNC_CAEVehicleAudioEntity__ProcessAIHeli               0x4FEE20
 
 class CVehicleSAInterface;
 
@@ -53,9 +53,9 @@ static_assert(sizeof(CAETwinLoopSoundEntity) == 0xA8, "Invalid size for CAETwinL
 class CAEVehicleAudioEntitySAInterface : public CAEAudioEntity
 {
 public:
-    void    AddAudioEvent(int eventId, float volume) { ((void(__thiscall*)(CAEVehicleAudioEntitySAInterface*, int, float))0x4F6420)(this, eventId, volume); }
-    bool    TerminateAudio() { return ((bool(__thiscall*)(CAEVehicleAudioEntitySAInterface*))0x4FB8C0)(this); }
-    bool    SoundJoin() { return ((bool(__thiscall*)(CAEVehicleAudioEntitySAInterface*))0x4F5700)(this); }
+    void AddAudioEvent(int eventId, float volume) { ((void(__thiscall*)(CAEVehicleAudioEntitySAInterface*, int, float))0x4F6420)(this, eventId, volume); }
+    bool TerminateAudio() { return ((bool(__thiscall*)(CAEVehicleAudioEntitySAInterface*))0x4FB8C0)(this); }
+    bool SoundJoin() { return ((bool(__thiscall*)(CAEVehicleAudioEntitySAInterface*))0x4F5700)(this); }
 
     int16_t InitAudio(CVehicleSAInterface* vehicle)
     {
@@ -137,10 +137,10 @@ class CAEVehicleAudioEntitySA : public CAEVehicleAudioEntity
 {
 public:
     CAEVehicleAudioEntitySA(CAEVehicleAudioEntitySAInterface* pInterface);
-    void JustGotInVehicleAsDriver();
-    void JustGotOutOfVehicleAsDriver();
-    void TurnOnRadioForVehicle();
-    void StopVehicleEngineSound(unsigned char ucSlot);
+    void                              JustGotInVehicleAsDriver();
+    void                              JustGotOutOfVehicleAsDriver();
+    void                              TurnOnRadioForVehicle();
+    void                              StopVehicleEngineSound(unsigned char ucSlot);
     CAEVehicleAudioEntitySAInterface* GetInterface() { return m_pInterface; };
 
 private:

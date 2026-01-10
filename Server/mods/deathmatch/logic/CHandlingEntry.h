@@ -96,12 +96,12 @@ public:
     };
 
     // Constructor for creatable dummy entries
-    CHandlingEntry(){};
+    CHandlingEntry() {};
 
     // Constructor for original entries
     CHandlingEntry(tHandlingData* pOriginal);
 
-    ~CHandlingEntry(){};
+    ~CHandlingEntry() {};
 
     // Use this to copy data from an another handling class to this
     void ApplyHandlingData(const CHandlingEntry* const pData) noexcept;

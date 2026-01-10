@@ -15,7 +15,7 @@ using SharedUtil::CalcMTASAPath;
 using std::string;
 
 #define CONSOLE_INPUT_HISTORY_LENGTH 128
-#define CONSOLE_SIZE 4096
+#define CONSOLE_SIZE                 4096
 
 #define MAX_CONSOLE_COMMAND_LENGTH 255
 

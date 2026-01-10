@@ -55,20 +55,20 @@ o Minor updates for MSVC 2005/08 compilers
 #include <vector>
 
 #ifndef _WIN32
-#define __cdecl
+    #define __cdecl
 #endif
 
-#define ASSERT assert // RTree uses ASSERT( condition )
+#define ASSERT assert            // RTree uses ASSERT( condition )
 
 //
 // RTree.h
 //
 
-#define RTREE_TEMPLATE template<class DATATYPE, class ELEMTYPE, int NUMDIMS, class ELEMTYPEREAL, int TMAXNODES, int TMINNODES>
-#define RTREE_QUAL RTree<DATATYPE, ELEMTYPE, NUMDIMS, ELEMTYPEREAL, TMAXNODES, TMINNODES>
+#define RTREE_TEMPLATE template <class DATATYPE, class ELEMTYPE, int NUMDIMS, class ELEMTYPEREAL, int TMAXNODES, int TMINNODES>
+#define RTREE_QUAL     RTree<DATATYPE, ELEMTYPE, NUMDIMS, ELEMTYPEREAL, TMAXNODES, TMINNODES>
 
-#define RTREE_DONT_USE_MEMPOOLS // This version does not contain a fixed memory allocator, fill in lines with EXAMPLE to implement one.
-#define RTREE_USE_SPHERICAL_VOLUME // Better split classification, may be slower on some systems
+#define RTREE_DONT_USE_MEMPOOLS               // This version does not contain a fixed memory allocator, fill in lines with EXAMPLE to implement one.
+#define RTREE_USE_SPHERICAL_VOLUME            // Better split classification, may be slower on some systems
 
 // Fwd decl
 class RTFileStream;            // File I/O helper class, look below for implementation and notes.
@@ -510,7 +510,7 @@ void RTREE_QUAL::Insert(const ELEMTYPE a_min[NUMDIMS], const ELEMTYPE a_max[NUMD
     {
         ASSERT(a_min[index] <= a_max[index]);
     }
-#endif //_DEBUG
+#endif            //_DEBUG
 
     Rect rect;
 
@@ -531,7 +531,7 @@ void RTREE_QUAL::Remove(const ELEMTYPE a_min[NUMDIMS], const ELEMTYPE a_max[NUMD
     {
         ASSERT(a_min[index] <= a_max[index]);
     }
-#endif //_DEBUG
+#endif            //_DEBUG
 
     Rect rect;
 
@@ -552,7 +552,7 @@ void RTREE_QUAL::Search(const ELEMTYPE a_min[NUMDIMS], const ELEMTYPE a_max[NUMD
     {
         ASSERT(a_min[index] <= a_max[index]);
     }
-#endif //_DEBUG
+#endif            //_DEBUG
 
     Rect rect;
 
@@ -778,10 +778,10 @@ void RTREE_QUAL::Reset()
 #ifdef RTREE_DONT_USE_MEMPOOLS
     // Delete all existing nodes
     RemoveAllRec(m_root);
-#else // RTREE_DONT_USE_MEMPOOLS
-        // Just reset memory pools.  We are not using complex types
-        // EXAMPLE
-#endif // RTREE_DONT_USE_MEMPOOLS
+#else             // RTREE_DONT_USE_MEMPOOLS
+                  // Just reset memory pools.  We are not using complex types
+                  // EXAMPLE
+#endif            // RTREE_DONT_USE_MEMPOOLS
 }
 
 RTREE_TEMPLATE
@@ -806,9 +806,9 @@ typename RTREE_QUAL::Node* RTREE_QUAL::AllocNode()
     Node* newNode;
 #ifdef RTREE_DONT_USE_MEMPOOLS
     newNode = new Node;
-#else // RTREE_DONT_USE_MEMPOOLS
-        // EXAMPLE
-#endif // RTREE_DONT_USE_MEMPOOLS
+#else             // RTREE_DONT_USE_MEMPOOLS
+                  // EXAMPLE
+#endif            // RTREE_DONT_USE_MEMPOOLS
     InitNode(newNode);
     return newNode;
 }
@@ -820,9 +820,9 @@ void RTREE_QUAL::FreeNode(Node* a_node)
 
 #ifdef RTREE_DONT_USE_MEMPOOLS
     delete a_node;
-#else // RTREE_DONT_USE_MEMPOOLS
-        // EXAMPLE
-#endif // RTREE_DONT_USE_MEMPOOLS
+#else             // RTREE_DONT_USE_MEMPOOLS
+                  // EXAMPLE
+#endif            // RTREE_DONT_USE_MEMPOOLS
 }
 
 // Allocate space for a node in the list used in DeletRect to
@@ -832,9 +832,9 @@ typename RTREE_QUAL::ListNode* RTREE_QUAL::AllocListNode()
 {
 #ifdef RTREE_DONT_USE_MEMPOOLS
     return new ListNode;
-#else // RTREE_DONT_USE_MEMPOOLS
-        // EXAMPLE
-#endif // RTREE_DONT_USE_MEMPOOLS
+#else             // RTREE_DONT_USE_MEMPOOLS
+                  // EXAMPLE
+#endif            // RTREE_DONT_USE_MEMPOOLS
 }
 
 RTREE_TEMPLATE
@@ -842,9 +842,9 @@ void RTREE_QUAL::FreeListNode(ListNode* a_listNode)
 {
 #ifdef RTREE_DONT_USE_MEMPOOLS
     delete a_listNode;
-#else // RTREE_DONT_USE_MEMPOOLS
-        // EXAMPLE
-#endif // RTREE_DONT_USE_MEMPOOLS
+#else             // RTREE_DONT_USE_MEMPOOLS
+                  // EXAMPLE
+#endif            // RTREE_DONT_USE_MEMPOOLS
 }
 
 RTREE_TEMPLATE
@@ -931,7 +931,7 @@ bool RTREE_QUAL::InsertRect(Rect* a_rect, const DATATYPE& a_id, Node** a_root, i
     {
         ASSERT(a_rect->m_min[index] <= a_rect->m_max[index]);
     }
-#endif //_DEBUG
+#endif            //_DEBUG
 
     Node*  newRoot;
     Node*  newNode;
@@ -1164,9 +1164,9 @@ ELEMTYPEREAL RTREE_QUAL::CalcRectVolume(Rect* a_rect)
 {
 #ifdef RTREE_USE_SPHERICAL_VOLUME
     return RectSphericalVolume(a_rect);            // Slower but helps certain merge cases
-#else // RTREE_USE_SPHERICAL_VOLUME
+#else                                              // RTREE_USE_SPHERICAL_VOLUME
     return RectVolume(a_rect);            // Faster but can cause poor merges
-#endif // RTREE_USE_SPHERICAL_VOLUME
+#endif                                             // RTREE_USE_SPHERICAL_VOLUME
 }
 
 // Load branch buffer with branches from full node plus the extra branch.
@@ -1547,4 +1547,4 @@ bool RTREE_QUAL::Search(Node* a_node, Rect* a_rect, std::vector<DATATYPE>& resul
 #undef RTREE_TEMPLATE
 #undef RTREE_QUAL
 
-#endif //RTREE_H
+#endif            // RTREE_H

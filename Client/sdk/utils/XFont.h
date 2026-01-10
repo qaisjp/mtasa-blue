@@ -32,7 +32,7 @@
 #include <crtdbg.h>
 
 #ifndef XFONT_H
-#define XFONT_H
+    #define XFONT_H
 
 typedef struct _tagFONT_PROPERTIES
 {
@@ -96,8 +96,8 @@ typedef struct _tagTT_NAME_RECORD
     USHORT uStringOffset;            // from start of storage area
 } TT_NAME_RECORD;
 
-#define SWAPWORD(x)        MAKEWORD(HIBYTE(x), LOBYTE(x))
-#define SWAPLONG(x)        MAKELONG(SWAPWORD(HIWORD(x)), SWAPWORD(LOWORD(x)))
+    #define SWAPWORD(x) MAKEWORD(HIBYTE(x), LOBYTE(x))
+    #define SWAPLONG(x) MAKELONG(SWAPWORD(HIWORD(x)), SWAPWORD(LOWORD(x)))
 
 BOOL GetFontProperties(LPCTSTR lpszFilePath, FONT_PROPERTIES* lpFontPropsX)
 {
@@ -321,4 +321,4 @@ BOOL GetFontProperties(LPCTSTR lpszFilePath, FONT_PROPERTIES* lpFontPropsX)
     return bRetVal;
 }
 
-#endif //XFONT_H
+#endif            // XFONT_H

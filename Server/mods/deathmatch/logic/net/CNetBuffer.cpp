@@ -1089,29 +1089,54 @@ void CNetServerBuffer::ProcessCommand(CNetJobData* pJobData)
 #define CALLPRE0(func) \
     case TYPE_##func: \
     {
-
 #define CALLPRE(func) \
     case TYPE_##func: \
     { \
         S##func##Args& a = *(S##func##Args*)pJobData->pArgs;
 
-#define CALLREALNET0(func)                                                CALLPRE0(func) m_pRealNetServer->func (); CALLPOST
-#define CALLREALNET1(func,t1,n1)                                          CALLPRE(func) m_pRealNetServer->func ( a.n1 ); CALLPOST
-#define CALLREALNET2(func,t1,n1,t2,n2)                                    CALLPRE(func) m_pRealNetServer->func ( a.n1, a.n2 ); CALLPOST
-#define CALLREALNET3(func,t1,n1,t2,n2,t3,n3)                              CALLPRE(func) m_pRealNetServer->func ( a.n1, a.n2, a.n3 ); CALLPOST
-#define CALLREALNET4(func,t1,n1,t2,n2,t3,n3,t4,n4)                        CALLPRE(func) m_pRealNetServer->func ( a.n1, a.n2, a.n3, a.n4 ); CALLPOST
-#define CALLREALNET5(func,t1,n1,t2,n2,t3,n3,t4,n4,t5,n5)                  CALLPRE(func) m_pRealNetServer->func ( a.n1, a.n2, a.n3, a.n4, a.n5 ); CALLPOST
-#define CALLREALNET6(func,t1,n1,t2,n2,t3,n3,t4,n4,t5,n5,t6,n6)            CALLPRE(func) m_pRealNetServer->func ( a.n1, a.n2, a.n3, a.n4, a.n5, a.n6 ); CALLPOST
+#define CALLREALNET0(func) \
+    CALLPRE0(func) m_pRealNetServer->func(); \
+    CALLPOST
+#define CALLREALNET1(func, t1, n1) \
+    CALLPRE(func) m_pRealNetServer->func(a.n1); \
+    CALLPOST
+#define CALLREALNET2(func, t1, n1, t2, n2) \
+    CALLPRE(func) m_pRealNetServer->func(a.n1, a.n2); \
+    CALLPOST
+#define CALLREALNET3(func, t1, n1, t2, n2, t3, n3) \
+    CALLPRE(func) m_pRealNetServer->func(a.n1, a.n2, a.n3); \
+    CALLPOST
+#define CALLREALNET4(func, t1, n1, t2, n2, t3, n3, t4, n4) \
+    CALLPRE(func) m_pRealNetServer->func(a.n1, a.n2, a.n3, a.n4); \
+    CALLPOST
+#define CALLREALNET5(func, t1, n1, t2, n2, t3, n3, t4, n4, t5, n5) \
+    CALLPRE(func) m_pRealNetServer->func(a.n1, a.n2, a.n3, a.n4, a.n5); \
+    CALLPOST
+#define CALLREALNET6(func, t1, n1, t2, n2, t3, n3, t4, n4, t5, n5, t6, n6) \
+    CALLPRE(func) m_pRealNetServer->func(a.n1, a.n2, a.n3, a.n4, a.n5, a.n6); \
+    CALLPOST
 
-#define CALLREALNET0R(ret,func)                                           CALLPRE(func) a.result = m_pRealNetServer->func (); CALLPOST
-#define CALLREALNET1R(ret,func,t1,n1)                                     CALLPRE(func) a.result = m_pRealNetServer->func ( a.n1 ); CALLPOST
-#define CALLREALNET2R(ret,func,t1,n1,t2,n2)                               CALLPRE(func) a.result = m_pRealNetServer->func ( a.n1, a.n2 ); CALLPOST
-#define CALLREALNET3R(ret,func,t1,n1,t2,n2,t3,n3)                         CALLPRE(func) a.result = m_pRealNetServer->func ( a.n1, a.n2, a.n3 ); CALLPOST
-#define CALLREALNET4R(ret,func,t1,n1,t2,n2,t3,n3,t4,n4)                   CALLPRE(func) a.result = m_pRealNetServer->func ( a.n1, a.n2, a.n3, a.n4 ); CALLPOST
-#define CALLREALNET7R(ret,func,t1,n1,t2,n2,t3,n3,t4,n4,t5,n5,t6,n6,t7,n7) CALLPRE(func) a.result = m_pRealNetServer->func ( a.n1, a.n2, a.n3, a.n4, a.n5, a.n6, a.n7 ); CALLPOST
+#define CALLREALNET0R(ret, func) \
+    CALLPRE(func) a.result = m_pRealNetServer->func(); \
+    CALLPOST
+#define CALLREALNET1R(ret, func, t1, n1) \
+    CALLPRE(func) a.result = m_pRealNetServer->func(a.n1); \
+    CALLPOST
+#define CALLREALNET2R(ret, func, t1, n1, t2, n2) \
+    CALLPRE(func) a.result = m_pRealNetServer->func(a.n1, a.n2); \
+    CALLPOST
+#define CALLREALNET3R(ret, func, t1, n1, t2, n2, t3, n3) \
+    CALLPRE(func) a.result = m_pRealNetServer->func(a.n1, a.n2, a.n3); \
+    CALLPOST
+#define CALLREALNET4R(ret, func, t1, n1, t2, n2, t3, n3, t4, n4) \
+    CALLPRE(func) a.result = m_pRealNetServer->func(a.n1, a.n2, a.n3, a.n4); \
+    CALLPOST
+#define CALLREALNET7R(ret, func, t1, n1, t2, n2, t3, n3, t4, n4, t5, n5, t6, n6, t7, n7) \
+    CALLPRE(func) a.result = m_pRealNetServer->func(a.n1, a.n2, a.n3, a.n4, a.n5, a.n6, a.n7); \
+    CALLPOST
 
 #define CALLPOST \
-        break; \
+    break; \
     }
 
     switch (pJobData->pArgs->type)

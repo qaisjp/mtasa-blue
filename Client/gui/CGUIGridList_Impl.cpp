@@ -13,9 +13,9 @@
 
 namespace
 {
-    constexpr const char kGridListName[] = "CGUI/MultiColumnList";
-    constexpr const char kGridListNoFrameName[] = "CGUI/MultiColumnList"; // MultiColumnListNoFrame
-    constexpr const char kGridListSpacer[] = "   ";
+    constexpr const char  kGridListName[] = "CGUI/MultiColumnList";
+    constexpr const char  kGridListNoFrameName[] = "CGUI/MultiColumnList";            // MultiColumnListNoFrame
+    constexpr const char  kGridListSpacer[] = "   ";
     constexpr std::size_t kGridListSpacerLength = (sizeof(kGridListSpacer) / sizeof(char)) - 1;
     constexpr std::size_t kGridListMaxTextLength = 256;
 
@@ -55,7 +55,7 @@ namespace
 
         return requestedColumn;
     }
-}
+}            // namespace
 
 CGUIGridList_Impl::CGUIGridList_Impl(CGUI_Impl* pGUI, CGUIElement* pParent, bool bFrame)
 {
@@ -447,8 +447,8 @@ int CGUIGridList_Impl::SetItemText(int iRow, int hColumn, const char* szText, bo
     try
     {
         CEGUI::MultiColumnList* list = reinterpret_cast<CEGUI::MultiColumnList*>(m_pWindow);
-        const int columnIndex = GetColumnIndex(hColumn);
-        CGUIListItem_Impl* pItem = reinterpret_cast<CGUIListItem_Impl*>(GetItem(iRow, hColumn));
+        const int               columnIndex = GetColumnIndex(hColumn);
+        CGUIListItem_Impl*      pItem = reinterpret_cast<CGUIListItem_Impl*>(GetItem(iRow, hColumn));
 
         if (!pItem)
         {
@@ -780,8 +780,8 @@ void CGUIGridList_Impl::SetSelectedItem(int iRow, int hColumn, bool bReset)
 void CGUIGridList_Impl::Sort(unsigned int uiColumn, SortDirection direction)
 {
     CEGUI::MultiColumnList* pList = reinterpret_cast<CEGUI::MultiColumnList*>(m_pWindow);
-    const unsigned int columnCount = static_cast<unsigned int>(pList->getColumnCount());
-    const unsigned int column = NormalizeSortColumn(uiColumn, columnCount);
+    const unsigned int      columnCount = static_cast<unsigned int>(pList->getColumnCount());
+    const unsigned int      column = NormalizeSortColumn(uiColumn, columnCount);
     if (column == 0)
         return;
 
@@ -840,8 +840,8 @@ void CGUIGridList_Impl::UpdateSortIndicator(unsigned int uiColumn, SortDirection
     try
     {
         CEGUI::MultiColumnList* pList = reinterpret_cast<CEGUI::MultiColumnList*>(m_pWindow);
-        const auto columnCount = static_cast<int>(pList->getColumnCount());
-        const int targetIndex = (uiColumn > 0) ? static_cast<int>(uiColumn - 1) : -1;
+        const auto              columnCount = static_cast<int>(pList->getColumnCount());
+        const int               targetIndex = (uiColumn > 0) ? static_cast<int>(uiColumn - 1) : -1;
 
         for (auto i = 0; i < columnCount; ++i)
         {

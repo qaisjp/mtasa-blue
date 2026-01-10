@@ -322,7 +322,8 @@ LRESULT CALLBACK CMessageLoopHook::ProcessMessage(HWND hwnd, UINT uMsg, WPARAM w
                     if ((uMsg == WM_KEYDOWN && wParam == VK_TAB))
                     {
                         SystemState systemState = g_pCore->GetGame()->GetSystemState();
-                        if (systemState == SystemState::GS_FRONTEND || systemState == SystemState::GS_INIT_PLAYING_GAME || systemState == SystemState::GS_PLAYING_GAME)
+                        if (systemState == SystemState::GS_FRONTEND || systemState == SystemState::GS_INIT_PLAYING_GAME ||
+                            systemState == SystemState::GS_PLAYING_GAME)
                         {
                             short sCtrlState = GetKeyState(VK_CONTROL);
                             short sShiftState = GetKeyState(VK_SHIFT);
@@ -345,7 +346,8 @@ LRESULT CALLBACK CMessageLoopHook::ProcessMessage(HWND hwnd, UINT uMsg, WPARAM w
                     if ((uMsg == WM_KEYDOWN && (wParam >= VK_1 && wParam <= VK_9)))
                     {
                         SystemState systemState = g_pCore->GetGame()->GetSystemState();
-                        if (systemState == SystemState::GS_FRONTEND || systemState == SystemState::GS_INIT_PLAYING_GAME || systemState == SystemState::GS_PLAYING_GAME)
+                        if (systemState == SystemState::GS_FRONTEND || systemState == SystemState::GS_INIT_PLAYING_GAME ||
+                            systemState == SystemState::GS_PLAYING_GAME)
                         {
                             short sCtrlState = GetKeyState(VK_CONTROL);
                             if (sCtrlState & 0x8000)
@@ -369,8 +371,8 @@ LRESULT CALLBACK CMessageLoopHook::ProcessMessage(HWND hwnd, UINT uMsg, WPARAM w
                     if ((uMsg == WM_KEYDOWN && wParam == VK_F8) || (uMsg == WM_CHAR && wParam == '`'))
                     {
                         SystemState systemState = g_pCore->GetGame()->GetSystemState();
-                        if (CLocalGUI::GetSingleton().IsConsoleVisible() || systemState == SystemState::GS_FRONTEND || systemState == SystemState::GS_INIT_PLAYING_GAME ||
-                            systemState == SystemState::GS_PLAYING_GAME)
+                        if (CLocalGUI::GetSingleton().IsConsoleVisible() || systemState == SystemState::GS_FRONTEND ||
+                            systemState == SystemState::GS_INIT_PLAYING_GAME || systemState == SystemState::GS_PLAYING_GAME)
                         {
                             CLocalGUI::GetSingleton().SetConsoleVisible(!CLocalGUI::GetSingleton().IsConsoleVisible());
                         }

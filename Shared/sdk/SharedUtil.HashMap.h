@@ -14,9 +14,9 @@
     #define CHashMap CMap
 #else
 
-#include <unordered_map>
-#include <functional>
-#include "SString.h"
+    #include <unordered_map>
+    #include <functional>
+    #include "SString.h"
 
 namespace SharedUtil
 {
@@ -107,4 +107,4 @@ namespace std
     };
 }            // namespace std
 
-#endif  // WITH_ALLOC_TRACKING
+#endif            // WITH_ALLOC_TRACKING

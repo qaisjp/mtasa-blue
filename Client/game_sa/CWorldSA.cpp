@@ -265,7 +265,6 @@ void ConvertMatrixToEulerAngles(const CMatrix_Padded& matrixPadded, float& fX, f
     // clang-format on
 }
 
-
 auto CWorldSA::ProcessLineAgainstMesh(CEntitySAInterface* targetEntity, CVector start, CVector end) -> SProcessLineOfSightMaterialInfoResult
 {
     assert(targetEntity);
@@ -287,8 +286,9 @@ auto CWorldSA::ProcessLineAgainstMesh(CEntitySAInterface* targetEntity, CVector 
 
     c.entity = targetEntity;
 
-    if (!c.entity->m_pRwObject) {
-        return ret; // isValid will be false in this case
+    if (!c.entity->m_pRwObject)
+    {
+        return ret;            // isValid will be false in this case
     }
 
     // Get matrix, and it's inverse
@@ -312,43 +312,43 @@ auto CWorldSA::ProcessLineAgainstMesh(CEntitySAInterface* targetEntity, CVector 
     // This is very slow
     // Perhaps we could parallelize it somehow? [OpenMP?]
     const auto ProcessOneAtomic = [](RpAtomic* a, void* data)
+    {
+        Context* const c = static_cast<Context*>(data);
+        RwFrame* const f = RpAtomicGetFrame(a);
+
+        const auto GetFrameCMatrix = [](RwFrame* f)
         {
-            Context* const c = static_cast<Context*>(data);
-            RwFrame* const f = RpAtomicGetFrame(a);
+            CMatrix out;
+            pGame->GetRenderWare()->RwMatrixToCMatrix(*RwFrameGetMatrix(f), out);
+            return out;
+        };
 
-            const auto GetFrameCMatrix = [](RwFrame* f)
-                {
-                    CMatrix out;
-                    pGame->GetRenderWare()->RwMatrixToCMatrix(*RwFrameGetMatrix(f), out);
-                    return out;
-                };
+        // Atomic not visible
+        if (!a->renderCallback || !(a->object.object.flags & 0x04 /*rpATOMICRENDER*/))
+        {
+            return true;
+        }
 
-            // Atomic not visible
-            if (!a->renderCallback || !(a->object.object.flags & 0x04 /*rpATOMICRENDER*/))
-            {
-                return true;
-            }
+        // Sometimes atomics have no geometry [I don't think that should be possible, but okay]
+        RpGeometry* const geo = a->geometry;
+        if (!geo)
+        {
+            return true;
+        }
 
-            // Sometimes atomics have no geometry [I don't think that should be possible, but okay]
-            RpGeometry* const geo = a->geometry;
-            if (!geo)
-            {
-                return true;
-            }
+        // Calculate transformation by traversing the hierarchy from the bottom (this frame) -> top (root frame)
+        CMatrix localToObjTransform{};
+        for (RwFrame* i = f; i && i != i->root; i = RwFrameGetParent(i))
+        {
+            localToObjTransform = GetFrameCMatrix(i) * localToObjTransform;
+        }
+        const CMatrix objToLocalTransform = localToObjTransform.Inverse();
 
-            // Calculate transformation by traversing the hierarchy from the bottom (this frame) -> top (root frame)
-            CMatrix localToObjTransform{};
-            for (RwFrame* i = f; i && i != i->root; i = RwFrameGetParent(i))
-            {
-                localToObjTransform = GetFrameCMatrix(i) * localToObjTransform;
-            }
-            const CMatrix objToLocalTransform = localToObjTransform.Inverse();
+        const auto ObjectToLocalSpace = [&](const CVector& in) { return objToLocalTransform.TransformVector(in); };
 
-            const auto ObjectToLocalSpace = [&](const CVector& in) { return objToLocalTransform.TransformVector(in); };
-
-            // Transform from object space, into local (the frame's) space
-            const CVector localOrigin = ObjectToLocalSpace(c->originOS);
-            const CVector localEnd = ObjectToLocalSpace(c->endOS);
+        // Transform from object space, into local (the frame's) space
+        const CVector localOrigin = ObjectToLocalSpace(c->originOS);
+        const CVector localEnd = ObjectToLocalSpace(c->endOS);
 
 #if 0
             if (!CCollisionSA::TestLineSphere(
@@ -358,35 +358,35 @@ auto CWorldSA::ProcessLineAgainstMesh(CEntitySAInterface* targetEntity, CVector 
                 return true; // Line segment doesn't touch bsp
             }
 #endif
-            const CVector localDir = localEnd - localOrigin;
+        const CVector localDir = localEnd - localOrigin;
 
-            const CVector* const verts = reinterpret_cast<CVector*>(geo->morph_target->verts);            // It's fine, trust me bro
-            for (auto i = geo->triangles_size; i-- > 0;)
+        const CVector* const verts = reinterpret_cast<CVector*>(geo->morph_target->verts);            // It's fine, trust me bro
+        for (auto i = geo->triangles_size; i-- > 0;)
+        {
+            RpTriangle* const tri = &geo->triangles[i];
+
+            // Process the line against the triangle
+            CVector hitBary, hitPos;
+            if (!localOrigin.IntersectsSegmentTriangle(localDir, verts[tri->verts[0]], verts[tri->verts[1]], verts[tri->verts[2]], &hitPos, &hitBary))
             {
-                RpTriangle* const tri = &geo->triangles[i];
-
-                // Process the line against the triangle
-                CVector hitBary, hitPos;
-                if (!localOrigin.IntersectsSegmentTriangle(localDir, verts[tri->verts[0]], verts[tri->verts[1]], verts[tri->verts[2]], &hitPos, &hitBary))
-                {
-                    continue;            // No intersection at all
-                }
-
-                // Intersection, check if it's closer than the previous one
-                const float hitDistSq = (hitPos - localOrigin).LengthSquared();
-                if (c->minHitDistSq > hitDistSq)
-                {
-                    c->minHitDistSq = hitDistSq;
-                    c->hitGeo = geo;
-                    c->hitAtomic = a;
-                    c->hitTri = tri;
-                    c->hitBary = hitBary;
-                    c->hitPosOS = localToObjTransform.TransformVector(hitPos);            // Transform back into object space
-                }
+                continue;            // No intersection at all
             }
 
-            return true;
-        };
+            // Intersection, check if it's closer than the previous one
+            const float hitDistSq = (hitPos - localOrigin).LengthSquared();
+            if (c->minHitDistSq > hitDistSq)
+            {
+                c->minHitDistSq = hitDistSq;
+                c->hitGeo = geo;
+                c->hitAtomic = a;
+                c->hitTri = tri;
+                c->hitBary = hitBary;
+                c->hitPosOS = localToObjTransform.TransformVector(hitPos);            // Transform back into object space
+            }
+        }
+
+        return true;
+    };
 
     if (c.entity->m_pRwObject->object.type == 2 /*rpCLUMP*/)
     {
@@ -551,14 +551,17 @@ bool CWorldSA::ProcessLineOfSight(const CVector* vecStart, const CVector* vecEnd
     return bReturn;
 }
 
-CEntity* CWorldSA::TestSphereAgainstWorld(const CVector& sphereCenter, float radius, CEntity* ignoredEntity, bool checkBuildings, bool checkVehicles, bool checkPeds, bool checkObjects, bool checkDummies, bool cameraIgnore, STestSphereAgainstWorldResult& result)
+CEntity* CWorldSA::TestSphereAgainstWorld(const CVector& sphereCenter, float radius, CEntity* ignoredEntity, bool checkBuildings, bool checkVehicles,
+                                          bool checkPeds, bool checkObjects, bool checkDummies, bool cameraIgnore, STestSphereAgainstWorldResult& result)
 {
-    auto entity = ((CEntitySAInterface*(__cdecl*)(CVector, float, CEntitySAInterface*, bool, bool, bool, bool, bool, bool))FUNC_CWorld_TestSphereAgainstWorld)(sphereCenter, radius, ignoredEntity ? ignoredEntity->GetInterface() : nullptr, checkBuildings, checkVehicles, checkPeds, checkObjects, checkDummies, cameraIgnore);
+    auto entity = ((CEntitySAInterface * (__cdecl*)(CVector, float, CEntitySAInterface*, bool, bool, bool, bool, bool, bool))
+                       FUNC_CWorld_TestSphereAgainstWorld)(sphereCenter, radius, ignoredEntity ? ignoredEntity->GetInterface() : nullptr, checkBuildings,
+                                                           checkVehicles, checkPeds, checkObjects, checkDummies, cameraIgnore);
     if (!entity)
         return nullptr;
-    
+
     result.collisionDetected = true;
-    result.modelID = entity->m_nModelIndex;   
+    result.modelID = entity->m_nModelIndex;
     if (entity->matrix)
     {
         result.entityPosition = entity->matrix->vPos;
@@ -770,7 +773,7 @@ int CWorldSA::FindClosestRailTrackNode(const CVector& vecPosition, uchar& ucOutT
                 SRailNodeSA& railNode = aTrackNodes[ucTrackId][i];
 
                 float fDistance = sqrtf(powf(vecPosition.fZ - railNode.sZ * 0.125f, 2) + powf(vecPosition.fY - railNode.sY * 0.125f, 2) +
-                                       powf(vecPosition.fX - railNode.sX * 0.125f, 2));
+                                        powf(vecPosition.fX - railNode.sX * 0.125f, 2));
                 if (fDistance < fMinDistance)
                 {
                     fMinDistance = fDistance;

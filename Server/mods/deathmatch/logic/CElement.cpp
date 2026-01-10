@@ -30,7 +30,7 @@
 extern CGame* g_pGame;
 
 #if defined(_MSC_VER)
-#pragma warning(disable : 4355)            // warning C4355: 'this' : used in base member initializer list
+    #pragma warning(disable : 4355)            // warning C4355: 'this' : used in base member initializer list
 #endif
 
 CElement::CElement(CElement* pParent)
@@ -1039,7 +1039,7 @@ void CElement::CallEventNoParent(const char* szName, const CLuaArguments& Argume
 
     // Call it on all our children
     CElementListSnapshotRef childrenList = GetChildrenListSnapshot();
-	for (CElement* pElement : *childrenList)
+    for (CElement* pElement : *childrenList)
     {
         if (!pElement->IsBeingDeleted())
         {

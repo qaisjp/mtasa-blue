@@ -64,7 +64,7 @@
 
 extern CGameSA* pGame;
 
-unsigned int&  CGameSA::ClumpOffset = *(unsigned int*)0xB5F878;
+unsigned int& CGameSA::ClumpOffset = *(unsigned int*)0xB5F878;
 
 unsigned int OBJECTDYNAMICINFO_MAX = *(uint32_t*)0x59FB4C != 0x90909090 ? *(uint32_t*)0x59FB4C : 160;            // default: 160
 
@@ -389,12 +389,12 @@ void CGameSA::StartGame()
  */
 void CGameSA::SetSystemState(SystemState State)
 {
-    MemPutFast<DWORD>(0xC8D4C0, (DWORD)State); // gGameState
+    MemPutFast<DWORD>(0xC8D4C0, (DWORD)State);            // gGameState
 }
 
 SystemState CGameSA::GetSystemState()
 {
-    return *(SystemState*)0xC8D4C0; // gGameState
+    return *(SystemState*)0xC8D4C0;            // gGameState
 }
 
 /**
@@ -483,10 +483,10 @@ void CGameSA::Terminate()
     // Initiate the destruction
     delete this;
 
-    // Dump any memory leaks if DETECT_LEAK is defined
-    #ifdef DETECT_LEAKS
+// Dump any memory leaks if DETECT_LEAK is defined
+#ifdef DETECT_LEAKS
     DumpUnfreed();
-    #endif
+#endif
 }
 
 void CGameSA::Initialize()
@@ -540,27 +540,27 @@ eGameVersion CGameSA::FindGameVersion()
 
 float CGameSA::GetFPS()
 {
-    return *(float*)0xB7CB50; // CTimer::game_FPS
+    return *(float*)0xB7CB50;            // CTimer::game_FPS
 }
 
 float CGameSA::GetTimeStep()
 {
-    return *(float*)0xB7CB5C; // CTimer::ms_fTimeStep
+    return *(float*)0xB7CB5C;            // CTimer::ms_fTimeStep
 }
 
 float CGameSA::GetOldTimeStep()
 {
-    return *(float*)0xB7CB54; // CTimer::ms_fOldTimeStep
+    return *(float*)0xB7CB54;            // CTimer::ms_fOldTimeStep
 }
 
 float CGameSA::GetTimeScale()
 {
-    return *(float*)0xB7CB64; // CTimer::ms_fTimeScale
+    return *(float*)0xB7CB64;            // CTimer::ms_fTimeScale
 }
 
 void CGameSA::SetTimeScale(float fTimeScale)
 {
-    MemPutFast<float>(0xB7CB64, fTimeScale); // CTimer::ms_fTimeScale
+    MemPutFast<float>(0xB7CB64, fTimeScale);            // CTimer::ms_fTimeScale
 }
 
 unsigned char CGameSA::GetBlurLevel()
@@ -709,7 +709,7 @@ void CGameSA::SetCoronaZTestEnabled(bool isEnabled)
     m_isCoronaZTestEnabled = isEnabled;
 }
 
-void CGameSA::SetWaterCreaturesEnabled(bool isEnabled) 
+void CGameSA::SetWaterCreaturesEnabled(bool isEnabled)
 {
     if (isEnabled == m_areWaterCreaturesEnabled)
         return;
@@ -734,7 +734,7 @@ void CGameSA::SetTunnelWeatherBlendEnabled(bool isEnabled)
     if (isEnabled == m_isTunnelWeatherBlendEnabled)
         return;
     // CWeather::UpdateInTunnelness
-    DWORD functionAddress = 0x72B630; 
+    DWORD functionAddress = 0x72B630;
     if (isEnabled)
     {
         // Restore original bytes: 83 EC 20
@@ -792,13 +792,13 @@ void CGameSA::SetFireballDestructEnabled(bool isEnabled)
     if (isEnabled)
     {
         BYTE originalCodes[7] = {0x81, 0x66, 0x1C, 0x7E, 0xFF, 0xFF, 0xFF};
-        MemCpy((void*)0x6CCE45, &originalCodes, 7); // CPlane::BlowUpCar
-        MemCpy((void*)0x6C6E01, &originalCodes, 7); // CHeli::BlowUpCar
+        MemCpy((void*)0x6CCE45, &originalCodes, 7);            // CPlane::BlowUpCar
+        MemCpy((void*)0x6C6E01, &originalCodes, 7);            // CHeli::BlowUpCar
     }
     else
     {
-        MemSet((void*)0x6CCE45, 0x90, 7); // CPlane::BlowUpCar
-        MemSet((void*)0x6C6E01, 0x90, 7); // CHeli::BlowUpCar
+        MemSet((void*)0x6CCE45, 0x90, 7);            // CPlane::BlowUpCar
+        MemSet((void*)0x6C6E01, 0x90, 7);            // CHeli::BlowUpCar
     }
 
     m_isFireballDestructEnabled = isEnabled;
@@ -812,8 +812,8 @@ void CGameSA::SetExtendedWaterCannonsEnabled(bool isEnabled)
     // Allocate memory for new bigger array or use default aCannons array
     void* aCannons = isEnabled ? malloc(MAX_WATER_CANNONS * SIZE_CWaterCannon) : (void*)ARRAY_aCannons;
 
-    int newLimit = isEnabled ? MAX_WATER_CANNONS : NUM_CWaterCannon_DefaultLimit; // default: 3
-    MemSetFast(aCannons, 0, newLimit * SIZE_CWaterCannon); // clear aCannons array
+    int newLimit = isEnabled ? MAX_WATER_CANNONS : NUM_CWaterCannon_DefaultLimit;            // default: 3
+    MemSetFast(aCannons, 0, newLimit * SIZE_CWaterCannon);                                   // clear aCannons array
 
     // Get current limit
     int currentLimit = *(int*)NUM_WaterCannon_Limit;
@@ -826,8 +826,10 @@ void CGameSA::SetExtendedWaterCannonsEnabled(bool isEnabled)
     {
         char* currentCannon = (char*)currentACannons + i * SIZE_CWaterCannon;
 
-        ((void(__thiscall*)(int, void*, bool))FUNC_CAESoundManager_CancelSoundsOwnedByAudioEntity)(STRUCT_CAESoundManager, currentCannon + NUM_CWaterCannon_Audio_Offset, true); // CAESoundManager::CancelSoundsOwnedByAudioEntity to prevent random crashes from CAESound::UpdateParameters
-        ((void(__thiscall*)(void*))FUNC_CWaterCannon_Destructor)(currentCannon); // CWaterCannon::~CWaterCannon
+        ((void(__thiscall*)(int, void*, bool))FUNC_CAESoundManager_CancelSoundsOwnedByAudioEntity)(
+            STRUCT_CAESoundManager, currentCannon + NUM_CWaterCannon_Audio_Offset,
+            true);            // CAESoundManager::CancelSoundsOwnedByAudioEntity to prevent random crashes from CAESound::UpdateParameters
+        ((void(__thiscall*)(void*))FUNC_CWaterCannon_Destructor)(currentCannon);            // CWaterCannon::~CWaterCannon
     }
 
     // Call CWaterCannon constructor & CWaterCannon::Init
@@ -835,8 +837,8 @@ void CGameSA::SetExtendedWaterCannonsEnabled(bool isEnabled)
     {
         char* currentCannon = (char*)aCannons + i * SIZE_CWaterCannon;
 
-        ((void(__thiscall*)(void*))FUNC_CWaterCannon_Constructor)(currentCannon); // CWaterCannon::CWaterCannon
-        ((void(__thiscall*)(void*))FUNC_CWaterCannon_Init)(currentCannon); // CWaterCannon::Init
+        ((void(__thiscall*)(void*))FUNC_CWaterCannon_Constructor)(currentCannon);            // CWaterCannon::CWaterCannon
+        ((void(__thiscall*)(void*))FUNC_CWaterCannon_Init)(currentCannon);                   // CWaterCannon::Init
     }
 
     // Patch references to array
@@ -903,11 +905,11 @@ void CGameSA::SetIgnoreFireStateEnabled(bool isEnabled)
         MemSet((void*)0x6511B9, 0x90, 10);            // CCarEnterExit::IsVehicleStealable - fire check
         MemSet((void*)0x643A95, 0x90, 14);            // CTaskComplexEnterCar::CreateFirstSubTask - fire check
         MemSet((void*)0x6900B5, 0x90, 14);            // CTaskComplexCopInCar::ControlSubTask - fire check
-        MemSet((void*)0x64F3DB, 0x90, 14);            // CCarEnterExit::IsPlayerToQuitCarEnter - fire check  
+        MemSet((void*)0x64F3DB, 0x90, 14);            // CCarEnterExit::IsPlayerToQuitCarEnter - fire check
         MemSet((void*)0x685A7F, 0x90, 14);            // CTaskSimplePlayerOnFoot::ProcessPlayerWeapon - fire check
 
-        MemSet((void*)0x53A899, 0x90, 5);             // CFire::ProcessFire
-        MemSet((void*)0x53A990, 0x90, 5);             // CFire::ProcessFire
+        MemSet((void*)0x53A899, 0x90, 5);            // CFire::ProcessFire
+        MemSet((void*)0x53A990, 0x90, 5);            // CFire::ProcessFire
     }
     else
     {
@@ -1185,9 +1187,9 @@ void CGameSA::SetWeaponRenderEnabled(bool enabled)
     if (!enabled)
     {
         // Disable calls to CVisibilityPlugins::RenderWeaponPedsForPC
-        MemSet((void*)0x53EAC4, 0x90, 5); // Idle
-        MemSet((void*)0x705322, 0x90, 5); // CPostEffects::Render
-        MemSet((void*)0x7271E3, 0x90, 5); // CMirrors::BeforeMainRender
+        MemSet((void*)0x53EAC4, 0x90, 5);            // Idle
+        MemSet((void*)0x705322, 0x90, 5);            // CPostEffects::Render
+        MemSet((void*)0x7271E3, 0x90, 5);            // CMirrors::BeforeMainRender
     }
     else
     {

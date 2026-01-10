@@ -373,7 +373,6 @@ bool CVehicleUpgrades::IsUpgradeCompatible(unsigned short usUpgrade)
     // Allow slot 2 to be upgraded regardless of ID and then check it has the required part
     if (GetSlotFromUpgrade(us, ucSlot) && (bReturn || ucSlot == 2))
     {
-        
         // Get our model supported upgrades
         auto* info = g_pGame->GetModelInfo(usModel);
         modelInfo = info ? info : m_pVehicle->GetModelInfo();

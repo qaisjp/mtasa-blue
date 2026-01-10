@@ -421,7 +421,9 @@ bool CLuaPedDefs::SetPedAnimation(CElement* pPed, std::optional<std::variant<std
                 throw LuaFunctionError("Animation name cannot be true. Possible values: nil, false, string.");
     }
 
-    return CStaticFunctionDefinitions::SetPedAnimation(pPed, animBlockName, animationName, time.value_or(-1), blendTime.value_or(250), loop.value_or(true), updatePosition.value_or(true), interruptable.value_or(true), freezeLastFrame.value_or(true), restoreTask.value_or(false));
+    return CStaticFunctionDefinitions::SetPedAnimation(pPed, animBlockName, animationName, time.value_or(-1), blendTime.value_or(250), loop.value_or(true),
+                                                       updatePosition.value_or(true), interruptable.value_or(true), freezeLastFrame.value_or(true),
+                                                       restoreTask.value_or(false));
 }
 
 int CLuaPedDefs::SetPedAnimationProgress(lua_State* luaVM)
@@ -1371,8 +1373,8 @@ int CLuaPedDefs::WarpPedIntoVehicle(lua_State* luaVM)
     return 1;
 }
 
-#define MIN_CLIENT_REQ_REMOVEPEDFROMVEHICLE_CLIENTSIDE  "1.3.0-9.04482"
-#define MIN_CLIENT_REQ_WARPPEDINTOVEHICLE_CLIENTSIDE    "1.3.0-9.04482"
+#define MIN_CLIENT_REQ_REMOVEPEDFROMVEHICLE_CLIENTSIDE "1.3.0-9.04482"
+#define MIN_CLIENT_REQ_WARPPEDINTOVEHICLE_CLIENTSIDE   "1.3.0-9.04482"
 int CLuaPedDefs::OOP_WarpPedIntoVehicle(lua_State* luaVM)
 {
     //  ped.vehicle = element vehicle

@@ -10,7 +10,7 @@
 #include "StdInc.h"
 #include "CEasingCurve.h"
 #include "lua/CLuaFunctionParseHelpers.h"
-#include "EasingEquations.hpp" //Included from cpp to separate just visually maths equations from framework
+#include "EasingEquations.hpp"            //Included from cpp to separate just visually maths equations from framework
 
 // For easing functions that require more parameters than time (like amplitude, period, overshot)
 class CComplexEasingFunction

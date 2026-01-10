@@ -47,7 +47,6 @@ enum taskType
     SECONDARY_TASK
 };
 
-
 class CTaskManager
 {
 public:

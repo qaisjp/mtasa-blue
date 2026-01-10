@@ -16,7 +16,7 @@
 
 class CEntitySAInterface;
 
-#define ARRAY_CORONAS               0xC3E058
+#define ARRAY_CORONAS 0xC3E058
 
 class CRegisteredCoronaSAInterface            // coronas are 104 bytes long, and theres 56 of them
 {

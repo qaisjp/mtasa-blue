@@ -524,11 +524,11 @@ void CMapManager::OnPlayerJoin(CPlayer& Player)
     // Send the packet to the given player
     Player.Send(CMapInfoPacket(ucCurrentWeather, ucWeatherBlendingTo, ucBlendedWeatherHour, ucClockHour, ucClockMin, ulMinuteDuration, bNametagsEnabled,
                                bRadarEnabled, fGravity, fGameSpeed, fWaveHeight, worldWaterLevelInfo, bHasSkyGradient, garageStates, ucTopRed, ucTopGreen,
-                               ucTopBlue, ucBottomRed, ucBottomGreen, ucBottomBlue, bHasHeatHaze, heatHazeSettings, fps, bCloudsEnabled,
-                               fJetpackMaxHeight, bOverrideWaterColor, ucWaterRed, ucWaterGreen, ucWaterBlue, ucWaterAlpha, bInteriorSoundsEnabled,
-                               bOverrideRainLevel, fRainLevel, bOverrideSunSize, fSunSize, bOverrideSunColor, ucCoreR, ucCoreG, ucCoreB, ucCoronaR, ucCoronaG,
-                               ucCoronaB, bOverrideWindVelocity, fWindVelX, fWindVelY, fWindVelZ, bOverrideFarClipDistance, fFarClip, bOverrideFogDistance,
-                               fFogDistance, fAircraftMaxHeight, fAircraftMaxVelocity, bOverrideMoonSize, iMoonSize));
+                               ucTopBlue, ucBottomRed, ucBottomGreen, ucBottomBlue, bHasHeatHaze, heatHazeSettings, fps, bCloudsEnabled, fJetpackMaxHeight,
+                               bOverrideWaterColor, ucWaterRed, ucWaterGreen, ucWaterBlue, ucWaterAlpha, bInteriorSoundsEnabled, bOverrideRainLevel, fRainLevel,
+                               bOverrideSunSize, fSunSize, bOverrideSunColor, ucCoreR, ucCoreG, ucCoreB, ucCoronaR, ucCoronaG, ucCoronaB, bOverrideWindVelocity,
+                               fWindVelX, fWindVelY, fWindVelZ, bOverrideFarClipDistance, fFarClip, bOverrideFogDistance, fFogDistance, fAircraftMaxHeight,
+                               fAircraftMaxVelocity, bOverrideMoonSize, iMoonSize));
 
     marker.Set("SendMapInfoPacket");
 

@@ -24,32 +24,36 @@ namespace bcrypt
 {
     extern "C"
     {
-        #include <bcrypt/ow-crypt.h>
+#include <bcrypt/ow-crypt.h>
     }
 }            // namespace bcrypt
 
 namespace SharedUtil
 {
-    #define S11 7
-    #define S12 12
-    #define S13 17
-    #define S14 22
-    #define S21 5
-    #define S22 9
-    #define S23 14
-    #define S24 20
-    #define S31 4
-    #define S32 11
-    #define S33 16
-    #define S34 23
-    #define S41 6
-    #define S42 10
-    #define S43 15
-    #define S44 21
+#define S11 7
+#define S12 12
+#define S13 17
+#define S14 22
+#define S21 5
+#define S22 9
+#define S23 14
+#define S24 20
+#define S31 4
+#define S32 11
+#define S33 16
+#define S34 23
+#define S41 6
+#define S42 10
+#define S43 15
+#define S44 21
 
-    CMD5Hasher::CMD5Hasher() {}
+    CMD5Hasher::CMD5Hasher()
+    {
+    }
 
-    CMD5Hasher::~CMD5Hasher() {}
+    CMD5Hasher::~CMD5Hasher()
+    {
+    }
 
     bool CMD5Hasher::Calculate(const char* szFilename, MD5& md5Result)
     {
@@ -216,7 +220,10 @@ namespace SharedUtil
         memset(m_buffer, 0, sizeof(m_buffer));
     }
 
-    const unsigned char* CMD5Hasher::GetResult() const { return m_digest; }
+    const unsigned char* CMD5Hasher::GetResult() const
+    {
+        return m_digest;
+    }
 
     void CMD5Hasher::Transform(unsigned char block[64])
     {
@@ -327,15 +334,30 @@ namespace SharedUtil
                 ((unsigned int)input[j]) | (((unsigned int)input[j + 1]) << 8) | (((unsigned int)input[j + 2]) << 16) | (((unsigned int)input[j + 3]) << 24);
     }
 
-    inline unsigned int CMD5Hasher::RotateLeft(unsigned int x, unsigned int n) { return (x << n) | (x >> (32 - n)); }
+    inline unsigned int CMD5Hasher::RotateLeft(unsigned int x, unsigned int n)
+    {
+        return (x << n) | (x >> (32 - n));
+    }
 
-    inline unsigned int CMD5Hasher::F(unsigned int x, unsigned int y, unsigned int z) { return (x & y) | (~x & z); }
+    inline unsigned int CMD5Hasher::F(unsigned int x, unsigned int y, unsigned int z)
+    {
+        return (x & y) | (~x & z);
+    }
 
-    inline unsigned int CMD5Hasher::G(unsigned int x, unsigned int y, unsigned int z) { return (x & z) | (y & ~z); }
+    inline unsigned int CMD5Hasher::G(unsigned int x, unsigned int y, unsigned int z)
+    {
+        return (x & z) | (y & ~z);
+    }
 
-    inline unsigned int CMD5Hasher::H(unsigned int x, unsigned int y, unsigned int z) { return x ^ y ^ z; }
+    inline unsigned int CMD5Hasher::H(unsigned int x, unsigned int y, unsigned int z)
+    {
+        return x ^ y ^ z;
+    }
 
-    inline unsigned int CMD5Hasher::I(unsigned int x, unsigned int y, unsigned int z) { return y ^ (x | ~z); }
+    inline unsigned int CMD5Hasher::I(unsigned int x, unsigned int y, unsigned int z)
+    {
+        return y ^ (x | ~z);
+    }
 
     inline void CMD5Hasher::FF(unsigned int& a, unsigned int b, unsigned int c, unsigned int d, unsigned int x, unsigned int s, unsigned int ac)
     {
@@ -365,7 +387,10 @@ namespace SharedUtil
     // Implementation of Bob Jenkin's awesome hash function
     // Ref: https://burtleburtle.net/bob/hash/doobs.html
     //
-    unsigned int HashString(const char* szString) { return HashString(szString, (unsigned int)strlen(szString)); }
+    unsigned int HashString(const char* szString)
+    {
+        return HashString(szString, (unsigned int)strlen(szString));
+    }
 
     unsigned int HashString(const char* szString, unsigned int length)
     {
@@ -556,13 +581,25 @@ namespace SharedUtil
         }
     }
 
-    void GenerateSha256(const void* pData, uint uiLength, uchar output[32]) { sha256((const uchar*)pData, uiLength, output); }
+    void GenerateSha256(const void* pData, uint uiLength, uchar output[32])
+    {
+        sha256((const uchar*)pData, uiLength, output);
+    }
 
-    SString GenerateSha256HexString(const void* pData, uint uiLength) { return GenerateHashHexString(EHashFunction::SHA256, pData, uiLength); }
+    SString GenerateSha256HexString(const void* pData, uint uiLength)
+    {
+        return GenerateHashHexString(EHashFunction::SHA256, pData, uiLength);
+    }
 
-    SString GenerateSha256HexString(const SString& strData) { return GenerateHashHexString(EHashFunction::SHA256, strData); }
+    SString GenerateSha256HexString(const SString& strData)
+    {
+        return GenerateHashHexString(EHashFunction::SHA256, strData);
+    }
 
-    SString GenerateSha256HexStringFromFile(const SString& strFilename) { return GenerateHashHexStringFromFile(EHashFunction::SHA256, strFilename); }
+    SString GenerateSha256HexStringFromFile(const SString& strFilename)
+    {
+        return GenerateHashHexStringFromFile(EHashFunction::SHA256, strFilename);
+    }
 
     SString GenerateHashHexString(EHashFunctionType hashFunction, const void* pData, uint uiLength)
     {
@@ -768,13 +805,12 @@ namespace SharedUtil
             return;
 
         size_t totalProbeSize = static_cast<size_t>(strbuflen) * 3 + 8;
-        void* probe = std::malloc(totalProbeSize);
+        void*  probe = std::malloc(totalProbeSize);
         if (!probe)
             return;
         std::free(probe);
 
-        std::unique_ptr<unsigned char, decltype(&std::free)> strbuf(
-            static_cast<unsigned char*>(std::malloc(strbuflen)), &std::free);
+        std::unique_ptr<unsigned char, decltype(&std::free)> strbuf(static_cast<unsigned char*>(std::malloc(strbuflen)), &std::free);
         if (!strbuf)
             return;
 
@@ -835,13 +871,12 @@ namespace SharedUtil
 
         size_t workingSize = static_cast<size_t>(numPasses) * 4 + 4;
         size_t outputSize = static_cast<size_t>(numPasses) * 4;
-        void* probe = std::malloc(workingSize + outputSize);
+        void*  probe = std::malloc(workingSize + outputSize);
         if (!probe)
             return;
         std::free(probe);
 
-        std::unique_ptr<unsigned char, decltype(&std::free)> buffer(
-            static_cast<unsigned char*>(std::malloc(workingSize)), &std::free);
+        std::unique_ptr<unsigned char, decltype(&std::free)> buffer(static_cast<unsigned char*>(std::malloc(workingSize)), &std::free);
         if (!buffer)
             return;
 

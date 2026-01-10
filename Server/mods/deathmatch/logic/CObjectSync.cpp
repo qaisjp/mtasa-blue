@@ -14,8 +14,8 @@
 
 #ifdef WITH_OBJECT_SYNC
 
-#define SYNC_RATE 500
-#define MAX_PLAYER_SYNC_DISTANCE 100.0f
+    #define SYNC_RATE                500
+    #define MAX_PLAYER_SYNC_DISTANCE 100.0f
 
 CObjectSync::CObjectSync(CPlayerManager* pPlayerManager, CObjectManager* pObjectManager)
 {

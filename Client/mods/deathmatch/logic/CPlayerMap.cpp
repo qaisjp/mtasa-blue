@@ -77,12 +77,11 @@ CPlayerMap::CPlayerMap(CClientManager* pManager)
         {colorWhiteTransparent, 0.92f, 1.5f, ""},
         {colorWhite, 0.95f, 1.0f, SString(_("Change mode: %s"), *GetBoundKeyName("radar_attach"))},
 
-        {colorWhite, 0.05f, 1.0f, SString(_("Zoom: %s/%s     Movement: %s, %s, %s, %s     Opacity: %s/%s"),
-                 *GetBoundKeyName("radar_zoom_in"), *GetBoundKeyName("radar_zoom_out"), *GetBoundKeyName("radar_move_north"),
-                 *GetBoundKeyName("radar_move_east"), *GetBoundKeyName("radar_move_south"), *GetBoundKeyName("radar_move_west"),
-                 *GetBoundKeyName("radar_opacity_down"), *GetBoundKeyName("radar_opacity_up"))},
-        {colorWhite, 0.07f, 1.0f, SString(_("Toggle map: %s     Toggle help text: %s"),
-                 *GetBoundKeyName("radar"), *GetBoundKeyName("radar_help"))},
+        {colorWhite, 0.05f, 1.0f,
+         SString(_("Zoom: %s/%s     Movement: %s, %s, %s, %s     Opacity: %s/%s"), *GetBoundKeyName("radar_zoom_in"), *GetBoundKeyName("radar_zoom_out"),
+                 *GetBoundKeyName("radar_move_north"), *GetBoundKeyName("radar_move_east"), *GetBoundKeyName("radar_move_south"),
+                 *GetBoundKeyName("radar_move_west"), *GetBoundKeyName("radar_opacity_down"), *GetBoundKeyName("radar_opacity_up"))},
+        {colorWhite, 0.07f, 1.0f, SString(_("Toggle map: %s     Toggle help text: %s"), *GetBoundKeyName("radar"), *GetBoundKeyName("radar_help"))},
     };
 
     for (uint i = 0; i < NUMELMS(messageList); i++)
@@ -718,7 +717,8 @@ void CPlayerMap::SetAttachedToLocalPlayer(bool bIsAttachedToLocal)
 
 bool CPlayerMap::IsPlayerMapShowing()
 {
-    return ((m_bIsPlayerMapEnabled || m_bForcedState) && m_mapImageTexture && m_playerMarkerTexture && (!g_pCore->GetConsole()->IsVisible() && !g_pCore->IsMenuVisible()));
+    return ((m_bIsPlayerMapEnabled || m_bForcedState) && m_mapImageTexture && m_playerMarkerTexture &&
+            (!g_pCore->GetConsole()->IsVisible() && !g_pCore->IsMenuVisible()));
 }
 
 bool CPlayerMap::GetBoundingBox(CVector& vecMin, CVector& vecMax)

@@ -19,7 +19,7 @@
 #include <game/CSettings.h>
 #include <game/CVehicle.h>
 
-#define MOUSE_CONTROL_MULTIPLIER    35
+#define MOUSE_CONTROL_MULTIPLIER 35
 
 extern CCore* g_pCore;
 

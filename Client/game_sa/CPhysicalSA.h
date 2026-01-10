@@ -18,16 +18,16 @@
 
 class CColPointSAInterface;
 
-#define FUNC_GetMoveSpeed                       0x404460
-#define FUNC_GetTurnSpeed                       0x470030
-#define FUNC_ProcessCollision                   0x54DFB0
-#define FUNC_AttachEntityToEntity               0x54D570
-#define FUNC_DetatchEntityFromEntity            0x5442F0
-#define FUNC_CPhysical_AddToMovingList          0x542800
-#define FUNC_CPhysical_RemoveFromMovingList     0x542860
+#define FUNC_GetMoveSpeed                   0x404460
+#define FUNC_GetTurnSpeed                   0x470030
+#define FUNC_ProcessCollision               0x54DFB0
+#define FUNC_AttachEntityToEntity           0x54D570
+#define FUNC_DetatchEntityFromEntity        0x5442F0
+#define FUNC_CPhysical_AddToMovingList      0x542800
+#define FUNC_CPhysical_RemoveFromMovingList 0x542860
 
-#define PHYSICAL_MAXNOOFCOLLISIONRECORDS        6
-#define PHYSICAL_MAXMASS                        99999.0
+#define PHYSICAL_MAXNOOFCOLLISIONRECORDS 6
+#define PHYSICAL_MAXMASS                 99999.0
 
 class CPhysicalSAInterface : public CEntitySAInterface
 {
@@ -107,7 +107,7 @@ public:
     CVector                   m_vecAttachedRotation;                      // 268
     CVector                   m_vecUnk;                                   // 280
     uint32                    m_pad4;                                     // 292
-    CPtrNodeDoubleLink<void>* m_pControlCodeNodeLink;                           // 296
+    CPtrNodeDoubleLink<void>* m_pControlCodeNodeLink;                     // 296
     float                     m_fLighting;                                // 300 surface brightness
     float                     m_fLighting2;                               // 304 dynamic lighting (unused, always set to 0 in the GTA code)
     class CShadowDataSA*      m_pShadowData;                              // 308

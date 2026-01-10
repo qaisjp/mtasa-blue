@@ -92,7 +92,8 @@ namespace mta::memory
 
             const std::uint32_t aligned_addr = (raw_addr + POINTER_METADATA_OVERHEAD + align_u32 - 1) & ~(align_u32 - 1);
 
-            if (aligned_addr < raw_addr + POINTER_METADATA_OVERHEAD || aligned_addr + size_u32 > raw_addr + total_size || aligned_addr + size_u32 < aligned_addr)
+            if (aligned_addr < raw_addr + POINTER_METADATA_OVERHEAD || aligned_addr + size_u32 > raw_addr + total_size ||
+                aligned_addr + size_u32 < aligned_addr)
             {
                 free(raw_memory);
                 errno = EINVAL;
@@ -102,13 +103,13 @@ namespace mta::memory
             void* result = reinterpret_cast<void*>(aligned_addr);
 
             // Validate store location
-            void** store_location = reinterpret_cast<void**>(aligned_addr - POINTER_SIZE);
-            std::uint32_t* metadata_location = reinterpret_cast<std::uint32_t*>(aligned_addr - POINTER_METADATA_OVERHEAD);
+            void**              store_location = reinterpret_cast<void**>(aligned_addr - POINTER_SIZE);
+            std::uint32_t*      metadata_location = reinterpret_cast<std::uint32_t*>(aligned_addr - POINTER_METADATA_OVERHEAD);
             const std::uint32_t store_addr = reinterpret_cast<std::uint32_t>(store_location);
             const std::uint32_t metadata_addr = reinterpret_cast<std::uint32_t>(metadata_location);
 
-            if (store_addr < raw_addr || store_addr > raw_addr + total_size - POINTER_SIZE ||
-                metadata_addr < raw_addr || metadata_addr > raw_addr + total_size - POINTER_SIZE)
+            if (store_addr < raw_addr || store_addr > raw_addr + total_size - POINTER_SIZE || metadata_addr < raw_addr ||
+                metadata_addr > raw_addr + total_size - POINTER_SIZE)
             {
                 free(raw_memory);
                 errno = EFAULT;
@@ -178,13 +179,13 @@ namespace mta::memory
 
         void* result = reinterpret_cast<void*>(aligned_addr);
 
-        void** store_location = reinterpret_cast<void**>(aligned_addr - POINTER_SIZE);
-        std::uint32_t* metadata_location = reinterpret_cast<std::uint32_t*>(aligned_addr - POINTER_METADATA_OVERHEAD);
+        void**              store_location = reinterpret_cast<void**>(aligned_addr - POINTER_SIZE);
+        std::uint32_t*      metadata_location = reinterpret_cast<std::uint32_t*>(aligned_addr - POINTER_METADATA_OVERHEAD);
         const std::uint32_t store_addr = reinterpret_cast<std::uint32_t>(store_location);
         const std::uint32_t metadata_addr = reinterpret_cast<std::uint32_t>(metadata_location);
 
-        if (store_addr < raw_addr || store_addr > raw_addr + total_size - POINTER_SIZE ||
-            metadata_addr < raw_addr || metadata_addr > raw_addr + total_size - POINTER_SIZE)
+        if (store_addr < raw_addr || store_addr > raw_addr + total_size - POINTER_SIZE || metadata_addr < raw_addr ||
+            metadata_addr > raw_addr + total_size - POINTER_SIZE)
         {
             free(raw_memory);
             errno = EFAULT;
@@ -272,13 +273,13 @@ namespace mta::memory
         void* result = reinterpret_cast<void*>(aligned_addr);
 
         // Validate store location
-        void** store_location = reinterpret_cast<void**>(aligned_addr - POINTER_SIZE);
-        std::uint32_t* metadata_location = reinterpret_cast<std::uint32_t*>(aligned_addr - POINTER_METADATA_OVERHEAD);
+        void**              store_location = reinterpret_cast<void**>(aligned_addr - POINTER_SIZE);
+        std::uint32_t*      metadata_location = reinterpret_cast<std::uint32_t*>(aligned_addr - POINTER_METADATA_OVERHEAD);
         const std::uint32_t store_addr = reinterpret_cast<std::uint32_t>(store_location);
         const std::uint32_t metadata_addr = reinterpret_cast<std::uint32_t>(metadata_location);
 
-        if (store_addr < raw_addr || store_addr > raw_addr + total_size - POINTER_SIZE ||
-            metadata_addr < raw_addr || metadata_addr > raw_addr + total_size - POINTER_SIZE)
+        if (store_addr < raw_addr || store_addr > raw_addr + total_size - POINTER_SIZE || metadata_addr < raw_addr ||
+            metadata_addr > raw_addr + total_size - POINTER_SIZE)
         {
             BOOL vfree_result = VirtualFree(raw_ptr, 0, MEM_RELEASE);
             (void)vfree_result;
@@ -310,7 +311,7 @@ namespace mta::memory
             return;
         }
 
-        void** read_location = reinterpret_cast<void**>(ptr_addr - POINTER_SIZE);
+        void**         read_location = reinterpret_cast<void**>(ptr_addr - POINTER_SIZE);
         std::uint32_t* metadata_location = reinterpret_cast<std::uint32_t*>(ptr_addr - POINTER_METADATA_OVERHEAD);
 
         // Validate memory readable
@@ -344,7 +345,7 @@ namespace mta::memory
             return;
         }
 
-        void* original_ptr = *read_location;
+        void*               original_ptr = *read_location;
         const std::uint32_t metadata = *metadata_location;
 
         if ((metadata & METADATA_MAGIC_MASK) != METADATA_MAGIC)

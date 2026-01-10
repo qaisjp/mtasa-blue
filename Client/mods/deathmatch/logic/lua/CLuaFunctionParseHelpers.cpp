@@ -320,7 +320,7 @@ IMPLEMENT_ENUM_BEGIN(ERenderFormat)
 ADD_ENUM(RFORMAT_UNKNOWN, "unknown")
 ADD_ENUM(RFORMAT_ARGB, "argb")
 ADD_ENUM(RFORMAT_XRGB, "xrgb")
-ADD_ENUM(RFORMAT_RGB,  "rgb")
+ADD_ENUM(RFORMAT_RGB, "rgb")
 ADD_ENUM(RFORMAT_DXT1, "dxt1")
 ADD_ENUM(RFORMAT_DXT2, "dxt2")
 ADD_ENUM(RFORMAT_DXT3, "dxt3")
@@ -491,11 +491,11 @@ IMPLEMENT_ENUM_BEGIN(eFontQuality)
 ADD_ENUM(FONT_QUALITY_DEFAULT, "default")
 ADD_ENUM(FONT_QUALITY_DRAFT, "draft")
 ADD_ENUM(FONT_QUALITY_PROOF, "proof")
-#if( WINVER >= 0x0400 )
+#if (WINVER >= 0x0400)
 ADD_ENUM(FONT_QUALITY_NONANTIALIASED, "nonantialiased")
 ADD_ENUM(FONT_QUALITY_ANTIALIASED, "antialiased")
 #endif
-#if( _WIN32_WINNT >= _WIN32_WINNT_WINXP )
+#if (_WIN32_WINNT >= _WIN32_WINNT_WINXP)
 ADD_ENUM(FONT_QUALITY_CLEARTYPE, "cleartype")
 ADD_ENUM(FONT_QUALITY_CLEARTYPE_NATURAL, "cleartype_natural")
 #endif
@@ -953,7 +953,6 @@ ADD_ENUM(RestreamOption::PEDS, "peds")
 ADD_ENUM(RestreamOption::OBJECTS, "objects")
 IMPLEMENT_ENUM_CLASS_END("restream-option")
 
-
 IMPLEMENT_ENUM_CLASS_BEGIN(taskType)
 ADD_ENUM(taskType::PRIMARY_TASK, "primary")
 ADD_ENUM(taskType::SECONDARY_TASK, "secondary")
@@ -968,7 +967,6 @@ ADD_ENUM(ENTITY_TYPE_OBJECT, "object")
 ADD_ENUM(ENTITY_TYPE_DUMMY, "dummy")
 ADD_ENUM(ENTITY_TYPE_NOTINPOOLS, "unknown")
 IMPLEMENT_ENUM_END("entity-type")
-
 
 IMPLEMENT_ENUM_CLASS_BEGIN(VehicleAudioSettingProperty)
 ADD_ENUM(VehicleAudioSettingProperty::DOOR_SOUND, "door-sound")
@@ -986,7 +984,6 @@ ADD_ENUM(VehicleAudioSettingProperty::FIELD_C, "field-c")
 ADD_ENUM(VehicleAudioSettingProperty::ENGINE_UPGRADE, "engine-upgrade")
 ADD_ENUM(VehicleAudioSettingProperty::VEHICLE_TYPE_FOR_AUDIO, "vehicle-type-for-audio")
 IMPLEMENT_ENUM_CLASS_END("vehicle-audio-setting")
-
 
 IMPLEMENT_ENUM_CLASS_BEGIN(PostFXType)
 ADD_ENUM(PostFXType::GAMMA, "gamma")
@@ -1313,16 +1310,14 @@ void MinClientReqCheck(lua_State* luaVM, const char* szVersionReq, const char* s
     CResource* pResource = pLuaMain->GetResource();
     if (!pResource)
         return;
-    
+
     if (pResource->GetMinClientReq() < szVersionReq)
     {
 #if MTASA_VERSION_TYPE >= VERSION_TYPE_UNTESTED
-        SString err("<min_mta_version> section in the meta.xml is incorrect or missing (expected at least client %s because %s)",
-                                szVersionReq, szReason);
+        SString err("<min_mta_version> section in the meta.xml is incorrect or missing (expected at least client %s because %s)", szVersionReq, szReason);
         throw std::invalid_argument(err);
 #endif
     }
-    
 }
 
 //
@@ -1388,7 +1383,7 @@ uint GetWeaponPropertyFlagBit(WeaponProperty weaponProperty)
         return 0;
 
     // Check 20 bits from first to last
-    //dassert(WEAPON_FLAG_LAST + 1 - WEAPON_FLAG_FIRST == 20);
+    // dassert(WEAPON_FLAG_LAST + 1 - WEAPON_FLAG_FIRST == 20);
 
     uint uiFlagIndex = ((std::size_t)weaponProperty - (std::size_t)WeaponProperty::WEAPON_FLAG_FIRST);
     uint uiFlagBit = 1 << uiFlagIndex;

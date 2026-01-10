@@ -22,8 +22,8 @@ struct CColModelSAInterface;
 /*****************************************************************************/
 
 /* RenderWare macros */
-#define RpGetFrame(__c)            ((RwFrame*)(((RwObject *)(__c))->parent))
-#define RpSetFrame(__c,__f)        ((((RwObject *)(__c))->parent) = (void *)(__f))
+#define RpGetFrame(__c)      ((RwFrame*)(((RwObject*)(__c))->parent))
+#define RpSetFrame(__c, __f) ((((RwObject*)(__c))->parent) = (void*)(__f))
 
 /* RenderWare function defines */
 typedef RpAtomic*(__cdecl* RpAtomicCreate_t)();
@@ -114,9 +114,9 @@ typedef RtQuat*(__cdecl* RtQuatRotate_t)(RtQuat* quat, const RwV3d* axis, float 
 /*****************************************************************************/
 
 #ifdef RWFUNC_IMPLEMENT
-    #define RWFUNC(a,b) a = b;
+    #define RWFUNC(a, b) a = b;
 #else
-    #define RWFUNC(a,b) extern a;
+    #define RWFUNC(a, b) extern a;
 #endif
 
 // US Versions

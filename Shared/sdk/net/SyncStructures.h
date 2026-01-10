@@ -57,9 +57,9 @@ struct SFloatSync : public ISyncStructure
 
         double dValue = data.fValue;
 #ifdef WIN32
-#ifdef MTA_DEBUG
+    #ifdef MTA_DEBUG
         assert(!std::isnan(dValue));
-#endif
+    #endif
 #endif
         dValue = Clamp<double>(limitsMin, dValue, limitsMax);
 
@@ -547,15 +547,9 @@ struct SPlayerPuresyncFlags : public ISyncStructure
         BITCOUNT = 15
     };
 
-    bool Read(NetBitStreamInterface& stream)
-    {
-        return stream.ReadBits((char*)&data, BITCOUNT);
-    }
+    bool Read(NetBitStreamInterface& stream) { return stream.ReadBits((char*)&data, BITCOUNT); }
 
-    void Write(NetBitStreamInterface& stream) const
-    {
-        stream.WriteBits((const char*)&data, BITCOUNT);
-    }
+    void Write(NetBitStreamInterface& stream) const { stream.WriteBits((const char*)&data, BITCOUNT); }
 
     struct
     {

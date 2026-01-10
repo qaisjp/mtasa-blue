@@ -13,10 +13,10 @@
 
 #include <game/CPad.h>
 
-#define MAX_HORN_HISTORY        5
-#define STEERINGBUFFERLENGTH    10
+#define MAX_HORN_HISTORY     5
+#define STEERINGBUFFERLENGTH 10
 
-#define FUNC_CPad_UpdatePads                0x541DD0
+#define FUNC_CPad_UpdatePads 0x541DD0
 
 class CPadSAInterface
 {

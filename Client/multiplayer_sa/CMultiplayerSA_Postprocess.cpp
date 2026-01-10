@@ -35,40 +35,28 @@ namespace GrainEffect
     {
         static float fMultiplier;
 
-        static void ApplyEffect(int grainStrength, bool updateGrainRaster)
-        {
-            MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster);
-        }
+        static void ApplyEffect(int grainStrength, bool updateGrainRaster) { MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster); }
     };
 
     struct NightModifier
     {
         static float fMultiplier;
 
-        static void ApplyEffect(int grainStrength, bool updateGrainRaster)
-        {
-            MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster);
-        }
+        static void ApplyEffect(int grainStrength, bool updateGrainRaster) { MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster); }
     };
 
     struct RainModifier
     {
         static float fMultiplier;
 
-        static void ApplyEffect(int grainStrength, bool updateGrainRaster)
-        {
-            MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster);
-        }
+        static void ApplyEffect(int grainStrength, bool updateGrainRaster) { MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster); }
     };
 
     struct OverlayModifier
     {
         static float fMultiplier;
 
-        static void ApplyEffect(int grainStrength, bool updateGrainRaster)
-        {
-            MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster);
-        }
+        static void ApplyEffect(int grainStrength, bool updateGrainRaster) { MasterModifier::ApplyEffect(grainStrength * fMultiplier, updateGrainRaster); }
     };
 
     float MasterModifier::fMultiplier = 1.0f;

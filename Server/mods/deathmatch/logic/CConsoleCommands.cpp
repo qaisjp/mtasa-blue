@@ -86,7 +86,8 @@ bool CConsoleCommands::StartResource(CConsole* pConsole, const char* szArguments
 
         if (!resource->IsLoaded())
         {
-            pEchoClient->SendConsole(SString("start: Resource '%s' is loaded, but has errors (%s)", resourceName.c_str(), resource->GetFailureReason().c_str()));
+            pEchoClient->SendConsole(
+                SString("start: Resource '%s' is loaded, but has errors (%s)", resourceName.c_str(), resource->GetFailureReason().c_str()));
             continue;
         }
 
@@ -135,7 +136,8 @@ bool CConsoleCommands::RestartResource(CConsole* pConsole, const char* szArgumen
 
         if (!resource->IsLoaded())
         {
-            pEchoClient->SendConsole(SString("restart: Resource '%s' is loaded, but has errors (%s)", resourceName.c_str(), resource->GetFailureReason().c_str()));
+            pEchoClient->SendConsole(
+                SString("restart: Resource '%s' is loaded, but has errors (%s)", resourceName.c_str(), resource->GetFailureReason().c_str()));
             continue;
         }
 
@@ -626,9 +628,9 @@ bool CConsoleCommands::Msg(CConsole* pConsole, const char* szInArguments, CClien
 
                                         // Send the message and player pointer to the script
                                         CLuaArguments Arguments;
-                                        Arguments.PushString(szArguments); // We don't want to remove this for backwards compatibility reasons
+                                        Arguments.PushString(szArguments);            // We don't want to remove this for backwards compatibility reasons
                                         Arguments.PushElement(pPlayer);
-                                        Arguments.PushString(szMessage); // Fix #2135
+                                        Arguments.PushString(szMessage);            // Fix #2135
 
                                         bool bContinue = pSender->CallEvent("onPlayerPrivateMessage", Arguments);
                                         if (bContinue)
@@ -1295,8 +1297,8 @@ bool CConsoleCommands::DebugScript(CConsole* console, const char* arguments, CCl
     }
 
     CPlayer* player = static_cast<CPlayer*>(client);
-    int debugLevel = arguments[0] - '0'; // Convert the character to an integer (e.g., '2' -> 2)
-    int debugLevelCurrent = player->GetScriptDebugLevel();
+    int      debugLevel = arguments[0] - '0';            // Convert the character to an integer (e.g., '2' -> 2)
+    int      debugLevelCurrent = player->GetScriptDebugLevel();
 
     // Check if the level is the same
     if (debugLevel == debugLevelCurrent)

@@ -242,7 +242,6 @@ void CClientVariables::ValidateValues()
     FPSLimits::IsValidAndSetValid(fps, fps);
     CVARS_SET("fps_limit", fps);
 
-
     ClampValue("chat_font", 0, 3);
     ClampValue("chat_lines", 3, 62);
     ClampValue("chat_color", CColor(0, 0, 0, 0), CColor(255, 255, 255, 255));
@@ -368,37 +367,38 @@ void CClientVariables::LoadDefaults()
     DEFAULT("borderless_contrast_enabled", false);                                    // Apply contrast adjustment while borderless tuning active
     DEFAULT("borderless_saturation_enabled", false);                                  // Apply saturation adjustment while borderless tuning active
     DEFAULT("borderless_apply_windowed", false);                                      // Apply display adjustments while windowed/borderless
-    DEFAULT("borderless_apply_fullscreen", false);                                   // Apply display adjustments while in exclusive fullscreen
+    DEFAULT("borderless_apply_fullscreen", false);                                    // Apply display adjustments while in exclusive fullscreen
 
     if (Exists("borderless_enable_srgb"))
     {
-    bool legacyEnable = false;
+        bool legacyEnable = false;
         Get("borderless_enable_srgb", legacyEnable);
         Set("borderless_apply_windowed", legacyEnable);
     }
-    DEFAULT("vertical_aim_sensitivity", 0.0015f);                                     // 0.0015f is GTA default setting
-    DEFAULT("process_priority", 0);                                                   // 0-normal 1-above normal 2-high
-    DEFAULT("process_dpi_aware", false);                                              // Enable DPI awareness in core initialization
-    DEFAULT("mute_master_when_minimized", 0);                                         // 0-off 1-on
-    DEFAULT("mute_sfx_when_minimized", 0);                                            // 0-off 1-on
-    DEFAULT("mute_radio_when_minimized", 0);                                          // 0-off 1-on
-    DEFAULT("mute_mta_when_minimized", 0);                                            // 0-off 1-on
-    DEFAULT("mute_voice_when_minimized", 0);                                          // 0-off 1-on
-    DEFAULT("share_file_cache", 1);                                                   // 0-no 1-share client resource file cache with other MTA installs
-    DEFAULT("show_unsafe_resolutions", 0);                                            // 0-off 1-show resolutions that are higher that the desktop
-    DEFAULT("fov", 70);                                                               // Camera field of view
-    DEFAULT("browser_remote_websites", true);                                         // Load remote websites?
-    DEFAULT("browser_remote_javascript", true);                                       // Execute javascript on remote websites?
-    DEFAULT("filter_duplicate_log_lines", true);                                      // Filter duplicate log lines for debug view and clientscript.log
-    DEFAULT("always_show_transferbox", false);                                        // Should the transfer box always be visible for downloads? (and ignore scripted control)
-    DEFAULT("allow_discord_rpc", true);                                               // Enable Discord Rich Presence
-    DEFAULT("discord_rpc_share_data", false);                                         // Consistent Rich Presence data sharing
-    DEFAULT("discord_rpc_share_data_firsttime", false);                               // Display the user data sharing consent dialog box - for the first time
-    DEFAULT("browser_enable_gpu", true);                                              // Enable GPU in CEF? (allows stuff like WebGL to function)
-    DEFAULT("process_cpu_affinity", true);                                            // Set CPU 0 affinity to improve game performance and fix the known issue in single-threaded games
-    DEFAULT("ask_before_disconnect", true);                                           // Ask before disconnecting from a server
-    DEFAULT("allow_steam_client", false);                                             // Allow connecting with the local Steam client (to set GTA:SA ingame status)
-    DEFAULT("use_mouse_sensitivity_for_aiming", false);                               // It uses the horizontal mouse sensitivity for aiming, making the Y-axis sensitivity the same as the X-axis
+    DEFAULT("vertical_aim_sensitivity", 0.0015f);                  // 0.0015f is GTA default setting
+    DEFAULT("process_priority", 0);                                // 0-normal 1-above normal 2-high
+    DEFAULT("process_dpi_aware", false);                           // Enable DPI awareness in core initialization
+    DEFAULT("mute_master_when_minimized", 0);                      // 0-off 1-on
+    DEFAULT("mute_sfx_when_minimized", 0);                         // 0-off 1-on
+    DEFAULT("mute_radio_when_minimized", 0);                       // 0-off 1-on
+    DEFAULT("mute_mta_when_minimized", 0);                         // 0-off 1-on
+    DEFAULT("mute_voice_when_minimized", 0);                       // 0-off 1-on
+    DEFAULT("share_file_cache", 1);                                // 0-no 1-share client resource file cache with other MTA installs
+    DEFAULT("show_unsafe_resolutions", 0);                         // 0-off 1-show resolutions that are higher that the desktop
+    DEFAULT("fov", 70);                                            // Camera field of view
+    DEFAULT("browser_remote_websites", true);                      // Load remote websites?
+    DEFAULT("browser_remote_javascript", true);                    // Execute javascript on remote websites?
+    DEFAULT("filter_duplicate_log_lines", true);                   // Filter duplicate log lines for debug view and clientscript.log
+    DEFAULT("always_show_transferbox", false);                     // Should the transfer box always be visible for downloads? (and ignore scripted control)
+    DEFAULT("allow_discord_rpc", true);                            // Enable Discord Rich Presence
+    DEFAULT("discord_rpc_share_data", false);                      // Consistent Rich Presence data sharing
+    DEFAULT("discord_rpc_share_data_firsttime", false);            // Display the user data sharing consent dialog box - for the first time
+    DEFAULT("browser_enable_gpu", true);                           // Enable GPU in CEF? (allows stuff like WebGL to function)
+    DEFAULT("process_cpu_affinity", true);             // Set CPU 0 affinity to improve game performance and fix the known issue in single-threaded games
+    DEFAULT("ask_before_disconnect", true);            // Ask before disconnecting from a server
+    DEFAULT("allow_steam_client", false);              // Allow connecting with the local Steam client (to set GTA:SA ingame status)
+    DEFAULT("use_mouse_sensitivity_for_aiming",
+            false);            // It uses the horizontal mouse sensitivity for aiming, making the Y-axis sensitivity the same as the X-axis
 
     if (!Exists("locale"))
     {
@@ -421,5 +421,4 @@ void CClientVariables::LoadDefaults()
 
 #undef DEFAULT
 #undef _S
-
 }

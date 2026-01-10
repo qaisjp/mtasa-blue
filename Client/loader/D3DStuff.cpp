@@ -17,7 +17,6 @@
 #include <d3d9.h>
 #include <nvapi/nvapi.h>
 
-
 namespace
 {
     SString GUIDToString(const GUID& g)
@@ -255,11 +254,10 @@ void BeginD3DStuff()
         SetApplicationSettingInt("nvhacks", "optimus-export-enablement", 0);
         SetApplicationSettingInt("nvhacks", "optimus-force-windowed", 0);
     }
-    
+
     // Crash handler enablement now occurs inside the game process once the
     // Direct3D device is fully created (see CGraphics::OnDeviceCreate).
 }
-
 
 //////////////////////////////////////////////////////////
 //

@@ -728,8 +728,8 @@ int CLuaUtilDefs::tocolor(lua_State* luaVM)
     if (!argStream.HasErrors())
     {
         // Make it into an unsigned long
-        unsigned long ulColor = COLOR_RGBA(static_cast<unsigned char>(iRed), static_cast<unsigned char>(iGreen),
-                                           static_cast<unsigned char>(iBlue), static_cast<unsigned char>(iAlpha));
+        unsigned long ulColor = COLOR_RGBA(static_cast<unsigned char>(iRed), static_cast<unsigned char>(iGreen), static_cast<unsigned char>(iBlue),
+                                           static_cast<unsigned char>(iAlpha));
         lua_pushinteger(luaVM, static_cast<lua_Integer>(ulColor));
         return 1;
     }

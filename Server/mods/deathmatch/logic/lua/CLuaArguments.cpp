@@ -22,13 +22,13 @@
 #include "CAccessControlListGroup.h"
 
 #ifndef WIN32
-#include <clocale>
+    #include <clocale>
 #endif
 
 extern CGame* g_pGame;
 
 #ifndef VERIFY_ELEMENT
-#define VERIFY_ELEMENT(element) (g_pGame->GetMapManager()->GetRootElement()->IsMyChild(element, true) && !element->IsBeingDeleted())
+    #define VERIFY_ELEMENT(element) (g_pGame->GetMapManager()->GetRootElement()->IsMyChild(element, true) && !element->IsBeingDeleted())
 #endif
 
 CLuaArguments::CLuaArguments(const CLuaArguments& Arguments, CFastHashMap<CLuaArguments*, CLuaArguments*>* pKnownTables)

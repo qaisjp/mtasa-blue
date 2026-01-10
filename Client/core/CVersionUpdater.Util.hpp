@@ -31,8 +31,8 @@ class CVersionUpdater;
     </master>
     <version>
         <serverlist>
-            <server priority="3">https://updatesa.mtasa.com/sa/version/?v=%VERSION%&amp;id=%ID%&amp;ty=%TYPE%&amp;da=%DATA%&amp;be=%BETA%&amp;re=%REFER%</server>
             <server
+priority="3">https://updatesa.mtasa.com/sa/version/?v=%VERSION%&amp;id=%ID%&amp;ty=%TYPE%&amp;da=%DATA%&amp;be=%BETA%&amp;re=%REFER%</server> <server
 priority="3">https://updatesa.multitheftauto.com/sa/version/?v=%VERSION%&amp;id=%ID%&amp;ty=%TYPE%&amp;da=%DATA%&amp;be=%BETA%&amp;re=%REFER%</server>
         </serverlist>
         <interval>12h</interval>
@@ -133,7 +133,10 @@ namespace
         BUTTON_3,
     };
 
-    CQuestionBox& GetQuestionBox() { return *CCore::GetSingleton().GetLocalGUI()->GetMainMenu()->GetQuestionWindow(); }
+    CQuestionBox& GetQuestionBox()
+    {
+        return *CCore::GetSingleton().GetLocalGUI()->GetMainMenu()->GetQuestionWindow();
+    }
 
 }            // namespace
 
@@ -883,11 +886,11 @@ namespace
             CStringPair pair;
             pair.strValue1 = strValue1.ToLower();
             pair.strValue2 = strValue2.ToLower();
-    #if MTA_DEBUG
+#if MTA_DEBUG
             CStringPair* pPair = MapFind(*this, strType.ToLower());
             if (!pPair || pPair->strValue1 != pair.strValue1 || pPair->strValue2 != pair.strValue2)
                 OutputDebugLine(SString("[Updater] SetCondition %s %s %s", strType.c_str(), strValue1.c_str(), strValue2.c_str()));
-    #endif
+#endif
             MapSet(*this, strType.ToLower(), pair);
         }
 

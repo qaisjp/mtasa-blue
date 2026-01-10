@@ -18,7 +18,7 @@
 #include <fstream>
 #include <array>
 #include <algorithm>
-#include "Userenv.h"        // This will enable SharedUtil::ExpandEnvString
+#include "Userenv.h"            // This will enable SharedUtil::ExpandEnvString
 #define ALLOC_STATS_MODULE_NAME "core"
 #include "SharedUtil.hpp"
 #include <clocale>
@@ -49,7 +49,7 @@ extern fs::path g_gtaDirectory;
 template <>
 CCore* CSingleton<CCore>::m_pSingleton = NULL;
 
-static auto Win32LoadLibraryA = LoadLibraryA;
+static auto                Win32LoadLibraryA = LoadLibraryA;
 static constexpr long long TIME_DISCORD_UPDATE_RICH_PRESENCE_RATE = 10000;
 
 static HMODULE WINAPI SkipDirectPlay_LoadLibraryA(LPCSTR fileName)
@@ -1213,12 +1213,12 @@ CWebCoreInterface* CCore::GetWebCore()
 
         // Log current working directory
         wchar_t cwdBeforeWebInit[32768]{};
-        DWORD cwdBeforeWebInitLen = GetCurrentDirectoryW(32768, cwdBeforeWebInit);
+        DWORD   cwdBeforeWebInitLen = GetCurrentDirectoryW(32768, cwdBeforeWebInit);
         if (cwdBeforeWebInitLen > 0)
         {
             WriteDebugEvent(SString("CCore::GetWebCore - CWD before Initialise: %S", cwdBeforeWebInit));
         }
-        
+
         // Keep m_pWebCore alive even if Initialise() fails
         // CefInitialize() can only be called once per process
         // Deleting and recreating m_pWebCore causes repeated initialization attempts
@@ -1233,7 +1233,7 @@ CWebCoreInterface* CCore::GetWebCore()
             WriteDebugEvent("CCore::GetWebCore - Initialise threw exception");
             bInitSuccess = false;
         }
-        
+
         if (!bInitSuccess)
         {
             WriteDebugEvent("CCore::GetWebCore - Initialise failed");
@@ -1246,7 +1246,7 @@ CWebCoreInterface* CCore::GetWebCore()
         if (!m_pWebCore->IsInitialised())
             return nullptr;
     }
-    
+
     return m_pWebCore;
 }
 
@@ -1580,7 +1580,6 @@ void CCore::Quit(bool bInstantly)
 
         // Destroy ourself (unreachable but kept for completeness)
         delete CCore::GetSingletonPtr();
-
     }
     else
     {
@@ -1911,9 +1910,9 @@ void CCore::ApplyCoreInitSettings()
         SetApplicationSettingInt("reset-settings-revision", 21486);
     }
 
-    HANDLE process = GetCurrentProcess();
+    HANDLE    process = GetCurrentProcess();
     const int priorities[] = {NORMAL_PRIORITY_CLASS, ABOVE_NORMAL_PRIORITY_CLASS, HIGH_PRIORITY_CLASS};
-    int priority = CVARS_GET_VALUE<int>("process_priority") % 3;
+    int       priority = CVARS_GET_VALUE<int>("process_priority") % 3;
 
     SetPriorityClass(process, priorities[priority]);
 
@@ -1924,7 +1923,7 @@ void CCore::ApplyCoreInitSettings()
 
     DWORD_PTR mask;
     DWORD_PTR sys;
-    BOOL result = GetProcessAffinityMask(process, &mask, &sys);
+    BOOL      result = GetProcessAffinityMask(process, &mask, &sys);
 
     if (result)
         SetProcessAffinityMask(process, mask & ~1);
@@ -2214,10 +2213,10 @@ namespace
     bool IsCoreDump(const SString& filePath)
     {
         constexpr std::array<std::uint32_t, 4> markers = {
-            0x734C4F50,  // 'POLs'
-            0x73443344,  // 'D3Ds'
-            0x73474F4C,  // 'LOGs'
-            0x73524557   // 'WERs' - WER fail-fast crash info
+            0x734C4F50,            // 'POLs'
+            0x73443344,            // 'D3Ds'
+            0x73474F4C,            // 'LOGs'
+            0x73524557             // 'WERs' - WER fail-fast crash info
         };
 
         constexpr std::size_t tailSize = 64 * 1024;
@@ -2253,7 +2252,7 @@ namespace
 
         return false;
     }
-}
+}            // namespace
 
 //
 // Handle encryption of Windows crash dump files
@@ -2445,9 +2444,8 @@ bool CCore::IsUsingCustomStreamingMemorySize()
 // Streaming memory size used [In Bytes]
 size_t CCore::GetStreamingMemory()
 {
-    return IsUsingCustomStreamingMemorySize()
-        ? m_CustomStreamingMemoryLimitBytes
-        : CVARS_GET_VALUE<size_t>("streaming_memory") * 1024 * 1024; // MB to B conversion
+    return IsUsingCustomStreamingMemorySize() ? m_CustomStreamingMemoryLimitBytes
+                                              : CVARS_GET_VALUE<size_t>("streaming_memory") * 1024 * 1024;            // MB to B conversion
 }
 
 // Discord rich presence

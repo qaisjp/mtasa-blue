@@ -15,13 +15,13 @@
 #include <pthread.h>
 
 #ifdef WIN32
-#ifndef _WINSOCKAPI_
+    #ifndef _WINSOCKAPI_
 struct timeval
 {
     long tv_sec;  /* seconds */
     long tv_usec; /* and microseconds */
 };
-#endif
+    #endif
 #else
     #include <sys/time.h>
 #endif
@@ -90,14 +90,14 @@ namespace SharedUtil
             {
                 // Get time now
                 struct timeval tv;
-    #ifdef WIN32
+#ifdef WIN32
                 _timeb timeb;
                 _ftime(&timeb);
                 tv.tv_sec = static_cast<ulong>(timeb.time);
                 tv.tv_usec = timeb.millitm * 1000;
-    #else
+#else
                 gettimeofday(&tv, NULL);
-    #endif
+#endif
                 // Add the timeout length
                 tv.tv_sec += uiTimeout / 1000;
                 tv.tv_usec += (uiTimeout % 1000) * 1000;

@@ -410,7 +410,7 @@ void CMarker::UpdateCollisionObject(unsigned char ucOldType)
         {
             if (m_pCollision)
                 g_pGame->GetElementDeleter()->Delete(m_pCollision);
-            
+
             m_pCollision = new CColSphere(m_pColManager, nullptr, m_vecPosition, m_fSize, true);
         }
 
