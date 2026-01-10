@@ -54,7 +54,7 @@ namespace std
 #endif
 
 #ifdef WIN32
-    // Forward declare basic windows types to avoid including windows.h here
+             // Forward declare basic windows types to avoid including windows.h here
     #ifdef STRICT
 struct HGLOBAL__;
 using WinHGlobalHandle = struct HGLOBAL__*;
