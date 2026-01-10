@@ -14,8 +14,8 @@
 #include <game/Task.h>
 #include "TaskNamesSA.h"
 
-#define FUNC_CTask__Operator_New            0x61A5A0
-#define FUNC_CTask__Operator_Delete         0x61A5B0
+#define FUNC_CTask__Operator_New    0x61A5A0
+#define FUNC_CTask__Operator_Delete 0x61A5B0
 
 class CTaskTimer
 {
@@ -84,10 +84,10 @@ public:
     const char* GetTaskName();
 
     // our function(s)
-    void              SetInterface(CTaskSAInterface* pInterface) { TaskInterface = pInterface; };
+    void                    SetInterface(CTaskSAInterface* pInterface) { TaskInterface = pInterface; };
     CTaskSAInterface*       GetInterface() noexcept { return TaskInterface; }
     const CTaskSAInterface* GetInterface() const noexcept { return TaskInterface; }
-    bool              IsValid() { return GetInterface() != NULL; }
+    bool                    IsValid() { return GetInterface() != NULL; }
 
     void CreateTaskInterface(size_t nSize);
 
@@ -111,7 +111,7 @@ public:
 class CTaskSimpleSA : public virtual CTaskSA, public virtual CTaskSimple
 {
 public:
-    CTaskSimpleSA(){};
+    CTaskSimpleSA() {};
 
     bool ProcessPed(CPed* pPed);
     bool SetPedPosition(CPed* pPed);
@@ -126,7 +126,7 @@ public:
 class CTaskComplexSA : public virtual CTaskSA, public virtual CTaskComplex
 {
 public:
-    CTaskComplexSA(){};
+    CTaskComplexSA() {};
 
     void   SetSubTask(CTask* pSubTask);
     CTask* CreateNextSubTask(CPed* pPed);

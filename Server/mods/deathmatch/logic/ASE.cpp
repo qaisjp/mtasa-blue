@@ -18,7 +18,7 @@
 
 extern "C"
 {
-    #include "ASEQuerySDK.h"
+#include "ASEQuerySDK.h"
 }
 
 ASE* ASE::_instance = NULL;
@@ -123,13 +123,13 @@ bool ASE::SetPortEnabled(bool bInternetEnabled, bool bLanEnabled)
             return false;
         }
 
-        // Set it to non blocking, so we dont have to wait for a packet
-        #ifdef WIN32
+// Set it to non blocking, so we dont have to wait for a packet
+#ifdef WIN32
         unsigned long ulNonBlock = 1;
         ioctlsocket(newSocket, FIONBIO, &ulNonBlock);
-        #else
+#else
         fcntl(newSocket, F_SETFL, fcntl(newSocket, F_GETFL) | O_NONBLOCK);
-        #endif
+#endif
 
         m_SocketList.push_back(newSocket);
     }

@@ -47,9 +47,9 @@ namespace SharedUtil
         SetDebugTagHidden("LogEvent");
         SetDebugTagHidden("Mem");
 
-        #ifdef Has_InitDebugTagsLocal
+    #ifdef Has_InitDebugTagsLocal
         InitDebugTagsLocal();
-        #endif
+    #endif
     }
 
     static std::set<SString> ms_debugTagInvisibleMap;
@@ -96,11 +96,11 @@ void SharedUtil::OutputDebugLine(const char* szMessage)
     SString strMessage = GetLocalTimeString(false, true) + " - " + szMessage;
     if (strMessage.length() > 0 && strMessage[strMessage.length() - 1] != '\n')
         strMessage += "\n";
-#ifdef _WIN32
+    #ifdef _WIN32
     OutputDebugStringW(FromUTF8(strMessage));
-#else
-            // Other platforms here
-#endif
+    #else
+        // Other platforms here
+    #endif
 }
 
 namespace SharedUtil
@@ -133,7 +133,7 @@ namespace SharedUtil
     }
 }            // namespace SharedUtil
 
-#endif  // MTA_DEBUG
+#endif            // MTA_DEBUG
 
 //
 // Output timestamped line into the debugger
@@ -146,7 +146,7 @@ void SharedUtil::OutputReleaseLine(const char* szMessage)
 #ifdef _WIN32
     OutputDebugStringW(FromUTF8(strMessage));
 #else
-        // Other platforms here
+    // Other platforms here
 #endif
 }
 

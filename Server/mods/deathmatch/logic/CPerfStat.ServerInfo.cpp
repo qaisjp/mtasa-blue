@@ -51,7 +51,7 @@ namespace
         return strResult;
     }
 
-    #define UDP_PACKET_OVERHEAD (28LL)
+#define UDP_PACKET_OVERHEAD (28LL)
 }            // namespace
 
 ///////////////////////////////////////////////////////////////

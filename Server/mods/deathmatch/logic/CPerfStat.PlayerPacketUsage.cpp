@@ -19,7 +19,7 @@ extern CNetServer* g_pRealNetServer;
 
 namespace
 {
-    #define TOP_COUNT (3)
+#define TOP_COUNT (3)
 
     struct CTopValue
     {

@@ -93,7 +93,7 @@ public:
     // Constructor for original entries
     CHandlingEntrySA(const tHandlingDataSA* const pOriginal);
 
-    virtual ~CHandlingEntrySA(){};
+    virtual ~CHandlingEntrySA() {};
 
     // Use this to copy data from an another handling class to this
     void Assign(const CHandlingEntry* const pEntry) noexcept;

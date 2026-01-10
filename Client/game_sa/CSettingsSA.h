@@ -15,30 +15,30 @@
 
 #include <game/CSettings.h>
 
-#define CLASS_CMenuManager      0xBA6748
+#define CLASS_CMenuManager 0xBA6748
 
-#define FUNC_CMenuManager_Save  0x57C660
+#define FUNC_CMenuManager_Save 0x57C660
 
-#define VAR_ucFxQuality         0xA9AE54
-#define VAR_fMouseSensitivity   0xB6EC1C
-#define VAR_RadarMode           0xBA676C
+#define VAR_ucFxQuality       0xA9AE54
+#define VAR_fMouseSensitivity 0xB6EC1C
+#define VAR_RadarMode         0xBA676C
 
-#define CLASS_CAudioEngine 0xB6BC90
+#define CLASS_CAudioEngine                       0xB6BC90
 #define FUNC_CAudioEngine_SetEffectsMasterVolume 0x506E10
-#define FUNC_CAudioEngine_SetMusicMasterVolume 0x506DE0
+#define FUNC_CAudioEngine_SetMusicMasterVolume   0x506DE0
 
-#define CLASS_CGamma 0xC92134
+#define CLASS_CGamma         0xC92134
 #define FUNC_CGamma_SetGamma 0x747200
 
-#define FUNC_SetAntiAliasing    0x7F8A90
+#define FUNC_SetAntiAliasing 0x7F8A90
 
-#define DEFAULT_VEHICLE_LOD_DISTANCE    ( 70.0f )
-#define DEFAULT_PEDS_LOD_DISTANCE       ( 60.0f )
+#define DEFAULT_VEHICLE_LOD_DISTANCE (70.0f)
+#define DEFAULT_PEDS_LOD_DISTANCE    (60.0f)
 // Default train distance is 150, so make it relative to default vehicle distance
-#define TRAIN_LOD_DISTANCE_MULTIPLIER   ( 2.14f )
-#define MAX_VEHICLE_LOD_DISTANCE        ( 500.0f )
-#define MAX_PEDS_LOD_DISTANCE           ( 500.0f )
-#define DEFAULT_BLUR_LEVEL              ( 36 )
+#define TRAIN_LOD_DISTANCE_MULTIPLIER (2.14f)
+#define MAX_VEHICLE_LOD_DISTANCE      (500.0f)
+#define MAX_PEDS_LOD_DISTANCE         (500.0f)
+#define DEFAULT_BLUR_LEVEL            (36)
 
 struct CSettingsSAInterface            // see code around 0x57CE9A for where these are
 {
@@ -141,7 +141,7 @@ public:
     bool IsVolumetricShadowsEnabled() const noexcept;
     bool GetVolumetricShadowsEnabledByVideoSetting() const noexcept;
     bool ResetVolumetricShadows() noexcept;
- 
+
     void SetVolumetricShadowsEnabled(bool bEnable);
     void SetVolumetricShadowsSuspended(bool bSuspended);
 

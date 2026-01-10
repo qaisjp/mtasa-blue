@@ -266,7 +266,7 @@ bool CEntityAddPacket::Write(NetBitStreamInterface& BitStream) const
 
                     // Scale
                     const CVector& vecScale = pObject->GetScale();
-                    bool bIsUniform = (vecScale.fX == vecScale.fY && vecScale.fX == vecScale.fZ);
+                    bool           bIsUniform = (vecScale.fX == vecScale.fY && vecScale.fX == vecScale.fZ);
                     BitStream.WriteBit(bIsUniform);
                     if (bIsUniform)
                     {
@@ -365,10 +365,10 @@ bool CEntityAddPacket::Write(NetBitStreamInterface& BitStream) const
                         BitStream.WriteBit(weaponConfig.flags.bSeeThroughStuff);
                         BitStream.WriteBit(weaponConfig.flags.bShootThroughStuff);
 
-                        auto           usAmmo = static_cast<unsigned short>(pWeapon->GetAmmo());
-                        auto           usClipAmmo = static_cast<unsigned short>(pWeapon->GetAmmo());
-                        ElementID      OwnerID = pWeapon->GetOwner() == NULL ? INVALID_ELEMENT_ID : pWeapon->GetOwner()->GetID();
-                        unsigned char  ucWeaponState = pWeapon->GetWeaponState();
+                        auto          usAmmo = static_cast<unsigned short>(pWeapon->GetAmmo());
+                        auto          usClipAmmo = static_cast<unsigned short>(pWeapon->GetAmmo());
+                        ElementID     OwnerID = pWeapon->GetOwner() == NULL ? INVALID_ELEMENT_ID : pWeapon->GetOwner()->GetID();
+                        unsigned char ucWeaponState = pWeapon->GetWeaponState();
                         BitStream.WriteBits(&ucWeaponState, 4);            // 4 bits = 8 possible values for weapon state
                         BitStream.Write(usAmmo);
                         BitStream.Write(usClipAmmo);
@@ -953,7 +953,7 @@ bool CEntityAddPacket::Write(NetBitStreamInterface& BitStream) const
 
                     // Animation
                     const SPlayerAnimData& animData = pPed->GetAnimationData();
-                    bool animRunning = animData.IsAnimating();
+                    bool                   animRunning = animData.IsAnimating();
                     BitStream.WriteBit(animRunning);
 
                     if (animRunning)
@@ -1129,7 +1129,7 @@ bool CEntityAddPacket::Write(NetBitStreamInterface& BitStream) const
                     BitStream.WriteCompressed(pBuilding->GetInterior());
 
                     CBuilding* pLowLodBuilding = pBuilding->GetLowLodElement();
-                    ElementID lowLodBuildingID = pLowLodBuilding ? pLowLodBuilding->GetID() : INVALID_ELEMENT_ID;
+                    ElementID  lowLodBuildingID = pLowLodBuilding ? pLowLodBuilding->GetID() : INVALID_ELEMENT_ID;
                     BitStream.Write(lowLodBuildingID);
                     break;
                 }

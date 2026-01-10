@@ -23,12 +23,11 @@ extern IDirectInput8* g_pDirectInput8;
 // Helper stuff
 //
 
-#ifndef NUMELMS     // in DShow.h
-    #define NUMELMS(aa) (sizeof(aa)/sizeof((aa)[0]))
+#ifndef NUMELMS            // in DShow.h
+    #define NUMELMS(aa) (sizeof(aa) / sizeof((aa)[0]))
 #endif
 
-#define VALID_INDEX_FOR( array, index ) \
-            ( index >= 0 && index < NUMELMS(array) )
+#define VALID_INDEX_FOR(array, index) (index >= 0 && index < NUMELMS(array))
 
 SString GUIDToString(const GUID& g)
 {
@@ -400,7 +399,7 @@ BOOL CJoystickManager::DoEnumObjectsCallback(const DIDEVICEOBJECTINSTANCE* pdido
         WriteDebugEvent("                    " + strStatus);
 
 #ifdef MTA_DEBUG
-#if 0
+    #if 0
         if ( CCore::GetSingleton ().GetConsole () )
             CCore::GetSingleton ().GetConsole ()->Printf(
                             "%p  dwHow:%d  dwObj:%d  guid:%x  index:%d  lMin:%d  lMax:%d"
@@ -413,7 +412,7 @@ BOOL CJoystickManager::DoEnumObjectsCallback(const DIDEVICEOBJECTINSTANCE* pdido
                             ,range.lMax
                             );
 
-#endif
+    #endif
 #endif
     }
 
@@ -1081,7 +1080,7 @@ void CJoystickManager::ApplyAxes(CControllerState& cs, bool bInVehicle)
 
     // Debug output
 #ifdef MTA_DEBUG
-#if 0
+    #if 0
 
     SString strBuffer = SString::Printf ( "LeftShoulder1: %u\n"
                                 "LeftShoulder2: %u\n"
@@ -1153,7 +1152,7 @@ void CJoystickManager::ApplyAxes(CControllerState& cs, bool bInVehicle)
 
     CCore::GetSingleton ().GetGraphics ()->DrawString ( 20, 550, 0xFFFFFFFF, 1, strBuffer );
 
-#endif
+    #endif
 #endif
 }
 

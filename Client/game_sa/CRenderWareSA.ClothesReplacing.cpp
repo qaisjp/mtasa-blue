@@ -219,8 +219,8 @@ __declspec(noinline) bool _cdecl OnCStreaming_RequestModel_Mid(int flags, SImgGT
     if (ms_ReplacementClothesFileDataMap.empty() && ms_ClothesFileDataMap.empty())
         return false;
 
-    static std::map<std::uint32_t, int>     blockOffsetToFileIdMap;
-    std::map<std::uint32_t, std::string>    blockOffsetToFileNameMap;
+    static std::map<std::uint32_t, int>  blockOffsetToFileIdMap;
+    std::map<std::uint32_t, std::string> blockOffsetToFileNameMap;
 
     if (blockOffsetToFileIdMap.empty() || ms_ClothesFileDataMap.size() > 0)
     {
@@ -260,8 +260,8 @@ __declspec(noinline) bool _cdecl OnCStreaming_RequestModel_Mid(int flags, SImgGT
     if (!replacementFileData)
         return false;
 
-        // If bLoadingBigModel is set, try to get it unset
-    #define VAR_CStreaming_bLoadingBigModel     0x08E4A58
+    // If bLoadingBigModel is set, try to get it unset
+#define VAR_CStreaming_bLoadingBigModel 0x08E4A58
     BYTE& bLoadingBigModel = *(BYTE*)VAR_CStreaming_bLoadingBigModel;
     if (bLoadingBigModel)
     {
@@ -285,10 +285,10 @@ __declspec(noinline) bool _cdecl OnCStreaming_RequestModel_Mid(int flags, SImgGT
 }
 
 // Hook info
-#define HOOKPOS_CStreaming_RequestModel_Mid             0x040895A
-#define HOOKSIZE_CStreaming_RequestModel_Mid            5
-DWORD RETURN_CStreaming_RequestModel_MidA = 0x0408960;
-DWORD RETURN_CStreaming_RequestModel_MidB = 0x0408990;
+#define HOOKPOS_CStreaming_RequestModel_Mid  0x040895A
+#define HOOKSIZE_CStreaming_RequestModel_Mid 5
+DWORD                         RETURN_CStreaming_RequestModel_MidA = 0x0408960;
+DWORD                         RETURN_CStreaming_RequestModel_MidB = 0x0408990;
 static void __declspec(naked) HOOK_CStreaming_RequestModel_Mid()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;

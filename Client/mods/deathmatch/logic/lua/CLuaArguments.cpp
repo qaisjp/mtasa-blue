@@ -15,7 +15,7 @@
 using namespace std;
 
 #ifndef VERIFY_ENTITY
-#define VERIFY_ENTITY(entity) (CStaticFunctionDefinitions::GetRootElement()->IsMyChild(entity,true)&&!entity->IsBeingDeleted())
+    #define VERIFY_ENTITY(entity) (CStaticFunctionDefinitions::GetRootElement()->IsMyChild(entity, true) && !entity->IsBeingDeleted())
 #endif
 
 extern CClientGame* g_pClientGame;

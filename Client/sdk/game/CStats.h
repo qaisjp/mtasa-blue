@@ -13,8 +13,8 @@
 
 #include "CWeaponInfo.h"
 
-#define STATS_OFFSET        120
-#define STATS_BLANK_OFFSET  320
+#define STATS_OFFSET       120
+#define STATS_BLANK_OFFSET 320
 
 enum
 {
@@ -541,7 +541,7 @@ enum
 };
 
 #define MAX_INT_STATS (MAX_INT_FLOAT_STATS - STATS_OFFSET)
-#define MAX_STATS (MAX_INT_STATS + MAX_FLOAT_STATS)
+#define MAX_STATS     (MAX_INT_STATS + MAX_FLOAT_STATS)
 
 class CStats
 {

@@ -44,4 +44,4 @@ namespace CameraScriptShared
             normalized += kFullRotationDegrees;
         return normalized;
     }
-}
+}            // namespace CameraScriptShared

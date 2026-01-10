@@ -537,7 +537,7 @@ public:
         {
             return lua_toboolean(m_luaVM, m_iIndex++) ? true : false;
         }
-        
+
         m_iIndex++;
         return false;
     }
@@ -619,9 +619,9 @@ public:
         const int iArgument = lua_type(m_luaVM, m_iIndex);
         if (iArgument == LUA_TSTRING)
         {
-            size_t length;
+            size_t      length;
             const char* str = lua_tolstring(m_luaVM, m_iIndex, &length);
-            unsigned hash = lua_tostringhash(m_luaVM, m_iIndex++);
+            unsigned    hash = lua_tostringhash(m_luaVM, m_iIndex++);
 
             try
             {
@@ -633,7 +633,7 @@ public:
             }
 
             return;
-        }        
+        }
 
         outValue.Clear();
         SetTypeError("string");
@@ -1455,11 +1455,11 @@ public:
         // Output warning here (there's no better way to integrate it without huge code changes
         if (!m_bError && !m_strCustomWarning.empty())
         {
-            #ifdef MTA_CLIENT
+#ifdef MTA_CLIENT
             CLuaFunctionDefs::m_pScriptDebugging->LogWarning(m_luaVM, m_strCustomWarning);
-            #else
+#else
             g_pGame->GetScriptDebugging()->LogWarning(m_luaVM, m_strCustomWarning);
-            #endif
+#endif
 
             m_strCustomWarning.clear();
         }

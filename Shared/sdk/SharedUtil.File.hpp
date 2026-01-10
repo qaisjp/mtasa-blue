@@ -22,13 +22,13 @@
 #include "SharedUtil.Buffer.h"
 #include <algorithm>
 
-#if __cplusplus >= 201703L // C++17
+#if __cplusplus >= 201703L            // C++17
     #include <filesystem>
 #endif
 
 #ifdef _WIN32
     #ifndef NOMINMAX
-    #define NOMINMAX
+        #define NOMINMAX
     #endif
     #include "Windows.h"
     #include "shellapi.h"
@@ -238,17 +238,17 @@ bool SharedUtil::FileLoad(std::nothrow_t, const SString& filePath, SString& outB
     CloseHandle(handle);
     return true;
 #else
-#ifdef __APPLE__
+    #ifdef __APPLE__
     struct stat info;
 
     if (stat(filePath, &info) != 0)
         return false;
-#else
+    #else
     struct stat64 info;
 
     if (stat64(filePath, &info) != 0)
         return false;
-#endif
+    #endif
 
     size_t fileSize = static_cast<size_t>(info.st_size);
 
@@ -279,11 +279,11 @@ bool SharedUtil::FileLoad(std::nothrow_t, const SString& filePath, SString& outB
         return false;
     }
 
-#ifdef __APPLE__
+    #ifdef __APPLE__
     if (fseeko(handle, static_cast<off_t>(offset), SEEK_SET) != 0)
-#else
+    #else
     if (fseeko64(handle, static_cast<off64_t>(offset), SEEK_SET) != 0)
-#endif
+    #endif
     {
         fclose(handle);
         outBuffer.clear();
@@ -492,7 +492,7 @@ void SharedUtil::MakeSureDirExists(const SString& strPath)
     }
 #else
     std::filesystem::path filePath = static_cast<std::string>(PathConform(strPath));
-    std::error_code ec{};
+    std::error_code       ec{};
     std::filesystem::create_directories(filePath.parent_path(), ec);
 #endif
 }
@@ -574,7 +574,7 @@ SString SharedUtil::GetSystemCurrentDirectory()
 }
 
 #ifdef _WIN32
-#ifdef MTA_CLIENT
+    #ifdef MTA_CLIENT
 
 SString SharedUtil::GetSystemDllDirectory()
 {
@@ -725,12 +725,12 @@ SString SharedUtil::GetDriveNameWithNotEnoughSpace(uint uiResourcesPathMinMB, ui
     return "";
 }
 
-#endif  // #ifdef MTA_CLIENT
-#endif  // #ifdef _WIN32
+    #endif            // #ifdef MTA_CLIENT
+#endif                // #ifdef _WIN32
 
 WString SharedUtil::FromUTF8(const SString& strPath)
 {
-#ifdef WIN32_TESTING   // This might be faster - Needs testing
+#ifdef WIN32_TESTING            // This might be faster - Needs testing
     const char* szSrc = strPath;
     uint        cCharacters = strlen(szSrc) + 1;
     uint        cbUnicode = cCharacters * 4;
@@ -751,7 +751,7 @@ WString SharedUtil::FromUTF8(const SString& strPath)
 
 SString SharedUtil::ToUTF8(const WString& strPath)
 {
-#ifdef WIN32_TESTING   // This might be faster - Needs testing
+#ifdef WIN32_TESTING            // This might be faster - Needs testing
     const wchar_t* pszW = strPath;
     uint           cCharacters = wcslen(pszW) + 1;
     uint           cbAnsi = cCharacters * 6;
@@ -890,7 +890,7 @@ std::vector<SString> SharedUtil::FindFiles(const SString& strInMatch, bool bFile
         strMatch += "*";
 
     _WIN32_FIND_DATAW findData;
-    HANDLE           hFind = FindFirstFileW(FromUTF8(strMatch), &findData);
+    HANDLE            hFind = FindFirstFileW(FromUTF8(strMatch), &findData);
     if (hFind != INVALID_HANDLE_VALUE)
     {
         try
@@ -1102,12 +1102,14 @@ SString SharedUtil::MakeGenericPath(const SString& uniqueFilePath)
 SString SharedUtil::ConformPathForSorting(const SString& strPathFilename)
 {
     SString strResult = strPathFilename;
-    std::transform(strResult.begin(), strResult.end(), strResult.begin(), [](int c) {
-        // Ignores locale and always does this:
-        if (c >= 'A' && c <= 'Z')
-            c = c - 'A' + 'a';
-        return c;
-    });
+    std::transform(strResult.begin(), strResult.end(), strResult.begin(),
+                   [](int c)
+                   {
+                       // Ignores locale and always does this:
+                       if (c >= 'A' && c <= 'Z')
+                           c = c - 'A' + 'a';
+                       return c;
+                   });
     return strResult;
 }
 
@@ -1153,7 +1155,7 @@ SString SharedUtil::GetSystemLongPathName(const SString& strPath)
         return strPath;
     return ToUTF8(szBuffer);
 }
-#endif // _WIN32
+#endif            // _WIN32
 
 FILE* SharedUtil::File::Fopen(const char* szFilename, const char* szMode)
 {
@@ -1225,7 +1227,9 @@ std::vector<std::string> SharedUtil::ListDir(const char* szPath) noexcept
                 entries.push_back(entry.path().filename().string());
         }
     }
-    catch (...) {} // catch all possible errors and ignore them
+    catch (...)
+    {
+    }            // catch all possible errors and ignore them
 #else
     #ifdef _WIN32
     std::string search_path = szPath;
@@ -1237,9 +1241,9 @@ std::vector<std::string> SharedUtil::ListDir(const char* szPath) noexcept
 
     try
     {
-        WString wideSearchPath = FromUTF8(search_path);
+        WString          wideSearchPath = FromUTF8(search_path);
         WIN32_FIND_DATAW fd;
-        HANDLE hFind = ::FindFirstFileW(wideSearchPath.c_str(), &fd);
+        HANDLE           hFind = ::FindFirstFileW(wideSearchPath.c_str(), &fd);
 
         if (hFind != INVALID_HANDLE_VALUE)
         {
@@ -1265,7 +1269,7 @@ std::vector<std::string> SharedUtil::ListDir(const char* szPath) noexcept
     }
 
     WIN32_FIND_DATAA fd;
-    HANDLE hFind = ::FindFirstFileA(search_path.c_str(), &fd);
+    HANDLE           hFind = ::FindFirstFileA(search_path.c_str(), &fd);
     if (hFind == INVALID_HANDLE_VALUE)
         return {};
 

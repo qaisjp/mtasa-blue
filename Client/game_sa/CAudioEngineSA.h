@@ -13,29 +13,29 @@
 
 #include <game/CAudioEngine.h>
 
-#define FUNC_ReportFrontendAudioEvent           0x506EA0
-#define FUNC_PreloadBeatTrack                   0x507F40
-#define FUNC_PlayPreloadedBeatTrack             0x507180
+#define FUNC_ReportFrontendAudioEvent 0x506EA0
+#define FUNC_PreloadBeatTrack         0x507F40
+#define FUNC_PlayPreloadedBeatTrack   0x507180
 
-#define FUNC_SetEffectsMasterVolume             0x506E10
-#define FUNC_SetMusicMasterVolume               0x506DE0
+#define FUNC_SetEffectsMasterVolume 0x506E10
+#define FUNC_SetMusicMasterVolume   0x506DE0
 
-#define FUNC_ReportMissionAudioEvent_Vehicle    0x507390
-#define FUNC_ReportMissionAudioEvent_Vector     0x507340
-#define FUNC_PauseAllSounds                     0x507430
-#define FUNC_ResumeAllSounds                    0x507440
-#define FUNC_StopRadio                          0x506F70
-#define FUNC_StartRadio2                        0x507DC0
+#define FUNC_ReportMissionAudioEvent_Vehicle 0x507390
+#define FUNC_ReportMissionAudioEvent_Vector  0x507340
+#define FUNC_PauseAllSounds                  0x507430
+#define FUNC_ResumeAllSounds                 0x507440
+#define FUNC_StopRadio                       0x506F70
+#define FUNC_StartRadio2                     0x507DC0
 
-#define VAR_AudioEventVolumes                   0xBD00F8 // m_pAudioEventVolumes
+#define VAR_AudioEventVolumes 0xBD00F8            // m_pAudioEventVolumes
 
-#define CLASS_CAudioEngine                      0xB6BC90
-#define CLASS_AERadioTrackManager               0x8CB6F8
-#define CLASS_AECutsceneTrackManager            0x8AE554
-#define FUNC_CAudioEngine_ReportBulletHit                   0x506ec0
-#define FUNC_CAudioEngine_ReportWeaponEvent                 0x506f40
+#define CLASS_CAudioEngine                  0xB6BC90
+#define CLASS_AERadioTrackManager           0x8CB6F8
+#define CLASS_AECutsceneTrackManager        0x8AE554
+#define FUNC_CAudioEngine_ReportBulletHit   0x506ec0
+#define FUNC_CAudioEngine_ReportWeaponEvent 0x506f40
 
-#define FUNC_CAESound__Stop                     0x4EF1C0
+#define FUNC_CAESound__Stop 0x4EF1C0
 
 class CAudioEngineSAInterface
 {

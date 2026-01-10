@@ -21,8 +21,8 @@
 #define FUNC_GetAeroplaneCompStatus 0x6C2300
 #define FUNC_FuckCarCompletely      0x6c25d0
 
-#define MAX_DOORS                   6   // also in CAutomobile
-#define MAX_WHEELS                  4
+#define MAX_DOORS  6            // also in CAutomobile
+#define MAX_WHEELS 4
 
 class CDamageManagerSAInterface            // 28 bytes due to the way its packed (24 containing actual data)
 {

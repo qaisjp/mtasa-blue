@@ -23,9 +23,9 @@ extern int ms_iNumNonDefaultAndNonZeroVertices;
 
 using namespace std;
 
-#define POLYENTRY_TYPE(entry) ( (entry)->m_wValue >> 14 )
-#define POLYENTRY_ID(entry) ( (entry)->m_wValue & 0x3FFF )
-#define MAKE_POLYENTRY(type, id) (WORD)( ((type) << 14) | (id) )
+#define POLYENTRY_TYPE(entry)    ((entry)->m_wValue >> 14)
+#define POLYENTRY_ID(entry)      ((entry)->m_wValue & 0x3FFF)
+#define MAKE_POLYENTRY(type, id) (WORD)(((type) << 14) | (id))
 
 // These are code references in SA to the various data pools. We relocate these pools
 // to our own buffers to have more space, and thus have to update all references.
@@ -361,12 +361,12 @@ void CWaterManagerSA::RelocatePools()
         }
     }
 
-    //
-    // Fix outside world water blocks disappearing when using long draw distances
-    //
+//
+// Fix outside world water blocks disappearing when using long draw distances
+//
 
-    // GTA default is 70 blocks. We increase this to 512 which is 2^9
-    #define OUTSIDE_WORLD_BLOCKS_BITS   9
+// GTA default is 70 blocks. We increase this to 512 which is 2^9
+#define OUTSIDE_WORLD_BLOCKS_BITS 9
     static short ms_BlocksToBeRenderedOutsideWorldX[1 << OUTSIDE_WORLD_BLOCKS_BITS];
     static short ms_BlocksToBeRenderedOutsideWorldY[1 << OUTSIDE_WORLD_BLOCKS_BITS];
 
@@ -396,7 +396,7 @@ void CWaterManagerSA::RelocatePools()
 // pool; however in MTA, we can dynamically delete water polys,
 // creating gaps. These hooks make SA skip empty pool slots.
 
-DWORD dwHook6E9E23continue = 0x6E9E29;
+DWORD                         dwHook6E9E23continue = 0x6E9E29;
 static void __declspec(naked) Hook6E9E23()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -419,8 +419,8 @@ static void __declspec(naked) Hook6E9E23()
     // clang-format on
 }
 
-DWORD dwHook6EFCD7continue = 0x6EFCDD;
-DWORD dwHook6EFCD7skip = 0x6EFE5E;
+DWORD                         dwHook6EFCD7continue = 0x6EFCDD;
+DWORD                         dwHook6EFCD7skip = 0x6EFE5E;
 static void __declspec(naked) Hook6EFCD7()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -443,7 +443,7 @@ static void __declspec(naked) Hook6EFCD7()
     // clang-format on
 }
 
-DWORD dwHook6EFBD8continue = 0x6EFBDE;
+DWORD                         dwHook6EFBD8continue = 0x6EFBDE;
 static void __declspec(naked) Hook6EFBD8()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;

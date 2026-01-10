@@ -30,7 +30,7 @@ private:
 public:
     CProjectileSA(class CProjectileSAInterface* projectileInterface);
     ~CProjectileSA();
-    void Destroy(bool bBlow = true);
+    void                    Destroy(bool bBlow = true);
     CProjectileSAInterface* GetProjectileInterface() const { return static_cast<CProjectileSAInterface*>(m_pInterface); };
 
     bool CalculateImpactPosition(CEntitySAInterface* pCollidedWith, CVector vecInputStart, CVector& vecInputEnd);

@@ -53,7 +53,7 @@ enum eEntityStatus
 class CEntity
 {
 public:
-    virtual ~CEntity(){};
+    virtual ~CEntity() {};
 
     //  virtual VOID                        SetModelAlpha ( int iAlpha )=0;
     virtual class CEntitySAInterface* GetInterface() = 0;

@@ -27,15 +27,15 @@ extern CGameSA*        pGame;
 CBaseModelInfoSAInterface** CModelInfoSAInterface::ms_modelInfoPtrs = (CBaseModelInfoSAInterface**)ARRAY_ModelInfo;
 CBaseModelInfoSAInterface** ppModelInfo = (CBaseModelInfoSAInterface**)ARRAY_ModelInfo;
 
-std::map<unsigned short, int>                                         CModelInfoSA::ms_RestreamTxdIDMap;
-std::map<DWORD, float>                                                CModelInfoSA::ms_ModelDefaultLodDistanceMap;
-std::map<DWORD, unsigned short>                                       CModelInfoSA::ms_ModelDefaultFlagsMap;
-std::map<DWORD, BYTE>                                                 CModelInfoSA::ms_ModelDefaultAlphaTransparencyMap;
+std::map<unsigned short, int>                                        CModelInfoSA::ms_RestreamTxdIDMap;
+std::map<DWORD, float>                                               CModelInfoSA::ms_ModelDefaultLodDistanceMap;
+std::map<DWORD, unsigned short>                                      CModelInfoSA::ms_ModelDefaultFlagsMap;
+std::map<DWORD, BYTE>                                                CModelInfoSA::ms_ModelDefaultAlphaTransparencyMap;
 std::unordered_map<std::uint32_t, std::map<VehicleDummies, CVector>> CModelInfoSA::ms_ModelDefaultDummiesPosition;
-std::map<CTimeInfoSAInterface*, CTimeInfoSAInterface*>                CModelInfoSA::ms_ModelDefaultModelTimeInfo;
-std::unordered_map<DWORD, unsigned short>                             CModelInfoSA::ms_OriginalObjectPropertiesGroups;
-std::unordered_map<DWORD, std::pair<float, float>>                    CModelInfoSA::ms_VehicleModelDefaultWheelSizes;
-std::map<unsigned short, int>                                         CModelInfoSA::ms_DefaultTxdIDMap;
+std::map<CTimeInfoSAInterface*, CTimeInfoSAInterface*>               CModelInfoSA::ms_ModelDefaultModelTimeInfo;
+std::unordered_map<DWORD, unsigned short>                            CModelInfoSA::ms_OriginalObjectPropertiesGroups;
+std::unordered_map<DWORD, std::pair<float, float>>                   CModelInfoSA::ms_VehicleModelDefaultWheelSizes;
+std::map<unsigned short, int>                                        CModelInfoSA::ms_DefaultTxdIDMap;
 
 union tIdeFlags
 {
@@ -342,7 +342,7 @@ char* CModelInfoSA::GetNameIfVehicle()
     DWORD ModelID = m_dwModelID;
     DWORD dwReturn = 0;
 
-        // clang-format off
+    // clang-format off
         __asm
         {
             push    eax
@@ -365,7 +365,7 @@ char* CModelInfoSA::GetNameIfVehicle()
             pop     ebx
             pop     eax
         }
-        // clang-format on
+    // clang-format on
     return (char*)dwReturn;
 }
 
@@ -912,11 +912,12 @@ void CModelInfoSA::SetTextureDictionaryID(unsigned short usID)
 void CModelInfoSA::ResetTextureDictionaryID()
 {
     const auto it = ms_DefaultTxdIDMap.find(static_cast<unsigned short>(m_dwModelID));
-    if (it == ms_DefaultTxdIDMap.end()) {
+    if (it == ms_DefaultTxdIDMap.end())
+    {
         return;
     }
     SetTextureDictionaryID(static_cast<unsigned short>(it->second));
-    ms_DefaultTxdIDMap.erase(it); // Only erase after calling the function above [otherwise gets reinserted]
+    ms_DefaultTxdIDMap.erase(it);            // Only erase after calling the function above [otherwise gets reinserted]
 }
 
 void CModelInfoSA::StaticResetTextureDictionaries()
@@ -1094,7 +1095,7 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
     // In other words, it does not affect elements created by MTA.
     // It's mostly a reimplementation of SA's DeleteAllRwObjects, except that it filters by model ID.
 
-    reinterpret_cast<void(*)()>(FUNC_FlushRequestList)();
+    reinterpret_cast<void (*)()>(FUNC_FlushRequestList)();
 
     std::unordered_set<unsigned short> processedTxdIDs;
     std::unordered_set<unsigned short> pendingTxdIDs;
@@ -1105,19 +1106,21 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
     // Sector array constants
     constexpr int kStreamSectorCount = 2 * NUM_StreamSectorRows * NUM_StreamSectorCols;
     constexpr int kRepeatSectorCount = NUM_StreamRepeatSectorRows * NUM_StreamRepeatSectorCols;
-    constexpr int kRepeatSectorStride = 3;  // StreamRepeatSectors uses stride of 3, we access element [2]
+    constexpr int kRepeatSectorStride = 3;            // StreamRepeatSectors uses stride of 3, we access element [2]
 
     // Helper to validate entity vtable - checks if DeleteRwObject points to expected address
-    auto isValidEntity = [](CEntitySAInterface* pEntity) -> bool {
+    auto isValidEntity = [](CEntitySAInterface* pEntity) -> bool
+    {
         constexpr std::size_t kDeleteRwObjectVtblOffset = 8;
         constexpr std::size_t kExpectedDeleteRwObject = 0x00534030;
-        auto* vtbl = static_cast<std::size_t*>(pEntity->GetVTBL());
+        auto*                 vtbl = static_cast<std::size_t*>(pEntity->GetVTBL());
         return vtbl[kDeleteRwObjectVtblOffset] == kExpectedDeleteRwObject;
     };
 
     // Process entities from a sector list
     // Note: validateVtable should be true for StreamSectors but false for StreamRepeatSectors
-    auto processSectorList = [&](DWORD* pSectorEntry, bool validateVtable, int sectorIndex) {
+    auto processSectorList = [&](DWORD* pSectorEntry, bool validateVtable, int sectorIndex)
+    {
         while (pSectorEntry)
         {
             auto* pEntity = reinterpret_cast<CEntitySAInterface*>(pSectorEntry[0]);
@@ -1130,10 +1133,9 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
             // Vtable validation for StreamSectors
             if (validateVtable && !isValidEntity(pEntity))
             {
-                OutputDebugString(SString("Entity 0x%08x (with model %d) at ARRAY_StreamSectors[%d,%d] is invalid\n", 
-                    pEntity, pEntity->m_nModelIndex,
-                    sectorIndex / 2 % NUM_StreamSectorRows, sectorIndex / 2 / NUM_StreamSectorCols));
-                    pSectorEntry = reinterpret_cast<DWORD*>(pSectorEntry[1]);
+                OutputDebugString(SString("Entity 0x%08x (with model %d) at ARRAY_StreamSectors[%d,%d] is invalid\n", pEntity, pEntity->m_nModelIndex,
+                                          sectorIndex / 2 % NUM_StreamSectorRows, sectorIndex / 2 / NUM_StreamSectorCols));
+                pSectorEntry = reinterpret_cast<DWORD*>(pSectorEntry[1]);
                 continue;
             }
 
@@ -1198,9 +1200,9 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
     // Increment retry counter ONLY for pending TXD IDs (entities being rendered)
     // Don't increment for: unprocessed (will be erased below)
     // Note: processedTxdIDs that are also in pendingTxdIDs stay in map and need counter incremented
-    constexpr int kMaxRetryFrames = 300;  // ~5 seconds at 60fps
+    constexpr int                      kMaxRetryFrames = 300;            // ~5 seconds at 60fps
     std::unordered_set<unsigned short> timedOutTxdIDs;
-    for (auto it = ms_RestreamTxdIDMap.begin(); it != ms_RestreamTxdIDMap.end(); )
+    for (auto it = ms_RestreamTxdIDMap.begin(); it != ms_RestreamTxdIDMap.end();)
     {
         // Skip if unprocessed - those will be erased below after model unload attempt
         if (unprocessedTxdIDs.count(it->first))
@@ -1208,8 +1210,8 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
             ++it;
             continue;
         }
-        
-        it->second++;  // Increment retry counter for pending TXD IDs
+
+        it->second++;            // Increment retry counter for pending TXD IDs
         if (it->second > kMaxRetryFrames)
         {
             // Timed out - entity was always being rendered. Force unload the models.
@@ -1254,7 +1256,8 @@ void CModelInfoSA::StaticFlushPendingRestreamIPL()
     {
         const auto maxModelId = static_cast<DWORD>(pGame->GetBaseIDforTXD());
 
-        auto tryQueueModelUnload = [&](DWORD modelId) {
+        auto tryQueueModelUnload = [&](DWORD modelId)
+        {
             auto* pStreamingInfo = pGame->GetStreaming()->GetStreamingInfo(modelId);
             if (!pStreamingInfo || pStreamingInfo->loadState == eModelLoadState::LOADSTATE_NOT_LOADED)
                 return;
@@ -1491,10 +1494,8 @@ void CModelInfoSA::SetCustomCarPlateText(const char* szText)
     }
     // clang-format on
 
-    if (szText)
-        strncpy(szStoredText, szText, 8);
-    else
-        szStoredText[0] = '\0';
+    if (szText) strncpy(szStoredText, szText, 8);
+    else szStoredText[0] = '\0';
 }
 
 unsigned int CModelInfoSA::GetNumRemaps()
@@ -1915,7 +1916,7 @@ void CModelInfoSA::MakeCustomModel()
         // on the same model (via the streaming hook) if the custom DFF lacks embedded collision.
         RpClump* pClumpToSet = m_pCustomClump;
         m_pCustomClump = nullptr;
-        
+
         if (!SetCustomModel(pClumpToSet))
         {
             // SetCustomModel failed, restore the custom clump for retry on next stream-in
@@ -2094,7 +2095,7 @@ void CModelInfoSA::MakeTimedObjectModel(ushort usBaseID)
 void CModelInfoSA::MakeClumpModel(ushort usBaseID)
 {
     CClumpModelInfoSAInterface* pNewInterface = new CClumpModelInfoSAInterface();
-    CBaseModelInfoSAInterface* pBaseObjectInfo = ppModelInfo[usBaseID];
+    CBaseModelInfoSAInterface*  pBaseObjectInfo = ppModelInfo[usBaseID];
     MemCpyFast(pNewInterface, pBaseObjectInfo, sizeof(CClumpModelInfoSAInterface));
     pNewInterface->usNumberOfRefs = 0;
     pNewInterface->pRwObject = nullptr;
@@ -2193,9 +2194,9 @@ __declspec(noinline) void OnMY_NodeNameStreamRead(RwStream* stream, char* pDest,
 }
 
 // Hook info
-#define HOOKPOS_NodeNameStreamRead                         0x072FA68
-#define HOOKSIZE_NodeNameStreamRead                        15
-DWORD RETURN_NodeNameStreamRead = 0x072FA77;
+#define HOOKPOS_NodeNameStreamRead  0x072FA68
+#define HOOKSIZE_NodeNameStreamRead 15
+DWORD                         RETURN_NodeNameStreamRead = 0x072FA77;
 static void __declspec(naked) HOOK_NodeNameStreamRead()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -2378,7 +2379,7 @@ void CModelInfoSA::RestoreAllObjectsPropertiesGroups()
 eModelInfoType CModelInfoSA::GetModelType()
 {
     if (auto pInterface = GetInterface())
-        return ((eModelInfoType(*)())pInterface->VFTBL->GetModelType)();
+        return ((eModelInfoType (*)())pInterface->VFTBL->GetModelType)();
 
     return eModelInfoType::UNKNOWN;
 }

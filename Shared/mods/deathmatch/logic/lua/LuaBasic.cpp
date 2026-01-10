@@ -42,7 +42,7 @@ namespace lua
         return lua_touserdata(L, index++);
     }
 
-    template<>
+    template <>
     lua_Number PopPrimitive<lua_Number>(lua_State* L, int& index)
     {
         return lua_tonumber(L, index++);

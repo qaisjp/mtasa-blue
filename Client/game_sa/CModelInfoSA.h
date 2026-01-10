@@ -21,48 +21,48 @@ class CPedModelInfoSAInterface;
 struct CColModelSAInterface;
 struct RpMaterial;
 
-#define     RpGetFrame(__c)                 ((RwFrame*)(((RwObject *)(__c))->parent))
+#define RpGetFrame(__c) ((RwFrame*)(((RwObject*)(__c))->parent))
 
 // #define     ARRAY_ModelLoaded               0x8E4CD0 // ##SA##
 static void* CStreaming__ms_aInfoForModel = *(void**)(0x5B8B08 + 6);
 static void* ARRAY_ModelLoaded = (char*)CStreaming__ms_aInfoForModel + 0x10;
 
-#define     FUNC_CStreaming__HasModelLoaded 0x4044C0
+#define FUNC_CStreaming__HasModelLoaded 0x4044C0
 
 // CModelInfo/ARRAY_ModelInfo __thiscall to load/replace vehicle models
-#define     FUNC_LoadVehicleModel           0x4C95C0
-#define     FUNC_LoadWeaponModel            0x4C9910
-#define     FUNC_LoadPedModel               0x4C7340
+#define FUNC_LoadVehicleModel 0x4C95C0
+#define FUNC_LoadWeaponModel  0x4C9910
+#define FUNC_LoadPedModel     0x4C7340
 
-#define     DWORD_AtomicsReplacerModelID    0xB71840
-#define     FUNC_AtomicsReplacer            0x537150
+#define DWORD_AtomicsReplacerModelID 0xB71840
+#define FUNC_AtomicsReplacer         0x537150
 
 // #define     ARRAY_ModelInfo                 0xA9B0C8
 static void* ARRAY_ModelInfo = *(void**)(0x403DA4 + 3);
-#define     CLASS_CText                     0xC1B340
-#define     FUNC_CText_Get                  0x6A0050
-#define     FUNC_GetBoundingBox             0x4082F0
+#define CLASS_CText         0xC1B340
+#define FUNC_CText_Get      0x6A0050
+#define FUNC_GetBoundingBox 0x4082F0
 
-#define     FUNC_RemoveRef                  0x4C4BB0
-#define     FUNC_IsBoatModel                0x4c5a70
-#define     FUNC_IsCarModel                 0x4c5aa0
-#define     FUNC_IsTrainModel               0x4c5ad0
-#define     FUNC_IsHeliModel                0x4c5b00
-#define     FUNC_IsPlaneModel               0x4c5b30
-#define     FUNC_IsBikeModel                0x4c5b60
-#define     FUNC_IsFakePlaneModel           0x4c5b90
-#define     FUNC_IsMonsterTruckModel        0x4c5bc0
-#define     FUNC_IsQuadBikeModel            0x4c5bf0
-#define     FUNC_IsBmxModel                 0x4c5c20
-#define     FUNC_IsTrailerModel             0x4c5c50
-#define     FUNC_IsVehicleModelType         0x4c5c80
-#define     FUNC_RemoveModel                0x4089a0
-#define     FUNC_FlushRequestList           0x40E4E0
-#define     FUNC_RequestVehicleUpgrade      0x408C70
+#define FUNC_RemoveRef             0x4C4BB0
+#define FUNC_IsBoatModel           0x4c5a70
+#define FUNC_IsCarModel            0x4c5aa0
+#define FUNC_IsTrainModel          0x4c5ad0
+#define FUNC_IsHeliModel           0x4c5b00
+#define FUNC_IsPlaneModel          0x4c5b30
+#define FUNC_IsBikeModel           0x4c5b60
+#define FUNC_IsFakePlaneModel      0x4c5b90
+#define FUNC_IsMonsterTruckModel   0x4c5bc0
+#define FUNC_IsQuadBikeModel       0x4c5bf0
+#define FUNC_IsBmxModel            0x4c5c20
+#define FUNC_IsTrailerModel        0x4c5c50
+#define FUNC_IsVehicleModelType    0x4c5c80
+#define FUNC_RemoveModel           0x4089a0
+#define FUNC_FlushRequestList      0x40E4E0
+#define FUNC_RequestVehicleUpgrade 0x408C70
 
-#define     FUNC_CVehicleModelInfo__GetNumRemaps        0x4C86B0
+#define FUNC_CVehicleModelInfo__GetNumRemaps 0x4C86B0
 
-#define     VAR_CTempColModels_ModelPed1    0x968DF0
+#define VAR_CTempColModels_ModelPed1 0x968DF0
 
 class CBaseModelInfoSAInterface;
 class CModelInfoSAInterface
@@ -237,8 +237,8 @@ static_assert(sizeof(CBaseModelInfoSAInterface) == 0x20, "Invalid size for CBase
 
 struct CTimeInfoSAInterface
 {
-    CTimeInfoSAInterface() : m_nTimeOn(20), m_nTimeOff(6), m_wOtherTimeModel(0){};
-    CTimeInfoSAInterface(char timeOn, char timeOff, short OtherTimeModel) : m_nTimeOn(timeOn), m_nTimeOff(timeOff), m_wOtherTimeModel(OtherTimeModel){};
+    CTimeInfoSAInterface() : m_nTimeOn(20), m_nTimeOff(6), m_wOtherTimeModel(0) {};
+    CTimeInfoSAInterface(char timeOn, char timeOff, short OtherTimeModel) : m_nTimeOn(timeOn), m_nTimeOff(timeOff), m_wOtherTimeModel(OtherTimeModel) {};
     char  m_nTimeOn;
     char  m_nTimeOff;
     short m_wOtherTimeModel;
@@ -311,7 +311,7 @@ public:
     std::int16_t                        vehFrequency;
     std::uint32_t                       componentRules;
     float                               bikeSteeringAngle;
-    CVehicleModelVisualInfoSAInterface* pVisualInfo; // vehicleStruct
+    CVehicleModelVisualInfoSAInterface* pVisualInfo;            // vehicleStruct
     std::uint8_t                        field_60[464];
     RpMaterial**                        m_dirtMaterials;
     std::size_t                         m_numDirtMaterials;
@@ -329,32 +329,32 @@ public:
     std::uint8_t                        upgrades[36];
     std::uint8_t                        anRemapTXDs[8];
     std::uint8_t                        field_302[2];
-    void*                               pAnimBlock; // CAnimBlock*
+    void*                               pAnimBlock;            // CAnimBlock*
 };
 static_assert(sizeof(CVehicleModelInfoSAInterface) == 0x308, "Invalid size of CVehicleModelInfoSAInterface class");
 
 class CModelInfoSA : public CModelInfo
 {
 protected:
-    CBaseModelInfoSAInterface*                                                   m_pInterface;
-    DWORD                                                                        m_dwModelID;
-    DWORD                                                                        m_dwParentID;
-    DWORD                                                                        m_dwReferences;
-    DWORD                                                                        m_dwPendingInterfaceRef;
-    CColModel*                                                                   m_pCustomColModel;
-    CColModelSAInterface*                                                        m_pOriginalColModelInterface;
-    std::uint16_t                                                                m_originalFlags = 0;
-    RpClump*                                                                     m_pCustomClump;
-    static std::map<unsigned short, int>                                         ms_RestreamTxdIDMap;
-    static std::map<DWORD, float>                                                ms_ModelDefaultLodDistanceMap;
-    static std::map<DWORD, unsigned short>                                       ms_ModelDefaultFlagsMap;
-    static std::map<DWORD, BYTE>                                                 ms_ModelDefaultAlphaTransparencyMap;
+    CBaseModelInfoSAInterface*                                                  m_pInterface;
+    DWORD                                                                       m_dwModelID;
+    DWORD                                                                       m_dwParentID;
+    DWORD                                                                       m_dwReferences;
+    DWORD                                                                       m_dwPendingInterfaceRef;
+    CColModel*                                                                  m_pCustomColModel;
+    CColModelSAInterface*                                                       m_pOriginalColModelInterface;
+    std::uint16_t                                                               m_originalFlags = 0;
+    RpClump*                                                                    m_pCustomClump;
+    static std::map<unsigned short, int>                                        ms_RestreamTxdIDMap;
+    static std::map<DWORD, float>                                               ms_ModelDefaultLodDistanceMap;
+    static std::map<DWORD, unsigned short>                                      ms_ModelDefaultFlagsMap;
+    static std::map<DWORD, BYTE>                                                ms_ModelDefaultAlphaTransparencyMap;
     static std::unordered_map<std::uint32_t, std::map<VehicleDummies, CVector>> ms_ModelDefaultDummiesPosition;
-    static std::map<CTimeInfoSAInterface*, CTimeInfoSAInterface*>                ms_ModelDefaultModelTimeInfo;
-    static std::unordered_map<DWORD, unsigned short>                             ms_OriginalObjectPropertiesGroups;
-    static std::unordered_map<DWORD, std::pair<float, float>>                    ms_VehicleModelDefaultWheelSizes;
-    static std::map<unsigned short, int>                                         ms_DefaultTxdIDMap;
-    SVehicleSupportedUpgrades                                                    m_ModelSupportedUpgrades;
+    static std::map<CTimeInfoSAInterface*, CTimeInfoSAInterface*>               ms_ModelDefaultModelTimeInfo;
+    static std::unordered_map<DWORD, unsigned short>                            ms_OriginalObjectPropertiesGroups;
+    static std::unordered_map<DWORD, std::pair<float, float>>                   ms_VehicleModelDefaultWheelSizes;
+    static std::map<unsigned short, int>                                        ms_DefaultTxdIDMap;
+    SVehicleSupportedUpgrades                                                   m_ModelSupportedUpgrades;
 
 public:
     CModelInfoSA();
@@ -384,40 +384,40 @@ public:
 
     char* GetNameIfVehicle();
 
-    BYTE           GetVehicleType() const noexcept;
-    void           Request(EModelRequestType requestType, const char* szTag);
-    void           Remove();
-    bool           UnloadUnused();
-    bool           IsLoaded();
-    bool           DoIsLoaded();
-    unsigned short GetFlags();
-    unsigned short GetOriginalFlags();
-    void           SetIdeFlags(unsigned int uiFlags);
-    void           SetIdeFlag(eModelIdeFlag eIdeFlag, bool bState);
-    bool           GetIdeFlag(eModelIdeFlag eIdeFlag);
-    void           SetFlags(unsigned short usFlags);
-    static void    StaticResetFlags();
-    CBoundingBox*  GetBoundingBox();
+    BYTE               GetVehicleType() const noexcept;
+    void               Request(EModelRequestType requestType, const char* szTag);
+    void               Remove();
+    bool               UnloadUnused();
+    bool               IsLoaded();
+    bool               DoIsLoaded();
+    unsigned short     GetFlags();
+    unsigned short     GetOriginalFlags();
+    void               SetIdeFlags(unsigned int uiFlags);
+    void               SetIdeFlag(eModelIdeFlag eIdeFlag, bool bState);
+    bool               GetIdeFlag(eModelIdeFlag eIdeFlag);
+    void               SetFlags(unsigned short usFlags);
+    static void        StaticResetFlags();
+    CBoundingBox*      GetBoundingBox();
     [[nodiscard]] bool IsCollisionLoaded() const noexcept;
     [[nodiscard]] bool IsRwObjectLoaded() const noexcept;
-    void WaitForModelFullyLoaded(std::chrono::milliseconds timeout);
-    bool IsValid();
-    bool           IsAllocatedInArchive() const noexcept;
-    float          GetDistanceFromCentreOfMassToBaseOfModel();
-    unsigned short GetTextureDictionaryID();
-    void           SetTextureDictionaryID(unsigned short usID);
-    void           ResetTextureDictionaryID();
-    static void    StaticResetTextureDictionaries();
-    float          GetLODDistance();
-    float          GetOriginalLODDistance();
-    void           SetLODDistance(float fDistance, bool bOverrideMaxDistance = false);
-    static void    StaticResetLodDistances();
-    void           RestreamIPL();
-    static void    StaticFlushPendingRestreamIPL();
-    static void    StaticSetHooks();
-    bool           GetTime(char& cHourOn, char& cHourOff);
-    bool           SetTime(char cHourOn, char cHourOff);
-    static void    StaticResetModelTimes();
+    void               WaitForModelFullyLoaded(std::chrono::milliseconds timeout);
+    bool               IsValid();
+    bool               IsAllocatedInArchive() const noexcept;
+    float              GetDistanceFromCentreOfMassToBaseOfModel();
+    unsigned short     GetTextureDictionaryID();
+    void               SetTextureDictionaryID(unsigned short usID);
+    void               ResetTextureDictionaryID();
+    static void        StaticResetTextureDictionaries();
+    float              GetLODDistance();
+    float              GetOriginalLODDistance();
+    void               SetLODDistance(float fDistance, bool bOverrideMaxDistance = false);
+    static void        StaticResetLodDistances();
+    void               RestreamIPL();
+    static void        StaticFlushPendingRestreamIPL();
+    static void        StaticSetHooks();
+    bool               GetTime(char& cHourOn, char& cHourOff);
+    bool               SetTime(char cHourOn, char cHourOff);
+    static void        StaticResetModelTimes();
 
     void        SetAlphaTransparencyEnabled(bool bEnabled);
     bool        IsAlphaTransparencyEnabled();

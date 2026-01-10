@@ -24,7 +24,9 @@ SString GetDebugTagStr(CClientEntityBase* pClientEntity);
 SString GetDebugTagStr(SShaderInfo* pShaderInfo);
 SString GetDebugTagStr(CMatchChannel* pChannel);
 #else
-    #define OutputDebug(x) {}
+    #define OutputDebug(x) \
+        { \
+        }
 #endif
 
 //
@@ -160,19 +162,19 @@ public:
     //////////////////////////////////////////////
     void AddShaderAndEntity(const CShaderAndEntityPair& key)
     {
-    #ifdef SHADER_DEBUG_OUTPUT
+#ifdef SHADER_DEBUG_OUTPUT
         if (!MapContains(m_ShaderAndEntityList, key))
             OutputDebug(SString("     +Channel:%s adds (ShaderEntity:%s)", GetDebugTag(this), GetDebugTag(key)));
-    #endif
+#endif
         MapInsert(m_ShaderAndEntityList, key);
     }
 
     void RemoveShaderAndEntity(const CShaderAndEntityPair& key)
     {
-    #ifdef SHADER_DEBUG_OUTPUT
+#ifdef SHADER_DEBUG_OUTPUT
         if (MapContains(m_ShaderAndEntityList, key))
             OutputDebug(SString("     -Channel:%s removes (ShaderEntity:%s)", GetDebugTag(this), GetDebugTag(key)));
-    #endif
+#endif
         MapRemove(m_ShaderAndEntityList, key);
     }
 
@@ -211,19 +213,19 @@ public:
     //////////////////////////////////////////////
     void AddTexture(STexNameInfo* pTexNameInfo)
     {
-    #ifdef SHADER_DEBUG_OUTPUT
+#ifdef SHADER_DEBUG_OUTPUT
         if (!MapContains(m_MatchedTextureList, pTexNameInfo))
             OutputDebug(SString("     +Channel:%s adds Tex:%s", GetDebugTag(this), GetDebugTag(pTexNameInfo)));
-    #endif
+#endif
         MapInsert(m_MatchedTextureList, pTexNameInfo);
     }
 
     void RemoveTexture(STexNameInfo* pTexNameInfo)
     {
-    #ifdef SHADER_DEBUG_OUTPUT
+#ifdef SHADER_DEBUG_OUTPUT
         if (MapContains(m_MatchedTextureList, pTexNameInfo))
             OutputDebug(SString("     -Channel:%s removes Tex:%s", GetDebugTag(this), GetDebugTag(pTexNameInfo)));
-    #endif
+#endif
         MapRemove(m_MatchedTextureList, pTexNameInfo);
     }
 
@@ -232,10 +234,10 @@ public:
     //////////////////////////////////////////////
     void SetMatchChain(const SWildcardMatchChain& matchChain)
     {
-    #ifdef SHADER_DEBUG_OUTPUT
+#ifdef SHADER_DEBUG_OUTPUT
         if (!(m_MatchChain == matchChain))
             OutputDebug(SString("     Channel:%s SetMatchChain:%s", GetDebugTag(this), GetDebugTag(matchChain)));
-    #endif
+#endif
         m_MatchChain = matchChain;
     }
 

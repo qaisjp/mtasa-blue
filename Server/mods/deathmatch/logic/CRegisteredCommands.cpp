@@ -45,7 +45,8 @@ bool CRegisteredCommands::AddCommand(CLuaMain* pLuaMain, const char* szKey, cons
         switch (policy)
         {
             case MultiCommandHandlerPolicy::BLOCK:
-                g_pGame->GetScriptDebugging()->LogError(pLuaMain->GetVM(), "addCommandHandler: Duplicate command registration blocked for '%s' (multiple handlers disabled)", szKey);
+                g_pGame->GetScriptDebugging()->LogError(
+                    pLuaMain->GetVM(), "addCommandHandler: Duplicate command registration blocked for '%s' (multiple handlers disabled)", szKey);
                 return false;
 
             case MultiCommandHandlerPolicy::WARN:

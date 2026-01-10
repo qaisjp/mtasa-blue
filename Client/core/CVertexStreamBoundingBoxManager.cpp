@@ -298,8 +298,8 @@ bool CVertexStreamBoundingBoxManager::ComputeVertexStreamBoundingBox(SCurrentSta
         std::vector<uint32_t> indices(numIndices);
         {
             void* pIndexBytes = NULL;
-            if (FAILED(state.pIndexData->Lock(static_cast<UINT>(startByte), static_cast<UINT>(requiredBytes), &pIndexBytes,
-                                              D3DLOCK_NOSYSLOCK | D3DLOCK_READONLY)))
+            if (FAILED(
+                    state.pIndexData->Lock(static_cast<UINT>(startByte), static_cast<UINT>(requiredBytes), &pIndexBytes, D3DLOCK_NOSYSLOCK | D3DLOCK_READONLY)))
                 return false;
 
             if (indexStride == sizeof(WORD))

@@ -21,7 +21,7 @@
 extern CMultiplayerSA* pMultiplayer;
 
 std::list<CShotSyncData*> ShotSyncData;
-CShotSyncData        LocalShotSyncData;
+CShotSyncData             LocalShotSyncData;
 
 float*                        fDirectionX;
 float*                        fDirectionY;
@@ -79,7 +79,7 @@ DWORD RETURN_CProjectile__CProjectile = 0x4037B3;
 
 CPools* m_pools = 0;
 
-#define VAR_CWorld_IncludeCarTyres 0xb7cd70 // Used for CWorld_ProcessLineOfSight
+#define VAR_CWorld_IncludeCarTyres 0xb7cd70            // Used for CWorld_ProcessLineOfSight
 
 void InitFireInstantHit_MidHooks();
 void InitFireSniper_MidHooks();
@@ -593,17 +593,17 @@ static void __declspec(naked) HOOK_CWeapon__Fire()
     if (!WriteTargetDataForPed(pShootingPed, vecTargetPosition, vecOrigin))
     {
         // Don't fire shot
-         // clang-format off
+        // clang-format off
          __asm
         {
             popad
             mov     al, 1
             retn    18h
         }
-         // clang-format on
+        // clang-format on
     }
 
-     // clang-format off
+    // clang-format off
      __asm
     {
         popad
@@ -613,7 +613,7 @@ static void __declspec(naked) HOOK_CWeapon__Fire()
         push    esi
         push    edi
     }
-     // clang-format on
+    // clang-format on
 
     // clang-format off
     __asm
@@ -676,7 +676,7 @@ static void __declspec(naked) HOOK_CWeapon__PostFire2()            // handles th
     // clang-format on
 }
 
-static const DWORD CWeapon_DoBulletImpact_RET = 0x73B557;
+static const DWORD            CWeapon_DoBulletImpact_RET = 0x73B557;
 static void __declspec(naked) HOOK_CWeapon_DoBulletImpact()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -856,8 +856,8 @@ bool ProcessDamageEvent(CEventDamageSAInterface* event, CPedSAInterface* affects
     return true;
 }
 
-CPedSAInterface*         affectsPed = 0;
-CEventDamageSAInterface* event = 0;
+CPedSAInterface*              affectsPed = 0;
+CEventDamageSAInterface*      event = 0;
 static void __declspec(naked) HOOK_CEventDamage__AffectsPed()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -1207,9 +1207,9 @@ void OnMy_CWeapon_FireInstantHit_Mid(CEntitySAInterface* pEntity, CVector* pvecN
 }
 
 // Hook info
-#define HOOKPOS_CWeapon_FireInstantHit_Mid                         0x740B89
-#define HOOKSIZE_CWeapon_FireInstantHit_Mid                        5
-DWORD RETURN_CWeapon_FireInstantHit_Mid = 0x740B8E;
+#define HOOKPOS_CWeapon_FireInstantHit_Mid  0x740B89
+#define HOOKSIZE_CWeapon_FireInstantHit_Mid 5
+DWORD                         RETURN_CWeapon_FireInstantHit_Mid = 0x740B8E;
 static void __declspec(naked) HOOK_CWeapon_FireInstantHit_Mid()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -1292,9 +1292,9 @@ void OnMy_CWeapon_FireSniper_Mid(CEntitySAInterface* pEntity, CVector* pvecEndHi
 }
 
 // Hook info
-#define HOOKPOS_CWeapon_FireSniper_Mid                         0x73AE31
-#define HOOKSIZE_CWeapon_FireSniper_Mid                        5
-DWORD RETURN_CWeapon_FireSniper_Mid = 0x73AE39;
+#define HOOKPOS_CWeapon_FireSniper_Mid  0x73AE31
+#define HOOKSIZE_CWeapon_FireSniper_Mid 5
+DWORD                         RETURN_CWeapon_FireSniper_Mid = 0x73AE39;
 static void __declspec(naked) HOOK_CWeapon_FireSniper_Mid()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -1382,8 +1382,8 @@ void _cdecl DoFireInstantHitPokes()
     MemPutFast<unsigned char>(VAR_CWorld_IncludeCarTyres, 1);
 }
 
-DWORD dwFunc_CWeapon_FireInstantHit_ret = 0x740B6E;
-DWORD dwFunc_CWorld_ProcessLineOfSight = 0x56BA00;
+DWORD                         dwFunc_CWeapon_FireInstantHit_ret = 0x740B6E;
+DWORD                         dwFunc_CWorld_ProcessLineOfSight = 0x56BA00;
 static void __declspec(naked) HOOK_CWeapon_FireInstantHit()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -1439,8 +1439,7 @@ static void __declspec(naked) HOOK_CWeapon_FireInstantHit()
     __asm
     {
         call DoFireInstantHitPokes
-    }
-    // clang-format on
+    }            // clang-format on
 
     HandleRemoteInstantHit();
 
@@ -1479,10 +1478,10 @@ bool FireInstantHit_CameraMode()
     return false;
 }
 
-DWORD dwFunc_CWeapon_FireInstantHit_CameraMode_ret = 0x7403C7;
-DWORD dwAddr_FireInstantHit_CameraMode = 0x740389;
-DWORD dwAddr_FireInstantHit_CameraMode_2 = 0x740373;
-short sFireInstantHit_CameraMode_camMode = 0;
+DWORD                         dwFunc_CWeapon_FireInstantHit_CameraMode_ret = 0x7403C7;
+DWORD                         dwAddr_FireInstantHit_CameraMode = 0x740389;
+DWORD                         dwAddr_FireInstantHit_CameraMode_2 = 0x740373;
+short                         sFireInstantHit_CameraMode_camMode = 0;
 static void __declspec(naked) HOOK_CWeapon_FireInstantHit_CameraMode()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -1561,8 +1560,8 @@ bool             FireInstantHit_IsPlayer()
     return false;
 }
 
-DWORD RETURN_CWeapon_FireInstantHit_IsPlayer = 0x740353;
-DWORD FUNC_CPlayer_IsPed = 0x5DF8F0;
+DWORD                         RETURN_CWeapon_FireInstantHit_IsPlayer = 0x740353;
+DWORD                         FUNC_CPlayer_IsPed = 0x5DF8F0;
 static void __declspec(naked) HOOK_CWeapon_FireInstantHit_IsPlayer()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;

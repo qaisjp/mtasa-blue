@@ -14,10 +14,10 @@
 #include <list>
 
 // Straight out of CGameSA.h
-#define     CLASSSIZE_WeaponInfo            112         // ##SA##
-#define     NUM_WeaponInfosStdSkill         WEAPONTYPE_LAST_WEAPONTYPE
-#define     NUM_WeaponInfosOtherSkill       11
-#define     NUM_WeaponInfosTotal            (NUM_WeaponInfosStdSkill + (3*NUM_WeaponInfosOtherSkill)) // std, (poor, pro, special)
+#define CLASSSIZE_WeaponInfo      112            // ##SA##
+#define NUM_WeaponInfosStdSkill   WEAPONTYPE_LAST_WEAPONTYPE
+#define NUM_WeaponInfosOtherSkill 11
+#define NUM_WeaponInfosTotal      (NUM_WeaponInfosStdSkill + (3 * NUM_WeaponInfosOtherSkill))            // std, (poor, pro, special)
 
 class CWeaponStat;
 
@@ -91,7 +91,7 @@ public:
 
     // Static Methods
     static eStats GetSkillStatIndex(eWeaponType weapon);
-    static bool           HasWeaponBulletSync(uint32_t weaponID) noexcept;
+    static bool   HasWeaponBulletSync(uint32_t weaponID) noexcept;
 
 private:
     std::list<CWeaponStat*>                             m_OriginalWeaponData;

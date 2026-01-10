@@ -11,7 +11,7 @@
 #include "StdInc.h"
 #include "CIdArray.h"
 
-#define SHARED_ARRAY_BASE_ID    0x02000000
+#define SHARED_ARRAY_BASE_ID 0x02000000
 
 CStack<SArrayId, 1>   CIdArray::m_IDStack;
 std::vector<SIdEntry> CIdArray::m_Elements;

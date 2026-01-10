@@ -15,39 +15,40 @@
 #include "CLanguageSelector.h"
 #include "CDiscordRichPresence.h"
 
-#define NATIVE_RES_X    1280.0f
-#define NATIVE_RES_Y    1024.0f
+#define NATIVE_RES_X 1280.0f
+#define NATIVE_RES_Y 1024.0f
 
-#define NATIVE_BG_X     1280.0f
-#define NATIVE_BG_Y     649.0f
+#define NATIVE_BG_X 1280.0f
+#define NATIVE_BG_Y 649.0f
 
-#define NATIVE_LOGO_X     1058.0f
-#define NATIVE_LOGO_Y     540.0f
+#define NATIVE_LOGO_X 1058.0f
+#define NATIVE_LOGO_Y 540.0f
 
-#define CORE_MTA_MENUITEMS_START_X  0.168
+#define CORE_MTA_MENUITEMS_START_X 0.168
 
-#define CORE_MTA_BG_MAX_ALPHA       1.00f   //ACHTUNG: Set to 1 for now due to GTA main menu showing through (no delay inserted between Entering game... and loading screen)
-#define CORE_MTA_BG_INGAME_ALPHA    0.90f
-#define CORE_MTA_FADER              0.05f // 1/20
-#define CORE_MTA_FADER_CREDITS      0.01f
+#define CORE_MTA_BG_MAX_ALPHA \
+    1.00f            // ACHTUNG: Set to 1 for now due to GTA main menu showing through (no delay inserted between Entering game... and loading screen)
+#define CORE_MTA_BG_INGAME_ALPHA 0.90f
+#define CORE_MTA_FADER           0.05f            // 1/20
+#define CORE_MTA_FADER_CREDITS   0.01f
 
-#define CORE_MTA_HOVER_SCALE        1.0f
-#define CORE_MTA_NORMAL_SCALE       0.6f
-#define CORE_MTA_HOVER_ALPHA        1.0f
-#define CORE_MTA_NORMAL_ALPHA       0.6f
+#define CORE_MTA_HOVER_SCALE  1.0f
+#define CORE_MTA_NORMAL_SCALE 0.6f
+#define CORE_MTA_HOVER_ALPHA  1.0f
+#define CORE_MTA_NORMAL_ALPHA 0.6f
 
-#define CORE_MTA_HIDDEN_ALPHA       0.0f
-#define CORE_MTA_DISABLED_ALPHA     0.4f
-#define CORE_MTA_ENABLED_ALPHA      1.0f
+#define CORE_MTA_HIDDEN_ALPHA   0.0f
+#define CORE_MTA_DISABLED_ALPHA 0.4f
+#define CORE_MTA_ENABLED_ALPHA  1.0f
 
 #define CORE_MTA_ANIMATION_TIME_IN  200
 #define CORE_MTA_ANIMATION_TIME_OUT 100
 #define CORE_MTA_MOVE_ANIM_TIME     600
 
-#define CORE_MTA_STATIC_BG          "cgui\\images\\background.png"
-#define CORE_MTA_LOGO               "cgui\\images\\background_logo.png"
-#define CORE_MTA_FILLER             "cgui\\images\\mta_filler.png"
-#define CORE_MTA_VERSION            "cgui\\images\\version.png"
+#define CORE_MTA_STATIC_BG "cgui\\images\\background.png"
+#define CORE_MTA_LOGO      "cgui\\images\\background_logo.png"
+#define CORE_MTA_FILLER    "cgui\\images\\mta_filler.png"
+#define CORE_MTA_VERSION   "cgui\\images\\version.png"
 
 static const SColor headlineColors[] = {SColorRGBA(233, 234, 106, 255), SColorRGBA(233 / 6 * 4, 234 / 6 * 4, 106 / 6 * 4, 255),
                                         SColorRGBA(233 / 7 * 3, 234 / 7 * 3, 106 / 7 * 3, 255)};
@@ -358,7 +359,8 @@ CMainMenu::CMainMenu(CGUI* pManager)
 
 CMainMenu::~CMainMenu()
 {
-    auto destroyElement = [this](auto*& element) {
+    auto destroyElement = [this](auto*& element)
+    {
         if (!element)
             return;
         m_pManager->DestroyElementRecursive(element);
@@ -478,8 +480,8 @@ void CMainMenu::Update()
     }
 
     // Get the game interface and the system state
-    CGame*       pGame = CCore::GetSingleton().GetGame();
-    SystemState  systemState = pGame->GetSystemState();
+    CGame*      pGame = CCore::GetSingleton().GetGame();
+    SystemState systemState = pGame->GetSystemState();
 
     m_Credits.Update();
     m_Settings.Update();
@@ -567,7 +569,8 @@ void CMainMenu::Update()
         {
             // Let's work out what the target progress should be by working out the time passed
             // Min of 0.5 progress fixes occasional graphical glitchekal
-            float newProgress = (*it)->animProgress - std::min(0.5f, ((float)ulTimePassed / CORE_MTA_ANIMATION_TIME_OUT) * (CORE_MTA_HOVER_ALPHA - CORE_MTA_NORMAL_ALPHA));
+            float newProgress =
+                (*it)->animProgress - std::min(0.5f, ((float)ulTimePassed / CORE_MTA_ANIMATION_TIME_OUT) * (CORE_MTA_HOVER_ALPHA - CORE_MTA_NORMAL_ALPHA));
             if (SetItemHoverProgress((*it), newProgress, false))
             {
                 std::set<sMenuItem*>::iterator itToErase = it++;
@@ -646,7 +649,6 @@ void CMainMenu::Update()
             m_ucFade = FADE_VISIBLE;
             m_bIsVisible = true;
             m_bIsFullyVisible = true;
-
         }
     }
     // Fade out
@@ -664,7 +666,6 @@ void CMainMenu::Update()
             m_bIsVisible = false;            // Make cursor disappear faster
             m_bCursorAlphaReset = false;
         }
-
 
         // If the fade is complete
         if (m_fFader <= 0)
@@ -706,8 +707,7 @@ void CMainMenu::Update()
     if (m_bIsVisible && systemState != SystemState::GS_INIT_PLAYING_GAME)
     {
         // If we're at the game's mainmenu, or ingame when m_bIsIngame is true show the background
-        if (systemState == SystemState::GS_FRONTEND ||
-            systemState == SystemState::GS_PLAYING_GAME && !m_bIsIngame)
+        if (systemState == SystemState::GS_FRONTEND || systemState == SystemState::GS_PLAYING_GAME && !m_bIsIngame)
         {
             if (m_ucFade == FADE_INVISIBLE)
                 Show(false);

@@ -12,18 +12,18 @@
 #pragma once
 
 #ifdef WIN32
-#include <windows.h>
+    #include <windows.h>
 #endif
 
 #include "net/bitstream.h"
 #include "net/packetenums.h"
 
-#define CNET_DOWNLOAD_INVALID       65535
+#define CNET_DOWNLOAD_INVALID 65535
 
-#define NET_CLIENT_PORT             0 // 0 will allow it to automatically choose a port, otherwise, use the value specific
-#define NET_DISCONNECT_DELAY        30
+#define NET_CLIENT_PORT      0            // 0 will allow it to automatically choose a port, otherwise, use the value specific
+#define NET_DISCONNECT_DELAY 30
 
-#define NET_INVALID_PACKET_ID       255
+#define NET_INVALID_PACKET_ID 255
 
 typedef bool (*PPACKETHANDLER)(unsigned char, NetBitStreamInterface&);
 

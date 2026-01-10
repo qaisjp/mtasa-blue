@@ -23,30 +23,30 @@ interface CProxyDirect3DDevice9 : public IDirect3DDevice9
 
     /*** IUnknown methods ***/
     virtual HRESULT __stdcall QueryInterface(REFIID riid, void** ppvObj);
-    virtual ULONG __stdcall AddRef();
-    virtual ULONG __stdcall Release();
+    virtual ULONG __stdcall   AddRef();
+    virtual ULONG __stdcall   Release();
 
     /*** IDirect3DDevice9 methods ***/
     virtual HRESULT __stdcall TestCooperativeLevel();
-    virtual UINT __stdcall GetAvailableTextureMem();
+    virtual UINT __stdcall    GetAvailableTextureMem();
     virtual HRESULT __stdcall EvictManagedResources();
     virtual HRESULT __stdcall GetDirect3D(IDirect3D9 * *ppD3D9);
     virtual HRESULT __stdcall GetDeviceCaps(D3DCAPS9 * pCaps);
     virtual HRESULT __stdcall GetDisplayMode(UINT iSwapChain, D3DDISPLAYMODE * pMode);
     virtual HRESULT __stdcall GetCreationParameters(D3DDEVICE_CREATION_PARAMETERS * pParameters);
     virtual HRESULT __stdcall SetCursorProperties(UINT XHotSpot, UINT YHotSpot, IDirect3DSurface9 * pCursorBitmap);
-    virtual void __stdcall SetCursorPosition(int X, int Y, DWORD Flags);
-    virtual BOOL __stdcall ShowCursor(BOOL bShow);
+    virtual void __stdcall    SetCursorPosition(int X, int Y, DWORD Flags);
+    virtual BOOL __stdcall    ShowCursor(BOOL bShow);
     virtual HRESULT __stdcall CreateAdditionalSwapChain(D3DPRESENT_PARAMETERS * pPresentationParameters, IDirect3DSwapChain9 * *pSwapChain);
     virtual HRESULT __stdcall GetSwapChain(UINT iSwapChain, IDirect3DSwapChain9 * *pSwapChain);
-    virtual UINT __stdcall GetNumberOfSwapChains();
+    virtual UINT __stdcall    GetNumberOfSwapChains();
     virtual HRESULT __stdcall Reset(D3DPRESENT_PARAMETERS * pPresentationParameters);
     virtual HRESULT __stdcall Present(CONST RECT * pSourceRect, CONST RECT * pDestRect, HWND hDestWindowOverride, CONST RGNDATA * pDirtyRegion);
     virtual HRESULT __stdcall GetBackBuffer(UINT iSwapChain, UINT iBackBuffer, D3DBACKBUFFER_TYPE Type, IDirect3DSurface9 * *ppBackBuffer);
     virtual HRESULT __stdcall GetRasterStatus(UINT iSwapChain, D3DRASTER_STATUS * pRasterStatus);
     virtual HRESULT __stdcall SetDialogBoxMode(BOOL bEnableDialogs);
-    virtual VOID __stdcall SetGammaRamp(UINT iSwapChain, DWORD Flags, CONST D3DGAMMARAMP * pRamp);
-    virtual VOID __stdcall GetGammaRamp(UINT iSwapChain, D3DGAMMARAMP * pRamp);
+    virtual VOID __stdcall    SetGammaRamp(UINT iSwapChain, DWORD Flags, CONST D3DGAMMARAMP * pRamp);
+    virtual VOID __stdcall    GetGammaRamp(UINT iSwapChain, D3DGAMMARAMP * pRamp);
     virtual HRESULT __stdcall CreateTexture(UINT Width, UINT Height, UINT Levels, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool, IDirect3DTexture9 * *ppTexture,
                                             HANDLE * pSharedHandle);
     virtual HRESULT __stdcall CreateVolumeTexture(UINT Width, UINT Height, UINT Depth, UINT Levels, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool,
@@ -113,9 +113,9 @@ interface CProxyDirect3DDevice9 : public IDirect3DDevice9
     virtual HRESULT __stdcall SetScissorRect(CONST RECT * pRect);
     virtual HRESULT __stdcall GetScissorRect(RECT * pRect);
     virtual HRESULT __stdcall SetSoftwareVertexProcessing(BOOL bSoftware);
-    virtual BOOL __stdcall GetSoftwareVertexProcessing();
+    virtual BOOL __stdcall    GetSoftwareVertexProcessing();
     virtual HRESULT __stdcall SetNPatchMode(float nSegments);
-    virtual FLOAT __stdcall GetNPatchMode();
+    virtual FLOAT __stdcall   GetNPatchMode();
     virtual HRESULT __stdcall DrawPrimitive(D3DPRIMITIVETYPE PrimitiveType, UINT StartVertex, UINT PrimitiveCount);
     virtual HRESULT __stdcall DrawIndexedPrimitive(D3DPRIMITIVETYPE, INT BaseVertexIndex, UINT MinVertexIndex, UINT NumVertices, UINT startIndex,
                                                    UINT primCount);
@@ -179,8 +179,8 @@ public:
     const static int D3DSAMP_MAX = 14;
     const static int D3DTS_MAX = 260;
 
-    #define DPAD(f,t)   DWORD       pad##f##_##t[(t)-(f)+1]
-    #define MPAD(f,t)   D3DMATRIX   pad##f##_##t[(t)-(f)+1]
+#define DPAD(f, t) DWORD pad##f##_##t[(t) - (f) + 1]
+#define MPAD(f, t) D3DMATRIX pad##f##_##t[(t) - (f) + 1]
 
     struct SD3DRenderState
     {
@@ -590,7 +590,7 @@ public:
 
     CProxyDirect3DDevice9* operator->() const { return m_pProxy; }
     CProxyDirect3DDevice9* Get() const { return m_pProxy; }
-    explicit operator bool() const { return m_pProxy != nullptr; }
+    explicit               operator bool() const { return m_pProxy != nullptr; }
 
 private:
     CProxyDirect3DDevice9* m_pProxy;
@@ -599,14 +599,12 @@ private:
 // Add gamma state management
 struct SGammaState
 {
-    bool          bOriginalGammaStored;
-    bool          bLastWasBorderless;
-    D3DGAMMARAMP  originalGammaRamp;
-    UINT          lastSwapChain;
-    
-    SGammaState() : bOriginalGammaStored(false), bLastWasBorderless(false), originalGammaRamp{}, lastSwapChain(0)
-    {
-    }
+    bool         bOriginalGammaStored;
+    bool         bLastWasBorderless;
+    D3DGAMMARAMP originalGammaRamp;
+    UINT         lastSwapChain;
+
+    SGammaState() : bOriginalGammaStored(false), bLastWasBorderless(false), originalGammaRamp{}, lastSwapChain(0) {}
 };
 
 extern SGammaState g_GammaState;
@@ -624,4 +622,4 @@ namespace BorderlessGamma
 
     void FetchSettings(float& gammaPower, float& brightnessScale, float& contrastScale, float& saturationScale, bool& applyWindowed, bool& applyFullscreen);
     bool ShouldApplyAdjustments(float gammaPower, float brightnessScale, float contrastScale, float saturationScale);
-}
+}            // namespace BorderlessGamma

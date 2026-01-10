@@ -261,13 +261,13 @@ public:
     byte GetCamDrunkLevel();
     void SetCamDrunkLevel(byte level);
 
-    DWORD GetCarTwoWheelCounter() { return internalInterface->nCarTwoWheelCounter; }
-    float GetCarTwoWheelDist() { return internalInterface->fCarTwoWheelDist; }
-    DWORD GetCarLess3WheelCounter() { return internalInterface->nCarLess3WheelCounter; }
-    DWORD GetBikeRearWheelCounter() { return internalInterface->nBikeRearWheelCounter; }
-    float GetBikeRearWheelDist() { return internalInterface->fBikeRearWheelDist; }
-    DWORD GetBikeFrontWheelCounter() { return internalInterface->nBikeFrontWheelCounter; }
-    float GetBikeFrontWheelDist() { return internalInterface->fBikeFrontWheelDist; }
+    DWORD        GetCarTwoWheelCounter() { return internalInterface->nCarTwoWheelCounter; }
+    float        GetCarTwoWheelDist() { return internalInterface->fCarTwoWheelDist; }
+    DWORD        GetCarLess3WheelCounter() { return internalInterface->nCarLess3WheelCounter; }
+    DWORD        GetBikeRearWheelCounter() { return internalInterface->nBikeRearWheelCounter; }
+    float        GetBikeRearWheelDist() { return internalInterface->fBikeRearWheelDist; }
+    DWORD        GetBikeFrontWheelCounter() { return internalInterface->nBikeFrontWheelCounter; }
+    float        GetBikeFrontWheelDist() { return internalInterface->fBikeFrontWheelDist; }
     std::uint8_t GetMaxHealth() const { return internalInterface->MaxHealth; }
     std::uint8_t GetMaxArmor() const { return internalInterface->MaxArmour; }
 };

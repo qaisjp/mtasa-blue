@@ -17,12 +17,12 @@
 
 class CPedSAInterface;
 
-#define FUNC_SetMaximumWantedLevel      0x561E70
-#define FUNC_SetWantedLevel             0x562470
-#define FUNC_SetWantedLevelNoDrop       0x562570
+#define FUNC_SetMaximumWantedLevel 0x561E70
+#define FUNC_SetWantedLevel        0x562470
+#define FUNC_SetWantedLevelNoDrop  0x562570
 
-#define MAX_CRIMES_QD       16
-#define MAX_COPS_PURSUIT    10
+#define MAX_CRIMES_QD    16
+#define MAX_COPS_PURSUIT 10
 
 class CCrimeBeingQd
 {

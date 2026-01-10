@@ -54,22 +54,23 @@ struct SLineOfSightBuildingResult
     CEntitySAInterface* pInterface;
 };
 
-struct SProcessLineOfSightMaterialInfoResult {
-    CVector2D   uv;            //< On-texture UV coordinates of the intersection point
-    const char* textureName;   //< GTA texture name
-    const char* frameName;     //< The name of the frame the hit geometry belongs to
-    CVector     hitPos;        //< Precise hit position on the clump [World space]
-    bool        valid{};       //< Data found in this struct is only valid if this is `true`!
+struct SProcessLineOfSightMaterialInfoResult
+{
+    CVector2D   uv;                     //< On-texture UV coordinates of the intersection point
+    const char* textureName;            //< GTA texture name
+    const char* frameName;              //< The name of the frame the hit geometry belongs to
+    CVector     hitPos;                 //< Precise hit position on the clump [World space]
+    bool        valid{};                //< Data found in this struct is only valid if this is `true`!
 };
 
 struct STestSphereAgainstWorldResult
 {
-    bool           collisionDetected{false};
-    std::uint32_t  modelID{0};
-    CVector        entityPosition{};
-    CVector        entityRotation{};
-    std::uint32_t  lodID{0};
-    eEntityType    type{ENTITY_TYPE_NOTHING};
+    bool          collisionDetected{false};
+    std::uint32_t modelID{0};
+    CVector       entityPosition{};
+    CVector       entityRotation{};
+    std::uint32_t lodID{0};
+    eEntityType   type{ENTITY_TYPE_NOTHING};
 };
 
 enum eDebugCaller
@@ -264,7 +265,8 @@ public:
     virtual void  Remove(CEntitySAInterface* entityInterface, eDebugCaller CallerId) = 0;
     virtual auto  ProcessLineAgainstMesh(CEntitySAInterface* e, CVector start, CVector end) -> SProcessLineOfSightMaterialInfoResult = 0;
     virtual bool  ProcessLineOfSight(const CVector* vecStart, const CVector* vecEnd, CColPoint** colCollision, CEntity** CollisionEntity,
-                                     const SLineOfSightFlags flags = SLineOfSightFlags(), SLineOfSightBuildingResult* pBuildingResult = NULL, SProcessLineOfSightMaterialInfoResult* outMatInfo = {}) = 0;
+                                     const SLineOfSightFlags flags = SLineOfSightFlags(), SLineOfSightBuildingResult* pBuildingResult = NULL,
+                                     SProcessLineOfSightMaterialInfoResult* outMatInfo = {}) = 0;
     virtual void  IgnoreEntity(CEntity* entity) = 0;
     virtual float FindGroundZFor3DPosition(CVector* vecPosition) = 0;
     virtual float FindRoofZFor3DCoord(CVector* pvecPosition, bool* pbOutResult) = 0;
@@ -288,5 +290,6 @@ public:
     virtual void          ResetAllSurfaceInfo() = 0;
     virtual bool          ResetSurfaceInfo(short sSurfaceID) = 0;
 
-    virtual CEntity* TestSphereAgainstWorld(const CVector& sphereCenter, float radius, CEntity* ignoredEntity, bool checkBuildings, bool checkVehicles, bool checkPeds, bool checkObjects, bool checkDummies, bool cameraIgnore, STestSphereAgainstWorldResult& result) = 0;
+    virtual CEntity* TestSphereAgainstWorld(const CVector& sphereCenter, float radius, CEntity* ignoredEntity, bool checkBuildings, bool checkVehicles,
+                                            bool checkPeds, bool checkObjects, bool checkDummies, bool cameraIgnore, STestSphereAgainstWorldResult& result) = 0;
 };

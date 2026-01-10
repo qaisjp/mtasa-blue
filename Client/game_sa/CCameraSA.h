@@ -17,29 +17,29 @@
 #include "CGarageSA.h"
 #include "CEntitySA.h"
 
-#define FUNC_TakeControl                    0x50C7C0
-#define FUNC_TakeControlNoEntity            0x50C8B0
-#define FUNC_Restore                        0x50B930
+#define FUNC_TakeControl         0x50C7C0
+#define FUNC_TakeControlNoEntity 0x50C8B0
+#define FUNC_Restore             0x50B930
 
-#define FUNC_Find3rdPersonCamTargetVector   0x514970
-#define FUNC_Find3rdPersonQuickAimPitch     0x50AD40
-#define FUNC_GetFadingDirection             0x50ADF0
-#define FUNC_GetFading                      0x50ADE0
-#define FUNC_Fade                           0x50AC20
-#define FUNC_SetFadeColour                  0x50BF00
-#define FUNC_ShakeCam                       0x50A9F0
+#define FUNC_Find3rdPersonCamTargetVector 0x514970
+#define FUNC_Find3rdPersonQuickAimPitch   0x50AD40
+#define FUNC_GetFadingDirection           0x50ADF0
+#define FUNC_GetFading                    0x50ADE0
+#define FUNC_Fade                         0x50AC20
+#define FUNC_SetFadeColour                0x50BF00
+#define FUNC_ShakeCam                     0x50A9F0
 
-#define VAR_CameraRotation                  0xB6F178 // used for controling where the player faces
-#define VAR_VehicleCameraView               0xB6F0DC
-#define VAR_PedCameraView                   0xB6F0F0
+#define VAR_CameraRotation    0xB6F178            // used for controling where the player faces
+#define VAR_VehicleCameraView 0xB6F0DC
+#define VAR_PedCameraView     0xB6F0F0
 
-#define MAX_CAMS                            3
+#define MAX_CAMS 3
 
-#define MAX_NUM_OF_NODES                    800 // for trains
+#define MAX_NUM_OF_NODES 800            // for trains
 
 /*** R* Defines ***/
 #define NUMBER_OF_VECTORS_FOR_AVERAGE 2
-#define MAX_NUM_OF_SPLINETYPES (4)
+#define MAX_NUM_OF_SPLINETYPES        (4)
 /*** END R* Defines ***/
 
 /*** BEGIN PURE R* CLASSES ***/
@@ -382,45 +382,45 @@ public:
     ~CCameraSA();
 
     CCameraSAInterface* GetInterface() const noexcept { return internalInterface; }
-    
+
     // CCamera interface implementation
-    void                TakeControl(CEntity* entity, eCamMode CamMode, int CamSwitchStyle) override;
-    void                TakeControl(CVector* position, int CamSwitchStyle) override;
-    void                Restore() override;
-    void                RestoreWithJumpCut() override;
-    CMatrix*            GetMatrix(CMatrix* matrix) override;
-    void                SetMatrix(CMatrix* matrix) override;
-    void                Find3rdPersonCamTargetVector(float fDistance, CVector* vecGunMuzzle, CVector* vecSource, CVector* vecTarget) override;
-    float               Find3rdPersonQuickAimPitch() override;
-    BYTE                GetActiveCam() override;
-    CCam*               GetCam(BYTE bCameraID) override;
-    void                SetWidescreen(bool bWidescreen) override;
-    bool                GetWidescreen() override;
-    bool                IsFading() override;
-    int                 GetFadingDirection() override;
-    void                Fade(float fFadeOutTime, int iOutOrIn) override;
-    void                SetFadeColor(unsigned char ucRed, unsigned char ucGreen, unsigned char ucBlue) override;
-    float               GetCameraRotation() override;
-    RwMatrix*           GetLTM() override;
-    CEntity*            GetTargetEntity() override;
-    void                SetCameraClip(bool bObjects, bool bVehicles) override;
-    void                GetCameraClip(bool& bObjects, bool& bVehicles) override;
-    BYTE                GetCameraVehicleViewMode() override;
-    BYTE                GetCameraPedViewMode() override;
-    void                SetCameraVehicleViewMode(BYTE dwCamMode) override;
-    void                SetCameraPedViewMode(BYTE dwCamMode) override;
-    void                SetShakeForce(float fShakeForce) override;
-    float               GetShakeForce() override;
-    void                ShakeCamera(float radius, float x, float y, float z) noexcept override;
-    void                ResetShakeCamera() noexcept override;
-    std::uint8_t        GetTransitionState() const override;
-    bool                IsInTransition() const override;
-    float               GetTransitionFOV() const override;
-    bool                GetTransitionMatrix(CMatrix& matrix) const override;
+    void         TakeControl(CEntity* entity, eCamMode CamMode, int CamSwitchStyle) override;
+    void         TakeControl(CVector* position, int CamSwitchStyle) override;
+    void         Restore() override;
+    void         RestoreWithJumpCut() override;
+    CMatrix*     GetMatrix(CMatrix* matrix) override;
+    void         SetMatrix(CMatrix* matrix) override;
+    void         Find3rdPersonCamTargetVector(float fDistance, CVector* vecGunMuzzle, CVector* vecSource, CVector* vecTarget) override;
+    float        Find3rdPersonQuickAimPitch() override;
+    BYTE         GetActiveCam() override;
+    CCam*        GetCam(BYTE bCameraID) override;
+    void         SetWidescreen(bool bWidescreen) override;
+    bool         GetWidescreen() override;
+    bool         IsFading() override;
+    int          GetFadingDirection() override;
+    void         Fade(float fFadeOutTime, int iOutOrIn) override;
+    void         SetFadeColor(unsigned char ucRed, unsigned char ucGreen, unsigned char ucBlue) override;
+    float        GetCameraRotation() override;
+    RwMatrix*    GetLTM() override;
+    CEntity*     GetTargetEntity() override;
+    void         SetCameraClip(bool bObjects, bool bVehicles) override;
+    void         GetCameraClip(bool& bObjects, bool& bVehicles) override;
+    BYTE         GetCameraVehicleViewMode() override;
+    BYTE         GetCameraPedViewMode() override;
+    void         SetCameraVehicleViewMode(BYTE dwCamMode) override;
+    void         SetCameraPedViewMode(BYTE dwCamMode) override;
+    void         SetShakeForce(float fShakeForce) override;
+    float        GetShakeForce() override;
+    void         ShakeCamera(float radius, float x, float y, float z) noexcept override;
+    void         ResetShakeCamera() noexcept override;
+    std::uint8_t GetTransitionState() const override;
+    bool         IsInTransition() const override;
+    float        GetTransitionFOV() const override;
+    bool         GetTransitionMatrix(CMatrix& matrix) const override;
 
     // Additional overload not in base interface
     virtual CCam* GetCam(CCamSAInterface* camInterface);
-    
+
     // Additional methods
-    void      RestoreLastGoodState();
+    void RestoreLastGoodState();
 };

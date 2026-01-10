@@ -17,7 +17,7 @@ class TInterpolation
 public:
     TInterpolation() : m_easingCurve(CEasingCurve::Linear), m_ullStartTime(0), m_ullEndTime(0), m_ulDuration(0) {}
 
-    virtual ~TInterpolation(){};
+    virtual ~TInterpolation() {};
 
     virtual void SetSourceValue(const T& a_rValue)
     {

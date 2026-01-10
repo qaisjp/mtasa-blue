@@ -16,11 +16,11 @@
 
 class CChatLineSection;
 
-#define CHAT_WIDTH 320                                   // Chatbox default width
-#define CHAT_TEXT_COLOR CColor(235, 221, 178)            // Chatbox default text color
-#define CHAT_MAX_LINES 100                               // Chatbox maximum chat lines
-#define CHAT_BUFFER 1024                                 // Chatbox buffer size
-#define CHAT_INPUT_HISTORY_LENGTH 128                    // Chatbox input history length
+#define CHAT_WIDTH                320                              // Chatbox default width
+#define CHAT_TEXT_COLOR           CColor(235, 221, 178)            // Chatbox default text color
+#define CHAT_MAX_LINES            100                              // Chatbox maximum chat lines
+#define CHAT_BUFFER               1024                             // Chatbox buffer size
+#define CHAT_INPUT_HISTORY_LENGTH 128                              // Chatbox input history length
 
 class CColor
 {
@@ -47,7 +47,7 @@ public:
     {
         R = (ulColor >> 16) & 0xFF;
         G = (ulColor >> 8) & 0xFF;
-        B = (ulColor)&0xFF;
+        B = (ulColor) & 0xFF;
         return *this;
     }
     bool operator==(const CColor& other) const { return R == other.R && G == other.G && B == other.B && A == other.A; }
@@ -74,8 +74,8 @@ public:
     void        InvalidateCache();
 
 protected:
-    std::string  m_text;
-    CColor       m_color;
+    std::string          m_text;
+    CColor               m_color;
     mutable float        m_cachedWidth;
     mutable unsigned int m_cachedLength;
 };
@@ -156,7 +156,7 @@ class CChat
     friend class CChatLineSection;
 
 public:
-    CChat(){};
+    CChat() {};
     CChat(CGUI* pManager, const CVector2D& vecPosition);
     virtual ~CChat();
 

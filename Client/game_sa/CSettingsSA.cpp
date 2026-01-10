@@ -26,9 +26,9 @@ static const float MOUSE_SENSITIVITY_MIN = 0.000312f;
 static const float MOUSE_SENSITIVITY_DEFAULT = 0.0025f;
 static const float MOUSE_SENSITIVITY_MAX = MOUSE_SENSITIVITY_DEFAULT * 2 - MOUSE_SENSITIVITY_MIN;
 
-#define VAR_CurVideoMode (*((uint*)(0x08D6220)))
+#define VAR_CurVideoMode   (*((uint*)(0x08D6220)))
 #define VAR_SavedVideoMode (*((uint*)(0x0BA6820)))
-#define VAR_CurAdapter (*((uint*)(0x0C920F4)))
+#define VAR_CurAdapter     (*((uint*)(0x0C920F4)))
 
 #define HOOKPOS_GetFxQuality 0x49EA50
 void HOOK_GetFxQuality();
@@ -82,7 +82,7 @@ unsigned int CSettingsSA::GetNumVideoModes()
 VideoMode* CSettingsSA::GetVideoModeInfo(VideoMode* modeInfo, unsigned int modeIndex)
 {
     // RwEngineGetVideoModeInfo
-    return ((VideoMode*(__cdecl*)(VideoMode*, unsigned int))0x7F2CF0)(modeInfo, modeIndex);
+    return ((VideoMode * (__cdecl*)(VideoMode*, unsigned int))0x7F2CF0)(modeInfo, modeIndex);
 }
 
 unsigned int CSettingsSA::GetCurrentVideoMode()
@@ -293,7 +293,6 @@ void CSettingsSA::SetVolumetricShadowsEnabled(bool bEnable)
     MemPut<BYTE>(0x5E682A + 1, bEnable);
 }
 
-
 bool CSettingsSA::GetVolumetricShadowsEnabledByVideoSetting() const noexcept
 {
     bool volumetricShadow;
@@ -335,7 +334,6 @@ bool CSettingsSA::ResetDynamicPedShadows() noexcept
     return true;
 }
 
-
 //
 // Volumetric shadow hooks
 //
@@ -366,9 +364,9 @@ __declspec(noinline) void _cdecl MaybeAlterFxQualityValue(DWORD dwAddrCalledFrom
     else
         // Handle all calls from CPed::PreRenderAfterTest
         if (dwAddrCalledFrom > 0x5E65A0 && dwAddrCalledFrom < 0x5E7680)
-    {
-        dwFxQualityValue = pGame->GetSettings()->IsDynamicPedShadowsEnabled() ? 2 : 0;
-    }
+        {
+            dwFxQualityValue = pGame->GetSettings()->IsDynamicPedShadowsEnabled() ? 2 : 0;
+        }
 }
 
 // Hooked from 0x49EA50
@@ -976,11 +974,11 @@ __declspec(noinline) int OnMY_SelectDevice()
 }
 
 // Hook info
-#define HOOKPOS_SelectDevice 0x0746219
+#define HOOKPOS_SelectDevice  0x0746219
 #define HOOKSIZE_SelectDevice 6
-DWORD RETURN_SelectDeviceSingle = 0x0746273;
-DWORD RETURN_SelectDeviceMultiHide = 0x074622C;
-DWORD RETURN_SelectDeviceMultiShow = 0x0746227;
+DWORD                         RETURN_SelectDeviceSingle = 0x0746273;
+DWORD                         RETURN_SelectDeviceMultiHide = 0x074622C;
+DWORD                         RETURN_SelectDeviceMultiShow = 0x0746227;
 static void __declspec(naked) HOOK_SelectDevice()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;

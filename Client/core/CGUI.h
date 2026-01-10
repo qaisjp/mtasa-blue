@@ -14,10 +14,10 @@ class CLocalGUI;
 #pragma once
 
 #ifndef WM_MOUSEWHEEL
-#define WM_MOUSEWHEEL 0x20A // Defined only when including Windows.h -> Not getting defined? (<=XP only?)
+    #define WM_MOUSEWHEEL 0x20A            // Defined only when including Windows.h -> Not getting defined? (<=XP only?)
 #endif
 
-#define DIRECT3D_VERSION         0x0900
+#define DIRECT3D_VERSION 0x0900
 #include "d3d9.h"
 #include "d3dx9.h"
 

@@ -85,7 +85,7 @@ CVehicle* CPoolsSA::AddVehicle(CClientVehicle* pClientVehicle, std::uint16_t mod
     CModelInfoSA* pModelInfo = static_cast<CModelInfoSA*>(pGame->GetModelInfo(model));
     if (!pModelInfo || !pModelInfo->GetInterface())
         return nullptr;
-    
+
     CBaseModelInfoSAInterface* pModelInterface = pModelInfo->GetInterface();
 
     // Ensure collision model pointer exists
@@ -93,10 +93,10 @@ CVehicle* CPoolsSA::AddVehicle(CClientVehicle* pClientVehicle, std::uint16_t mod
     {
         // Collision model pointer is NULL - try loading
         pGame->GetStreaming()->LoadAllRequestedModels(false, "CPoolsSA::AddVehicle");
-        
+
         // Re-fetch interface as loading may have invalidated pointer
         pModelInterface = pModelInfo->GetInterface();
-        
+
         // Still NULL means model has no collision (or loading failed) - block creation
         if (!pModelInterface->pColModel)
             return nullptr;
@@ -608,8 +608,8 @@ CClientEntity* CPoolsSA::GetClientEntity(DWORD* pGameInterface)
 static void CreateMissionTrain(const CVector& vecPos, bool bDirection, std::uint32_t uiTrainType, CTrainSAInterface** ppTrainBeginning,
                                CTrainSAInterface** ppTrainEnd, int iNodeIndex, int iTrackId, bool bMissionTrain) noexcept
 {
-    auto createMissionTrain = reinterpret_cast<void(__cdecl*)(CVector, bool, std::uint32_t, CTrainSAInterface**, CTrainSAInterface**,
-                                                              int, int, bool)>(FUNC_CTrain_CreateMissionTrain);
+    auto createMissionTrain = reinterpret_cast<void(__cdecl*)(CVector, bool, std::uint32_t, CTrainSAInterface**, CTrainSAInterface**, int, int, bool)>(
+        FUNC_CTrain_CreateMissionTrain);
 
     createMissionTrain(vecPos, bDirection, uiTrainType, ppTrainBeginning, ppTrainEnd, iNodeIndex, iTrackId, bMissionTrain);
 }
@@ -693,7 +693,7 @@ DWORD CPoolsSA::GetPedPoolIndex(std::uint8_t* pInterface)
     {
         return MAX_PEDS;
     }
-    return ((pInterface - pTheObjects) / dwAlignedSize); 
+    return ((pInterface - pTheObjects) / dwAlignedSize);
 }
 
 DWORD CPoolsSA::GetVehiclePoolIndex(std::uint8_t* pInterface)

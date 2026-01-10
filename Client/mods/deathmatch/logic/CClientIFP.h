@@ -216,7 +216,7 @@ public:
     // Sorta a hack that these are required by CClientEntity...
     void Unlink();
     void GetPosition(CVector& vecPosition) const {};
-    void SetPosition(const CVector& vecPosition){};
+    void SetPosition(const CVector& vecPosition) {};
 
 private:
     bool ReadIFPByVersion();

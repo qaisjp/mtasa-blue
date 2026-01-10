@@ -30,43 +30,43 @@ class CTrainSAInterface;
 struct CColModelSAInterface;
 struct RwTexture;
 
-#define SIZEOF_CHELI                            2584
+#define SIZEOF_CHELI 2584
 
 // Suspension line sizes for different vehicle types
-#define MAX_SUSPENSION_LINES                    6
-#define SUSPENSION_SIZE_STANDARD                0x20  // Standard wheel: 32 bytes
-#define SUSPENSION_SIZE_BIKE                    0x80  // Bike: 128 bytes (2 wheels with extra data)
-#define SUSPENSION_SIZE_MONSTER_TRUCK           0x90  // Monster truck: 144 bytes
+#define MAX_SUSPENSION_LINES          6
+#define SUSPENSION_SIZE_STANDARD      0x20            // Standard wheel: 32 bytes
+#define SUSPENSION_SIZE_BIKE          0x80            // Bike: 128 bytes (2 wheels with extra data)
+#define SUSPENSION_SIZE_MONSTER_TRUCK 0x90            // Monster truck: 144 bytes
 
-#define FUNC_CCarCtrlCreateCarForScript         0x431f80
-#define FUNC_CVehicle_AddVehicleUpgrade         0x6E3290
-#define FUNC_CVehicle_RemoveVehicleUpgrade      0x6DF930
-#define FUNC_CVehicle_GetBaseVehicleType        0x411D50
-#define FUNC_CVehicle_IsUpsideDown              0x6D1D90
-#define FUNC_CVehicle_SetEngineOn               0x41BDD0
-#define FUNC_CVehicle_IsPassenger               0x6D1BD0
-#define FUNC_CTrain_FindPositionOnTrackFromCoors           0x6F6CC0
+#define FUNC_CCarCtrlCreateCarForScript          0x431f80
+#define FUNC_CVehicle_AddVehicleUpgrade          0x6E3290
+#define FUNC_CVehicle_RemoveVehicleUpgrade       0x6DF930
+#define FUNC_CVehicle_GetBaseVehicleType         0x411D50
+#define FUNC_CVehicle_IsUpsideDown               0x6D1D90
+#define FUNC_CVehicle_SetEngineOn                0x41BDD0
+#define FUNC_CVehicle_IsPassenger                0x6D1BD0
+#define FUNC_CTrain_FindPositionOnTrackFromCoors 0x6F6CC0
 
-#define FUNC_CVehicle_QueryPickedUpEntityWithWinch              0x6d3cf0
-#define FUNC_CVehicle_PickUpEntityWithWinch                     0x6d3cd0
-#define FUNC_CVehicle_ReleasePickedUpEntityWithWinch            0x6d3cb0
-#define FUNC_CVehicle_SetRopeHeightForHeli                      0x6d3d30
+#define FUNC_CVehicle_QueryPickedUpEntityWithWinch   0x6d3cf0
+#define FUNC_CVehicle_PickUpEntityWithWinch          0x6d3cd0
+#define FUNC_CVehicle_ReleasePickedUpEntityWithWinch 0x6d3cb0
+#define FUNC_CVehicle_SetRopeHeightForHeli           0x6d3d30
 
-#define FUNC_CVehicle__SetRemapTexDictionary                    0x6D0BC0
-#define FUNC_CVehicle__GetRemapIndex                            0x6D0B70
-#define FUNC_CVehicle__SetRemap                                 0x6D0C00
-#define FUNC_CVehicle_CustomCarPlate_TextureCreate              0x6D10E0
+#define FUNC_CVehicle__SetRemapTexDictionary       0x6D0BC0
+#define FUNC_CVehicle__GetRemapIndex               0x6D0B70
+#define FUNC_CVehicle__SetRemap                    0x6D0C00
+#define FUNC_CVehicle_CustomCarPlate_TextureCreate 0x6D10E0
 
-#define FUNC_CVehicle_SetWindowOpenFlag                         0x6D3080
-#define FUNC_CVehicle_ClearWindowOpenFlag                       0x6D30B0
+#define FUNC_CVehicle_SetWindowOpenFlag   0x6D3080
+#define FUNC_CVehicle_ClearWindowOpenFlag 0x6D30B0
 
 // from CBike
-#define FUNC_Bike_PlaceOnRoadProperly           0x6BEEB0
-#define FUNC_Automobile_PlaceOnRoadProperly     0x6AF420
-#define FUNC_CBike_Fix                          0x6B7050
+#define FUNC_Bike_PlaceOnRoadProperly       0x6BEEB0
+#define FUNC_Automobile_PlaceOnRoadProperly 0x6AF420
+#define FUNC_CBike_Fix                      0x6B7050
 
 // from CPlane
-#define FUNC_CPlane__Fix                        0x6CABB0
+#define FUNC_CPlane__Fix 0x6CABB0
 
 // from CAutomobile
 #define FUNC_CAutomobile__Fix                   0x6A3440
@@ -74,35 +74,35 @@ struct RwTexture;
 #define FUNC_CAutomobile__UpdateMovingCollision 0x6a1460
 
 // from CHeli
-#define FUNC_CHeli__Fix                         0x6C4530
+#define FUNC_CHeli__Fix 0x6C4530
 
 // from CQuadBike
-#define FUNC_CQuadBike__Fix                     0x6CE2B0
+#define FUNC_CQuadBike__Fix 0x6CE2B0
 
-#define VARS_CarCounts                          0x969094 // 5 values for each vehicle type
+#define VARS_CarCounts 0x969094            // 5 values for each vehicle type
 
-#define MAX_PASSENGERS                          8
+#define MAX_PASSENGERS 8
 
-#define NUM_RAILTRACKS                          4
-#define ARRAY_NumRailTrackNodes                 0xC38014    // NUM_RAILTRACKS dwords
-#define ARRAY_RailTrackNodePointers             0xC38024    // NUM_RAILTRACKS pointers to arrays of SRailNode
+#define NUM_RAILTRACKS              4
+#define ARRAY_NumRailTrackNodes     0xC38014            // NUM_RAILTRACKS dwords
+#define ARRAY_RailTrackNodePointers 0xC38024            // NUM_RAILTRACKS pointers to arrays of SRailNode
 
-#define VAR_CVehicle_SpecialColModels           0xc1cc78
+#define VAR_CVehicle_SpecialColModels 0xc1cc78
 
 #define FUNC_CAutomobile__GetDoorAngleOpenRatio 0x6A2270
 #define FUNC_CTrain__GetDoorAngleOpenRatio      0x6F59C0
 
-#define HANDLING_NOS_Flag                       0x00080000
-#define HANDLING_Hydraulics_Flag                0x00020000
+#define HANDLING_NOS_Flag        0x00080000
+#define HANDLING_Hydraulics_Flag 0x00020000
 
-#define VAR_CVehicle_Variation1                 0x8A6458
-#define VAR_CVehicle_Variation2                 0x8A6459
+#define VAR_CVehicle_Variation1 0x8A6458
+#define VAR_CVehicle_Variation2 0x8A6459
 
 // for vehicle sun glare
 #define FUNC_CAutomobile_OnVehiclePreRender 0x6ABCFD
 #define FUNC_CVehicle_DoSunGlare            0x6DD6F0
 
-#define FUNC_CHeli_ProcessFlyingCarStuff 0x6C4E7D
+#define FUNC_CHeli_ProcessFlyingCarStuff  0x6C4E7D
 #define FUNC_CPlane_ProcessFlyingCarStuff 0x6CB7D2
 
 // CClumpModelInfo::GetFrameFromName
@@ -113,9 +113,9 @@ struct RwTexture;
 // CBike::m_apModelNodes
 // CBoat::pBoatParts
 #define OFFSET_CAutomobile_Nodes 0x648
-#define OFFSET_CTrain_Nodes 0x668
-#define OFFSET_CBike_Nodes 0x5A0
-#define OFFSET_CBoat_Nodes 0x5B0
+#define OFFSET_CTrain_Nodes      0x668
+#define OFFSET_CBike_Nodes       0x5A0
+#define OFFSET_CBoat_Nodes       0x5B0
 
 struct SRailNodeSA
 {
@@ -228,7 +228,7 @@ class CAutoPilot
     BYTE pad[56];
 };
 
-#define MAX_UPGRADES_ATTACHED 15 // perhaps?
+#define MAX_UPGRADES_ATTACHED 15            // perhaps?
 
 class CVehicleSAInterface : public CPhysicalSAInterface
 {
@@ -292,9 +292,7 @@ public:
         ((void(__thiscall*)(CVehicleSAInterface*, RwFrame*, std::uint32_t))0x6D2700)(this, component, state);
     }
 
-    bool IsPassenger(CPedSAInterface* ped) const {
-        return ((bool(__thiscall*)(CVehicleSAInterface const*, CPedSAInterface*))0x6D1BD0)(this, ped);
-    }
+    bool IsPassenger(CPedSAInterface* ped) const { return ((bool(__thiscall*)(CVehicleSAInterface const*, CPedSAInterface*))0x6D1BD0)(this, ped); }
 
     CAEVehicleAudioEntitySAInterface m_VehicleAudioEntity;            // 312
 
@@ -330,9 +328,9 @@ public:
     char             m_nNitroBoosts;            // +1162
     // float m_fNitroTimer; // +2212
 
-    unsigned char m_nSpecialColModel;
-    CEntity*      pEntityWeAreOnForVisibilityCheck;
-    CFireSAInterface*        m_pFire;
+    unsigned char     m_nSpecialColModel;
+    CEntity*          pEntityWeAreOnForVisibilityCheck;
+    CFireSAInterface* m_pFire;
 
     float m_fSteerAngle;               // +1172
     float m_f2ndSteerAngle;            // used for steering 2nd set of wheels or elevators etc..
@@ -413,7 +411,7 @@ public:
 
     // 1424
     VehicleClass m_vehicleClass;
-    uint32_t m_vehicleSubClass;
+    uint32_t     m_vehicleSubClass;
 
     int16_t    m_peviousRemapTxd;
     int16_t    m_remapTxd;
@@ -584,7 +582,7 @@ public:
     bool           GetVehicleRotorState() const noexcept override { return m_rotorState; }
     float          GetPlaneRotorSpeed();
 
-    unsigned long  GetExplodeTime() { return *reinterpret_cast<unsigned long*>(reinterpret_cast<unsigned int>(m_pInterface) + 1240); };
+    unsigned long GetExplodeTime() { return *reinterpret_cast<unsigned long*>(reinterpret_cast<unsigned int>(m_pInterface) + 1240); };
 
     char  GetNitroCount() { return GetVehicleInterface()->m_nNitroBoosts; }
     float GetNitroLevel();
@@ -646,9 +644,9 @@ public:
     SharedUtil::SColor GetHeadLightColor() { return m_HeadLightColor; }
     void               SetHeadLightColor(const SharedUtil::SColor color) { m_HeadLightColor = color; }
 
-    bool     SpawnFlyingComponent(const eCarNodes& nodeIndex, const eCarComponentCollisionTypes& collisionType, std::int32_t removalTime = -1);
-    void     SetWheelVisibility(eWheelPosition wheel, bool bVisible);
-    CVector  GetWheelPosition(eWheelPosition wheel);
+    bool    SpawnFlyingComponent(const eCarNodes& nodeIndex, const eCarComponentCollisionTypes& collisionType, std::int32_t removalTime = -1);
+    void    SetWheelVisibility(eWheelPosition wheel, bool bVisible);
+    CVector GetWheelPosition(eWheelPosition wheel);
 
     bool IsHeliSearchLightVisible();
     void SetHeliSearchLightVisible(bool bVisible);

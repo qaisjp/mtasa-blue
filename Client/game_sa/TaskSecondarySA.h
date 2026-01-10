@@ -18,7 +18,7 @@
 // typedef int CAnimBlendAssociation       ;
 typedef DWORD IKChain_c;
 
-#define FUNC_CTaskSimpleDuck__Constructor               0x691FC0
+#define FUNC_CTaskSimpleDuck__Constructor 0x691FC0
 
 // ##############################################################################
 // ## Name:    CTaskSimpleDuck
@@ -48,6 +48,6 @@ public:
 class CTaskSimpleDuckSA : public virtual CTaskSimpleSA, public virtual CTaskSimpleDuck
 {
 public:
-    CTaskSimpleDuckSA(){};
+    CTaskSimpleDuckSA() {};
     CTaskSimpleDuckSA(eDuckControlTypes nDuckControl, unsigned short nLengthOfDuck = 0, short nUseShotsWhizzingEvents = -1);
 };

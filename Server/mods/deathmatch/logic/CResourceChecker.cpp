@@ -309,24 +309,24 @@ void CResourceChecker::CheckMetaFileForIssues(const string& strPath, const strin
     else
         // ..or do an upgrade
         if (m_bUpgradeScripts == true)
-    {
-        bool bHasChanged = false;
-        CheckMetaSourceForIssues(pRootNode, strFileName, strResourceName, ECheckerMode::UPGRADE, &bHasChanged);
-
-        // Has contents changed?
-        if (bHasChanged)
         {
-            // Rename original to xml.old
-            if (!RenameBackupFile(strPath, ".old"))
-                return;
+            bool bHasChanged = false;
+            CheckMetaSourceForIssues(pRootNode, strFileName, strResourceName, ECheckerMode::UPGRADE, &bHasChanged);
 
-            // Save new content
-            metaFile->Write();
-            CLogger::LogPrintf("Upgrading %s:%s ...........done\n", strResourceName.c_str(), strFileName.c_str());
+            // Has contents changed?
+            if (bHasChanged)
+            {
+                // Rename original to xml.old
+                if (!RenameBackupFile(strPath, ".old"))
+                    return;
 
-            m_upgradedFullPathList.push_back(strPath);
+                // Save new content
+                metaFile->Write();
+                CLogger::LogPrintf("Upgrading %s:%s ...........done\n", strResourceName.c_str(), strFileName.c_str());
+
+                m_upgradedFullPathList.push_back(strPath);
+            }
         }
-    }
 
     delete metaFile;
 }
@@ -540,8 +540,8 @@ void CResourceChecker::CheckLuaSourceForIssues(string strLuaSource, const string
             if (checkerMode == ECheckerMode::WARNINGS)
             {
                 m_ulDeprecatedWarningCount++;
-                CLogger::LogPrintf("WARNING: %s/%s [%s] is encoded in ANSI instead of UTF-8.  Please convert your file to UTF-8.\n", 
-                                 strResourceName.c_str(), strFileName.c_str(), bClientScript ? "Client" : "Server");
+                CLogger::LogPrintf("WARNING: %s/%s [%s] is encoded in ANSI instead of UTF-8.  Please convert your file to UTF-8.\n", strResourceName.c_str(),
+                                   strFileName.c_str(), bClientScript ? "Client" : "Server");
             }
         }
     }
@@ -957,7 +957,7 @@ void CResourceChecker::CheckLuaSourceForIssues(string strLuaSource, const string
             current += 1;
             continue;
         }
-        
+
         // We are calling a function with several arguments or with a table: foo (...)  or  foo {...}
         if ((first == '(' && lastKeyword != "function") || first == '{')
         {
@@ -1156,11 +1156,11 @@ int CResourceChecker::ReplaceFilesInZIP(const string& strOrigZip, const string& 
 {
     // open source and destination file
     zlib_filefunc_def ffunc;
-    #ifdef WIN32
+#ifdef WIN32
     fill_win32_filefunc(&ffunc);
-    #else
+#else
     fill_fopen_filefunc(&ffunc);
-    #endif
+#endif
 
     zipFile szip = unzOpen2(strOrigZip.c_str(), &ffunc);
     if (szip == NULL)
@@ -1215,9 +1215,9 @@ int CResourceChecker::ReplaceFilesInZIP(const string& strOrigZip, const string& 
         if (unzGetCurrentFileInfo(szip, &unzfi, dos_fn, MAX_PATH, NULL, 0, NULL, 0) != UNZ_OK)
             break;
         char fn[MAX_PATH];
-        #ifdef WIN32
+#ifdef WIN32
         OemToChar(dos_fn, fn);
-        #endif
+#endif
 
         // See if file should be replaced
         string fullPathReplacement;

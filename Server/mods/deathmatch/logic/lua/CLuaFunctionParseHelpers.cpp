@@ -319,7 +319,7 @@ CLuaTimer* UserDataCast(CLuaTimer* ptr, lua_State* luaState)
     CLuaManager* luaManager = g_pGame->GetLuaManager();
     if (!luaManager)
         return nullptr;
-        
+
     return luaManager->FindTimerGlobally(reinterpret_cast<unsigned long>(ptr));
 }
 

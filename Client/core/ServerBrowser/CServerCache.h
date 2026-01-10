@@ -22,7 +22,7 @@ public:
     virtual void SetServerCachedInfo(const CServerListItem* pItem) = 0;
     virtual void GetServerListCachedInfo(CServerList* pList) = 0;
     virtual bool GenerateServerList(CServerList* pList, bool bAllowNonResponding = false) = 0;
-    virtual void SetServerListCachedInfo(CServerList* pList) = 0;  // Cache all servers in the list
+    virtual void SetServerListCachedInfo(CServerList* pList) = 0;            // Cache all servers in the list
 };
 
 CServerCacheInterface* GetServerCache();

@@ -4,14 +4,14 @@
 
 // Workaround MultiplayerSA including this header for whatever reason..
 #ifdef __cpp_lib_is_invocable
-#define HAS_ASYNC_TASK_SCHED
+    #define HAS_ASYNC_TASK_SCHED
 
-#include <queue>
-#include <functional>
-#include <memory>
-#include <thread>
-#include <mutex>
-#include <type_traits>
+    #include <queue>
+    #include <functional>
+    #include <memory>
+    #include <thread>
+    #include <mutex>
+    #include <type_traits>
 
 namespace SharedUtil
 {

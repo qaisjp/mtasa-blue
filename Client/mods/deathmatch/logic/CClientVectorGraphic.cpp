@@ -84,7 +84,7 @@ void CClientVectorGraphic::OnUpdate()
     if (std::holds_alternative<CLuaFunctionRef>(m_updateCallbackRef))
     {
         auto& func = std::get<CLuaFunctionRef>(m_updateCallbackRef);
-        auto state = func.GetLuaVM();
+        auto  state = func.GetLuaVM();
 
         if (VERIFY_FUNCTION(func) && state != NULL)
         {

@@ -289,7 +289,6 @@ void CServerCache::StaticSaveServerCache()
     CDataInfoSet dataSet;
     for (const auto& [key, info] : ms_ServerCachedMap)
     {
-
         // Only exclude servers that have failed multiple consecutive query attempts
         if (info.uiCacheNoReplyCount > 3)
             continue;
@@ -452,7 +451,7 @@ void CServerCache::GetServerListCachedInfo(CServerList* pList)
         CServerListItem* pItem = *it;
         if (!pItem)
             continue;
-        CCachedKey       key;
+        CCachedKey key;
         key.ulIp = pItem->Address.s_addr;
         key.usGamePort = pItem->usGamePort;
         if (CCachedInfo* pInfo = MapFind(m_ServerCachedMap, key))
@@ -494,7 +493,6 @@ bool CServerCache::GenerateServerList(CServerList* pList, bool bAllowNonRespondi
 
     for (const auto& [key, info] : m_ServerCachedMap)
     {
-
         // When master server is offline, include all cached servers. Otherwise exclude servers that
         // have consistently failed to respond (uiCacheNoReplyCount > 3). New servers without response data
         // should still be included since they may not have been queried yet.

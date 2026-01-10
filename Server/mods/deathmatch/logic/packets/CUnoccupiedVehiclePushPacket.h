@@ -19,7 +19,7 @@ class CVehicle;
 class CUnoccupiedVehiclePushPacket final : public CPacket
 {
 public:
-    CUnoccupiedVehiclePushPacket(){};
+    CUnoccupiedVehiclePushPacket() {};
 
     ePacketID     GetPacketID() const { return PACKET_ID_VEHICLE_PUSH_SYNC; };
     unsigned long GetFlags() const { return 0; };            // Not used

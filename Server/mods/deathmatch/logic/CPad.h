@@ -137,7 +137,7 @@ struct SGTAControlState
     bool bEnabled;
 };
 
-#define NUM_CONTROL_STATES 45
+#define NUM_CONTROL_STATES     45
 #define NUM_MTA_CONTROL_STATES 19
 
 class CPad

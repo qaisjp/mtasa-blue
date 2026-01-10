@@ -16,17 +16,17 @@
 #include <CMatrix.h>
 #include <CVector2D.h>
 
-#define FUNC_GetDistanceFromCentreOfMassToBaseOfModel       0x536BE0
+#define FUNC_GetDistanceFromCentreOfMassToBaseOfModel 0x536BE0
 
-#define FUNC_SetRwObjectAlpha                               0x5332C0
+#define FUNC_SetRwObjectAlpha 0x5332C0
 
-#define FUNC_CMatrix__ConvertToEulerAngles                  0x59A840
-#define FUNC_CMatrix__ConvertFromEulerAngles                0x59AA40
+#define FUNC_CMatrix__ConvertToEulerAngles   0x59A840
+#define FUNC_CMatrix__ConvertFromEulerAngles 0x59AA40
 
-#define FUNC_IsVisible                                      0x536BC0
+#define FUNC_IsVisible 0x536BC0
 
 // not in CEntity really
-#define FUNC_RpAnimBlendClumpGetAssociation                 0x4D6870
+#define FUNC_RpAnimBlendClumpGetAssociation 0x4D6870
 
 class CPhysicalSAInterface;
 class CRect;
@@ -128,8 +128,8 @@ public:
 
     unsigned long bDontCastShadowsOn : 1;            // Dont cast shadows on this object
     unsigned long bOffscreen : 1;                    // offscreen flag. This can only be trusted when it is set to true
-    unsigned long
-        bIsStaticWaitingForCollision : 1;              // this is used by script created entities - they are static until the collision is loaded below them
+    unsigned long bIsStaticWaitingForCollision
+        : 1;                                           // this is used by script created entities - they are static until the collision is loaded below them
     unsigned long bDontStream : 1;                     // tell the streaming not to stream me
     unsigned long bUnderwater : 1;                     // this object is underwater change drawing order
     unsigned long bHasPreRenderEffects : 1;            // Object has a prerender effects attached to it
@@ -181,7 +181,7 @@ public:
     // Functions to hide member variable misuse
     //
 
-    void SetLod(CEntitySAInterface* pLod) noexcept { m_pLod = pLod; };
+    void                SetLod(CEntitySAInterface* pLod) noexcept { m_pLod = pLod; };
     CEntitySAInterface* GetLod() const noexcept { return m_pLod; };
 
     // Sets
@@ -219,7 +219,8 @@ public:
         ((CStencilShadow_dtorByOwner)0x711730)(this);
     };
 
-    void RemoveRWObjectWithReferencesCleanup() {
+    void RemoveRWObjectWithReferencesCleanup()
+    {
         DeleteRwObject();
         ResolveReferences();
         RemoveShadows();

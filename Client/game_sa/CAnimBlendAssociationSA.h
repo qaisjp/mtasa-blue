@@ -150,16 +150,16 @@ class CAnimBlendAssociationSA : public CAnimBlendAssociation
 public:
     CAnimBlendAssociationSA(CAnimBlendAssociationSAInterface* pInterface) { m_pInterface = pInterface; }
 
-    CAnimBlendAssociationSAInterface*    Constructor(CAnimBlendStaticAssociationSAInterface& StaticAssociationByReference);
-    CAnimBlendAssociationSAInterface*    Constructor(RpClump* pClump, CAnimBlendHierarchySAInterface* pAnimHierarchy);
-    CAnimBlendAssociationSAInterface*    InitializeForCustomAnimation(RpClump* pClump, CAnimBlendHierarchySAInterface* pAnimHierarchy);
-    void                                 Init(RpClump* pClump, CAnimBlendHierarchySAInterface* pAnimHierarchy);
-    void                                 AllocateAnimBlendNodeArray(int count);
-    void                                 FreeAnimBlendNodeArray();
-    CAnimBlendAssociationSAInterface*    GetInterface() { return m_pInterface; }
-    eAnimGroup                           GetAnimGroup() { return static_cast<eAnimGroup>(m_pInterface->sAnimGroup); }
-    eAnimID                              GetAnimID() { return static_cast<eAnimID>(m_pInterface->sAnimID); }
-    std::unique_ptr<CAnimBlendHierarchy> GetAnimHierarchy();
+    CAnimBlendAssociationSAInterface*          Constructor(CAnimBlendStaticAssociationSAInterface& StaticAssociationByReference);
+    CAnimBlendAssociationSAInterface*          Constructor(RpClump* pClump, CAnimBlendHierarchySAInterface* pAnimHierarchy);
+    CAnimBlendAssociationSAInterface*          InitializeForCustomAnimation(RpClump* pClump, CAnimBlendHierarchySAInterface* pAnimHierarchy);
+    void                                       Init(RpClump* pClump, CAnimBlendHierarchySAInterface* pAnimHierarchy);
+    void                                       AllocateAnimBlendNodeArray(int count);
+    void                                       FreeAnimBlendNodeArray();
+    CAnimBlendAssociationSAInterface*          GetInterface() { return m_pInterface; }
+    eAnimGroup                                 GetAnimGroup() { return static_cast<eAnimGroup>(m_pInterface->sAnimGroup); }
+    eAnimID                                    GetAnimID() { return static_cast<eAnimID>(m_pInterface->sAnimID); }
+    std::unique_ptr<CAnimBlendHierarchy>       GetAnimHierarchy();
     const std::unique_ptr<CAnimBlendHierarchy> GetAnimHierarchy() const noexcept;
 
     float GetBlendAmount() { return m_pInterface->fBlendAmount; }

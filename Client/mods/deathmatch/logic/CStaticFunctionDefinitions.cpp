@@ -274,10 +274,10 @@ bool CStaticFunctionDefinitions::OutputChatBox(const char* szText, unsigned char
     // Early null-safety checks to prevent crashes when called before initialization
     if (!m_pCore || !g_pClientGame || !szText || szText[0] == '\0')
         return false;
-    
+
     // Calculate length without color codes when bColorCoded is true for accurate visible text length
     SString textToProcess = bColorCoded ? RemoveColorCodes(szText) : SStringX(szText);
-    
+
     // Reject messages that exceed the maximum length
     if (textToProcess.length() > MAX_OUTPUTCHATBOX_LENGTH)
         return false;
@@ -295,7 +295,7 @@ bool CStaticFunctionDefinitions::OutputChatBox(const char* szText, unsigned char
         m_pCore->ChatPrintfColor("%s", bColorCoded, ucRed, ucGreen, ucBlue, szText);
         return true;
     }
-    
+
     return false;
 }
 
@@ -576,7 +576,6 @@ bool CStaticFunctionDefinitions::GetElementBoundingBox(CClientEntity& Entity, CV
             pModelInfo = g_pGame->GetModelInfo(building.GetModel());
             break;
         }
-
     }
 
     if (pModelInfo)
@@ -1505,7 +1504,8 @@ bool CStaticFunctionDefinitions::SetElementHealth(CClientEntity& Entity, float f
 
             // If setting health to 0 for local player, clear stale damage data
             // and set proper scripted death parameters for DoWastedCheck
-            if (fHealth == 0.0f && Ped.IsLocalPlayer() && Ped.GetHealth() > 0.0f) {
+            if (fHealth == 0.0f && Ped.IsLocalPlayer() && Ped.GetHealth() > 0.0f)
+            {
                 g_pClientGame->SetScriptedDeathData();
             }
 
@@ -1537,7 +1537,8 @@ bool CStaticFunctionDefinitions::SetElementModel(CClientEntity& Entity, unsigned
 {
     RUN_CHILDREN(SetElementModel(**iter, usModel))
 
-    auto callOnChangeEvent = [](auto &element, uint16_t usCurrentModel, uint16_t usModel) {
+    auto callOnChangeEvent = [](auto& element, uint16_t usCurrentModel, uint16_t usModel)
+    {
         CLuaArguments Arguments;
         Arguments.PushNumber(usCurrentModel);
         Arguments.PushNumber(usModel);
@@ -2689,7 +2690,8 @@ bool CStaticFunctionDefinitions::GetTypeIndexFromClothes(const char* szTexture, 
     {
         std::vector<const SPlayerClothing*> pPlayerClothing = CClientPlayerClothes::GetClothingGroup(ucType);
 
-        if (!pPlayerClothing.empty()) {
+        if (!pPlayerClothing.empty())
+        {
             for (unsigned char ucIter = 0; ucIter < pPlayerClothing.size(); ucIter++)
             {
                 if ((szTexture == NULL || strcmp(szTexture, pPlayerClothing[ucIter]->texture.c_str()) == 0) &&
@@ -2915,7 +2917,7 @@ bool CStaticFunctionDefinitions::BlowVehicle(CClientEntity& Entity, std::optiona
     if (!IS_VEHICLE(&Entity))
         return false;
 
-    CClientVehicle& vehicle = static_cast<CClientVehicle&>(Entity);
+    CClientVehicle&  vehicle = static_cast<CClientVehicle&>(Entity);
     VehicleBlowFlags blow;
 
     blow.withExplosion = withExplosion.value_or(true);
@@ -2929,8 +2931,8 @@ bool CStaticFunctionDefinitions::BlowVehicle(CClientEntity& Entity, std::optiona
         CVector position;
         vehicle.GetPosition(position);
 
-        const auto type = vehicle.GetType();
-        const auto state = (blow.withExplosion ? VehicleBlowState::AWAITING_EXPLOSION_SYNC : VehicleBlowState::BLOWN);
+        const auto     type = vehicle.GetType();
+        const auto     state = (blow.withExplosion ? VehicleBlowState::AWAITING_EXPLOSION_SYNC : VehicleBlowState::BLOWN);
         eExplosionType explosion;
 
         switch (type)
@@ -3265,7 +3267,8 @@ bool CStaticFunctionDefinitions::SetVehicleLightState(CClientEntity& Entity, uns
     return false;
 }
 
-bool CStaticFunctionDefinitions::SetVehiclePanelState(CClientEntity& Entity, unsigned char ucPanel, unsigned char ucState, bool spawnFlyingComponent, bool breakGlass)
+bool CStaticFunctionDefinitions::SetVehiclePanelState(CClientEntity& Entity, unsigned char ucPanel, unsigned char ucState, bool spawnFlyingComponent,
+                                                      bool breakGlass)
 {
     RUN_CHILDREN(SetVehiclePanelState(**iter, ucPanel, ucState, spawnFlyingComponent, breakGlass))
 
@@ -4837,7 +4840,8 @@ bool CStaticFunctionDefinitions::SetBlipVisibleDistance(CClientEntity& Entity, u
     return false;
 }
 
-CClientMarker* CStaticFunctionDefinitions::CreateMarker(CResource& Resource, const CVector& vecPosition, const char* szType, float fSize, const SColor color, bool ignoreAlphaLimits)
+CClientMarker* CStaticFunctionDefinitions::CreateMarker(CResource& Resource, const CVector& vecPosition, const char* szType, float fSize, const SColor color,
+                                                        bool ignoreAlphaLimits)
 {
     assert(szType);
 
@@ -5001,7 +5005,7 @@ bool CStaticFunctionDefinitions::SetMarkerTargetArrowProperties(CClientEntity& E
     if (!IS_MARKER(&Entity))
         return false;
 
-    CClientMarker& marker = static_cast<CClientMarker&>(Entity);
+    CClientMarker&     marker = static_cast<CClientMarker&>(Entity);
     CClientCheckpoint* checkpoint = marker.GetCheckpoint();
     if (!checkpoint)
         return false;
@@ -5020,32 +5024,32 @@ bool CStaticFunctionDefinitions::GetCameraMatrix(CVector& vecPosition, CVector& 
 
     m_pCamera->GetPosition(vecPosition);
     m_pCamera->GetFixedTarget(vecLookAt, &fRoll);
-    
+
     fFOV = m_pCamera->GetAccurateFOV();
-    
+
     if (fRoll == 0.0f)
     {
         // Calculate roll from camera matrix when not directly available
         CMatrix matrix;
         m_pCamera->GetMatrix(matrix);
-        
+
         CVector worldUp(0.0f, 0.0f, 1.0f);
         CVector cameraUp = matrix.vUp;
         CVector cameraRight = matrix.vRight;
-        
+
         // Project camera up vector onto plane perpendicular to camera front
         CVector projectedUp = cameraUp - matrix.vFront * cameraUp.DotProduct(&matrix.vFront);
         if (projectedUp.Length() <= FLOAT_EPSILON)
             return true;
 
         projectedUp.Normalize();
-        
+
         float cosRoll = worldUp.DotProduct(&projectedUp);
         float sinRoll = cameraRight.DotProduct(&worldUp);
-        
+
         fRoll = std::atan2(sinRoll, cosRoll) * (180.0f / std::numbers::pi_v<float>);
     }
-    
+
     return true;
 }
 
@@ -6479,8 +6483,8 @@ void CStaticFunctionDefinitions::GUILabelSetColor(CClientEntity& Entity, int iR,
         if (IS_CGUIELEMENT_LABEL(&GUIElement))
         {
             // Set the label color
-            static_cast<CGUILabel*>(GUIElement.GetCGUIElement())->SetTextColor(static_cast<unsigned char>(iR), static_cast<unsigned char>(iG),
-                                                                               static_cast<unsigned char>(iB));
+            static_cast<CGUILabel*>(GUIElement.GetCGUIElement())
+                ->SetTextColor(static_cast<unsigned char>(iR), static_cast<unsigned char>(iG), static_cast<unsigned char>(iB));
         }
     }
 }
@@ -6759,11 +6763,11 @@ bool CStaticFunctionDefinitions::GetGarageSize(unsigned char ucGarageID, float& 
     if (pGarage)
     {
         pGarage->GetSize(fHeight, fWidth, fDepth);
-        
+
         CVector vecPosition;
         pGarage->GetPosition(vecPosition);
         fHeight -= vecPosition.fZ;
-        
+
         return true;
     }
 
@@ -8082,7 +8086,9 @@ bool CStaticFunctionDefinitions::FxAddFootSplash(CVector& vecPosition)
     return true;
 }
 
-bool CStaticFunctionDefinitions::FxCreateParticle(FxParticleSystems eFxParticle, CVector& vecPosition, CVector& vecDirection, float fR, float fG, float fB, float fA, bool bRandomizeColors, std::uint32_t iCount, float fBrightness, float fSize, bool bRandomizeSizes, float fLife)
+bool CStaticFunctionDefinitions::FxCreateParticle(FxParticleSystems eFxParticle, CVector& vecPosition, CVector& vecDirection, float fR, float fG, float fB,
+                                                  float fA, bool bRandomizeColors, std::uint32_t iCount, float fBrightness, float fSize, bool bRandomizeSizes,
+                                                  float fLife)
 {
     g_pGame->GetFx()->AddParticle(eFxParticle, vecPosition, vecDirection, fR, fG, fB, fA, bRandomizeColors, iCount, fBrightness, fSize, bRandomizeSizes, fLife);
     return true;

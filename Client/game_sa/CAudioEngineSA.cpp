@@ -18,11 +18,11 @@
 
 extern CGameSA* pGame;
 
-#define HOOKPOS_CAEAmbienceTrackManager_CheckForPause       0x4D6E21
+#define HOOKPOS_CAEAmbienceTrackManager_CheckForPause 0x4D6E21
 DWORD RETURN_CAEAmbienceTrackManager_CheckForPause = 0x4D6E27;
 void  HOOK_CAEAmbienceTrackManager_CheckForPause();
 
-#define HOOKPOS_CAESoundManager_RequestNewSound     0x4EFB10
+#define HOOKPOS_CAESoundManager_RequestNewSound 0x4EFB10
 DWORD RETURN_CAESoundManager_RequestNewSound = 0x4EFB15;
 void  HOOK_CAESoundManager_RequestNewSound();
 

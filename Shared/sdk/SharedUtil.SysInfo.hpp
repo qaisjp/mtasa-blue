@@ -11,12 +11,12 @@
 
 #ifdef MTA_CLIENT
 
-#define _WIN32_DCOM
-#include <comdef.h>
-#include <Wbemidl.h>
+    #define _WIN32_DCOM
+    #include <comdef.h>
+    #include <Wbemidl.h>
 
-# pragma comment(lib, "wbemuuid.lib")
-#pragma comment(lib, "Version.lib")
+    #pragma comment(lib, "wbemuuid.lib")
+    #pragma comment(lib, "Version.lib")
 
 namespace
 {
@@ -45,7 +45,7 @@ namespace
                      /* [in] */ long                                                                                lTimeout,
                      /* [in] */ ULONG                                                                               uCount,
                      /* [length_is][size_is][out] */ __RPC__out_ecount_part(uCount, *puReturned) IWbemClassObject** apObjects,
-                     /* [out] */ __RPC__out ULONG* puReturned)
+                     /* [out] */ __RPC__out ULONG*                                                                  puReturned)
     {
         __try
         {
@@ -538,4 +538,4 @@ bool SharedUtil::Is64BitOS()
     return bIs64BitOS;
 }
 
-#endif  // MTA_CLIENT
+#endif            // MTA_CLIENT

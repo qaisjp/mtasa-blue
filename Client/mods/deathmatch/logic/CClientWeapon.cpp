@@ -309,10 +309,10 @@ void CClientWeapon::Fire(bool bServerFire)
 #ifdef SHOTGUN_TEST
             CVector vecFireOffset = *m_pWeaponInfo->GetFireOffset();
             CMatrix matTemp = CMatrix(vecFireOffset) * matOrigin;
-#ifdef MARKER_DEBUG
+    #ifdef MARKER_DEBUG
             // Process
             m_pMarker->SetPosition(matOrigin.GetPosition());
-#endif
+    #endif
             CVector vecTemp2;
             GetRotationDegrees(vecTemp2);
             vecTemp2.fZ -= 84.6f;

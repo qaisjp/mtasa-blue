@@ -10,7 +10,7 @@
 #pragma once
 
 #if defined(WIN32)
-#include <detours.h>
+    #include <detours.h>
 
 namespace SharedUtil
 {

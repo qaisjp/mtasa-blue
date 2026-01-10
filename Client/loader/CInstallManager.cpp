@@ -46,13 +46,25 @@ namespace
     }
 
     // Comms between 'Admin' and 'User' processes
-    void SendStringToUserProcess(const SString& strText) { SetApplicationSetting("admin2user_comms", strText); }
+    void SendStringToUserProcess(const SString& strText)
+    {
+        SetApplicationSetting("admin2user_comms", strText);
+    }
 
-    SString ReceiveStringFromAdminProcess() { return GetApplicationSetting("admin2user_comms"); }
+    SString ReceiveStringFromAdminProcess()
+    {
+        return GetApplicationSetting("admin2user_comms");
+    }
 
-    bool IsBlockingUserProcess() { return GetApplicationSetting("admin2user_comms") == "user_waiting"; }
+    bool IsBlockingUserProcess()
+    {
+        return GetApplicationSetting("admin2user_comms") == "user_waiting";
+    }
 
-    void SetIsBlockingUserProcess() { SetApplicationSetting("admin2user_comms", "user_waiting"); }
+    void SetIsBlockingUserProcess()
+    {
+        SetApplicationSetting("admin2user_comms", "user_waiting");
+    }
 
     void ClearIsBlockingUserProcess()
     {
@@ -86,7 +98,7 @@ CInstallManager* GetInstallManager()
 //////////////////////////////////////////////////////////
 void CInstallManager::InitSequencer()
 {
-    #define CR "\n"
+#define CR "\n"
     SString strSource = CR "initial: "                                                     // *** Starts here  by default
         CR "            CALL CheckOnRestartCommand "                                       ////// Start of 'update game' //////
         CR "            IF LastResult != ok GOTO update_end: "                             //
@@ -211,7 +223,7 @@ void CInstallManager::InitSequencer()
         // 3. New launcher lands HERE at "crashed:" label
         // 4. Shows dialog with crash info from settings
         // 5. User chooses restart or quit
-        CR " "                                                                             //
+        CR " "            //
         CR "launch: ";
 
     m_pSequencer = new CSequencerType();
@@ -454,7 +466,7 @@ SString CInstallManager::_ShowCrashFailDialog()
     SetApplicationSetting("diagnostics", "last-crash-code", "");
 
     const bool debuggerCapturePending = (GetApplicationSetting("diagnostics", "debugger-crash-capture") == "1");
-    
+
     if (strReason == "direct3ddevice-reset")
     {
         strMessage += _("** The crash was caused by a graphics driver error **\n\n** Please update your graphics drivers **");
@@ -517,7 +529,7 @@ namespace
     {
         return WerCrash::IsFileRecentEnough(hFile);
     }
-}
+}            // namespace
 
 SString CInstallManager::_CheckForWerCrash()
 {
@@ -532,10 +544,9 @@ SString CInstallManager::_CheckForWerCrash()
     }
 
     const SString existingReason = GetApplicationSetting("diagnostics", "last-crash-reason");
-    const DWORD existingCode = static_cast<DWORD>(GetApplicationSettingInt("diagnostics", "last-crash-code"));
+    const DWORD   existingCode = static_cast<DWORD>(GetApplicationSettingInt("diagnostics", "last-crash-code"));
 
-    if ((existingCode == EXCEPTION_STACK_BUFFER_OVERRUN || existingCode == EXCEPTION_HEAP_CORRUPTION)
-        && !existingReason.empty())
+    if ((existingCode == EXCEPTION_STACK_BUFFER_OVERRUN || existingCode == EXCEPTION_HEAP_CORRUPTION) && !existingReason.empty())
     {
         OutputDebugStringA(SString("_CheckForWerCrash: Already have crash info, code=0x%08X\n", existingCode));
         bWerCrashAlreadyHandled = true;
@@ -558,8 +569,7 @@ SString CInstallManager::_CheckForWerCrash()
             break;
 
         const SString fullPath = PathJoin(werDumpPath, dumpFile);
-        HANDLE hFile = CreateFileA(fullPath, GENERIC_READ, FILE_SHARE_READ, nullptr,
-                                   OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+        HANDLE        hFile = CreateFileA(fullPath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
         if (hFile == INVALID_HANDLE_VALUE)
             break;
@@ -569,15 +579,15 @@ SString CInstallManager::_CheckForWerCrash()
 
         if (isRecent)
         {
-            const auto regs = WerCrash::ExtractRegistersFromMinidump(fullPath);
+            const auto  regs = WerCrash::ExtractRegistersFromMinidump(fullPath);
             const DWORD exceptionCode = regs.valid ? regs.exceptionCode : EXCEPTION_STACK_BUFFER_OVERRUN;
             const char* exceptionName = (exceptionCode == EXCEPTION_STACK_BUFFER_OVERRUN) ? "Stack Buffer Overrun"
-                                       : (exceptionCode == EXCEPTION_HEAP_CORRUPTION)    ? "Heap Corruption"
-                                                                                        : "Security Exception";
+                                        : (exceptionCode == EXCEPTION_HEAP_CORRUPTION)    ? "Heap Corruption"
+                                                                                          : "Security Exception";
 
             SString moduleName = "unknown";
-            DWORD moduleOffset = 0;
-            DWORD idaAddress = 0;
+            DWORD   moduleOffset = 0;
+            DWORD   idaAddress = 0;
             if (regs.valid)
             {
                 const auto resolved = WerCrash::ResolveAddressFromMinidump(fullPath, regs.eip);
@@ -607,8 +617,7 @@ SString CInstallManager::_CheckForWerCrash()
             SYSTEMTIME st{};
             GetLocalTime(&st);
 
-            const auto strMTAVersionFull = SString("%s.%s", MTA_DM_BUILDTAG_LONG,
-                                                   *GetApplicationSetting("mta-version-ext").SplitRight(".", nullptr, -2));
+            const auto strMTAVersionFull = SString("%s.%s", MTA_DM_BUILDTAG_LONG, *GetApplicationSetting("mta-version-ext").SplitRight(".", nullptr, -2));
 
             const SString crashReason = SString(
                 "Security Exception - %s (0x%08X) detected.\n"
@@ -617,11 +626,7 @@ SString CInstallManager::_CheckForWerCrash()
                 "IDA Address: %s\n"
                 "This crash bypassed normal crash handling.\n"
                 "Crash dump: %s",
-                exceptionName, exceptionCode,
-                moduleName.c_str(),
-                moduleOffset,
-                idaAddressStr.c_str(),
-                ExtractFilename(usedDumpPath).c_str());
+                exceptionName, exceptionCode, moduleName.c_str(), moduleOffset, idaAddressStr.c_str(), ExtractFilename(usedDumpPath).c_str());
 
             SString coreLogEntry;
             coreLogEntry += SString("Version = %s\n", strMTAVersionFull.c_str());
@@ -637,9 +642,8 @@ SString CInstallManager::_CheckForWerCrash()
                     "EAX=%08X  EBX=%08X  ECX=%08X  EDX=%08X  ESI=%08X\n"
                     "EDI=%08X  EBP=%08X  ESP=%08X  EIP=%08X  FLG=%08X\n"
                     "CS=%04X   DS=%04X  SS=%04X  ES=%04X   FS=%04X  GS=%04X\n\n",
-                    regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi,
-                    regs.edi, regs.ebp, regs.esp, regs.eip, regs.eflags,
-                    regs.cs, regs.ds, regs.ss, regs.es, regs.fs, regs.gs);
+                    regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp, regs.esp, regs.eip, regs.eflags, regs.cs, regs.ds, regs.ss, regs.es,
+                    regs.fs, regs.gs);
             }
 
             if (!stackTrace.empty())
@@ -706,8 +710,7 @@ SString CInstallManager::_CheckForWerCrash()
             }
 
             const SString fullPath = PathJoin(werDumpPath, dumpFile);
-            HANDLE hFile = CreateFileA(fullPath, GENERIC_READ, FILE_SHARE_READ, nullptr,
-                                       OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
+            HANDLE        hFile = CreateFileA(fullPath, GENERIC_READ, FILE_SHARE_READ, nullptr, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
             if (hFile == INVALID_HANDLE_VALUE)
             {
@@ -722,15 +725,15 @@ SString CInstallManager::_CheckForWerCrash()
             {
                 OutputDebugStringA(SString("_CheckForWerCrash: Processing WER dump file directly: %s\n", dumpFile.c_str()));
 
-                const auto regs = WerCrash::ExtractRegistersFromMinidump(fullPath);
+                const auto  regs = WerCrash::ExtractRegistersFromMinidump(fullPath);
                 const DWORD exceptionCode = regs.valid ? regs.exceptionCode : EXCEPTION_STACK_BUFFER_OVERRUN;
                 const char* exceptionName = (exceptionCode == EXCEPTION_STACK_BUFFER_OVERRUN) ? "Stack Buffer Overrun"
-                                           : (exceptionCode == EXCEPTION_HEAP_CORRUPTION)    ? "Heap Corruption"
-                                                                                            : "Security Exception";
+                                            : (exceptionCode == EXCEPTION_HEAP_CORRUPTION)    ? "Heap Corruption"
+                                                                                              : "Security Exception";
 
                 SString moduleName = "unknown";
-                DWORD moduleOffset = 0;
-                DWORD idaAddress = 0;
+                DWORD   moduleOffset = 0;
+                DWORD   idaAddress = 0;
                 if (regs.valid)
                 {
                     const auto resolved = WerCrash::ResolveAddressFromMinidump(fullPath, regs.eip);
@@ -760,8 +763,7 @@ SString CInstallManager::_CheckForWerCrash()
                 SYSTEMTIME st{};
                 GetLocalTime(&st);
 
-                const auto strMTAVersionFull = SString("%s.%s", MTA_DM_BUILDTAG_LONG,
-                                                       *GetApplicationSetting("mta-version-ext").SplitRight(".", nullptr, -2));
+                const auto strMTAVersionFull = SString("%s.%s", MTA_DM_BUILDTAG_LONG, *GetApplicationSetting("mta-version-ext").SplitRight(".", nullptr, -2));
 
                 const SString crashReason = SString(
                     "Security Exception - %s (0x%08X) detected.\n"
@@ -770,11 +772,7 @@ SString CInstallManager::_CheckForWerCrash()
                     "IDA Address: %s\n"
                     "This crash bypassed normal crash handling.\n"
                     "Crash dump: %s",
-                    exceptionName, exceptionCode,
-                    moduleName.c_str(),
-                    moduleOffset,
-                    idaAddressStr.c_str(),
-                    ExtractFilename(usedDumpPath).c_str());
+                    exceptionName, exceptionCode, moduleName.c_str(), moduleOffset, idaAddressStr.c_str(), ExtractFilename(usedDumpPath).c_str());
 
                 SString coreLogEntry;
                 coreLogEntry += SString("Version = %s\n", strMTAVersionFull.c_str());
@@ -790,9 +788,8 @@ SString CInstallManager::_CheckForWerCrash()
                         "EAX=%08X  EBX=%08X  ECX=%08X  EDX=%08X  ESI=%08X\n"
                         "EDI=%08X  EBP=%08X  ESP=%08X  EIP=%08X  FLG=%08X\n"
                         "CS=%04X   DS=%04X  SS=%04X  ES=%04X   FS=%04X  GS=%04X\n\n",
-                        regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi,
-                        regs.edi, regs.ebp, regs.esp, regs.eip, regs.eflags,
-                        regs.cs, regs.ds, regs.ss, regs.es, regs.fs, regs.gs);
+                        regs.eax, regs.ebx, regs.ecx, regs.edx, regs.esi, regs.edi, regs.ebp, regs.esp, regs.eip, regs.eflags, regs.cs, regs.ds, regs.ss,
+                        regs.es, regs.fs, regs.gs);
                 }
 
                 if (!stackTrace.empty())
@@ -844,13 +841,13 @@ SString CInstallManager::_CheckForWerCrash()
     }
 
     const char* exceptionName = (werInfo.exceptionCode == EXCEPTION_STACK_BUFFER_OVERRUN) ? "Stack Buffer Overrun"
-                               : (werInfo.exceptionCode == EXCEPTION_HEAP_CORRUPTION)    ? "Heap Corruption"
-                                                                                           : "Security Exception";
+                                : (werInfo.exceptionCode == EXCEPTION_HEAP_CORRUPTION)    ? "Heap Corruption"
+                                                                                          : "Security Exception";
 
-    OutputDebugStringA(SString("_CheckForWerCrash: DETECTED! code=0x%08X module=%s offset=%s\n",
-        werInfo.exceptionCode, werInfo.moduleName.c_str(), werInfo.faultOffset.c_str()));
+    OutputDebugStringA(SString("_CheckForWerCrash: DETECTED! code=0x%08X module=%s offset=%s\n", werInfo.exceptionCode, werInfo.moduleName.c_str(),
+                               werInfo.faultOffset.c_str()));
 
-    DWORD offsetValue = 0;
+    DWORD   offsetValue = 0;
     SString offsetStr;
     if (!werInfo.faultOffset.empty())
     {
@@ -867,8 +864,8 @@ SString CInstallManager::_CheckForWerCrash()
         offsetText = SString("0x%s", offsetStr.c_str());
 
     constexpr DWORD IDA_DEFAULT_DLL_BASE = 0x10000000;
-    const DWORD idaAddress = IDA_DEFAULT_DLL_BASE + offsetValue;
-    SString idaAddressStr;
+    const DWORD     idaAddress = IDA_DEFAULT_DLL_BASE + offsetValue;
+    SString         idaAddressStr;
     if (offsetValue == 0)
         idaAddressStr = "unknown";
     else
@@ -886,33 +883,27 @@ SString CInstallManager::_CheckForWerCrash()
         SetApplicationSetting("diagnostics", "last-wer-dump-shown", dumpResult.sourceFilename);
 
     const SString crashReason = dumpResult.path.empty()
-                                   ? SString(
-                                         "Security Exception - %s (0x%08X) detected.\n"
-                                         "Module: %s\n"
-                                 "Offset: %s\n"
-                                         "IDA Address: %s (assuming default DLL base 0x10000000)\n"
-                                         "This crash bypassed normal crash handling.",
-                                         exceptionName, werInfo.exceptionCode,
-                                         werInfo.moduleName.empty() ? "unknown" : werInfo.moduleName.c_str(),
-                                 offsetText.c_str(),
-                                         idaAddressStr.c_str())
-                                   : SString(
-                                         "Security Exception - %s (0x%08X) detected.\n"
-                                         "Module: %s\n"
-                                 "Offset: %s\n"
-                                         "IDA Address: %s (assuming default DLL base 0x10000000)\n"
-                                         "Crash dump: %s",
-                                         exceptionName, werInfo.exceptionCode,
-                                         werInfo.moduleName.empty() ? "unknown" : werInfo.moduleName.c_str(),
-                                 offsetText.c_str(),
-                                         idaAddressStr.c_str(),
-                                         ExtractFilename(dumpResult.path).c_str());
+                                    ? SString(
+                                          "Security Exception - %s (0x%08X) detected.\n"
+                                          "Module: %s\n"
+                                          "Offset: %s\n"
+                                          "IDA Address: %s (assuming default DLL base 0x10000000)\n"
+                                          "This crash bypassed normal crash handling.",
+                                          exceptionName, werInfo.exceptionCode, werInfo.moduleName.empty() ? "unknown" : werInfo.moduleName.c_str(),
+                                          offsetText.c_str(), idaAddressStr.c_str())
+                                    : SString(
+                                          "Security Exception - %s (0x%08X) detected.\n"
+                                          "Module: %s\n"
+                                          "Offset: %s\n"
+                                          "IDA Address: %s (assuming default DLL base 0x10000000)\n"
+                                          "Crash dump: %s",
+                                          exceptionName, werInfo.exceptionCode, werInfo.moduleName.empty() ? "unknown" : werInfo.moduleName.c_str(),
+                                          offsetText.c_str(), idaAddressStr.c_str(), ExtractFilename(dumpResult.path).c_str());
 
     SYSTEMTIME st{};
     GetLocalTime(&st);
 
-    const auto strMTAVersionFull = SString("%s.%s", MTA_DM_BUILDTAG_LONG,
-                                           *GetApplicationSetting("mta-version-ext").SplitRight(".", nullptr, -2));
+    const auto strMTAVersionFull = SString("%s.%s", MTA_DM_BUILDTAG_LONG, *GetApplicationSetting("mta-version-ext").SplitRight(".", nullptr, -2));
 
     SString coreLogEntry;
     coreLogEntry += SString("Version = %s\n", strMTAVersionFull.c_str());
@@ -928,9 +919,9 @@ SString CInstallManager::_CheckForWerCrash()
             "EAX=%08X  EBX=%08X  ECX=%08X  EDX=%08X  ESI=%08X\n"
             "EDI=%08X  EBP=%08X  ESP=%08X  EIP=%08X  FLG=%08X\n"
             "CS=%04X   DS=%04X  SS=%04X  ES=%04X   FS=%04X  GS=%04X\n\n",
-            dumpResult.regs.eax, dumpResult.regs.ebx, dumpResult.regs.ecx, dumpResult.regs.edx, dumpResult.regs.esi,
-            dumpResult.regs.edi, dumpResult.regs.ebp, dumpResult.regs.esp, dumpResult.regs.eip, dumpResult.regs.eflags,
-            dumpResult.regs.cs, dumpResult.regs.ds, dumpResult.regs.ss, dumpResult.regs.es, dumpResult.regs.fs, dumpResult.regs.gs);
+            dumpResult.regs.eax, dumpResult.regs.ebx, dumpResult.regs.ecx, dumpResult.regs.edx, dumpResult.regs.esi, dumpResult.regs.edi, dumpResult.regs.ebp,
+            dumpResult.regs.esp, dumpResult.regs.eip, dumpResult.regs.eflags, dumpResult.regs.cs, dumpResult.regs.ds, dumpResult.regs.ss, dumpResult.regs.es,
+            dumpResult.regs.fs, dumpResult.regs.gs);
     }
 
     if (!dumpResult.stackTrace.empty())

@@ -62,11 +62,11 @@ public:
 
     CFastList() : uiRevision(1), uiNextFrontIndex(UINT_MAX / 2 - 1), uiNextBackIndex(UINT_MAX / 2), m_bSuspendingModifyOperations(false)
     {
-        #ifdef MTA_DEBUG
+#ifdef MTA_DEBUG
         // T must be a pointer
         void* ptr = (T)NULL;
         ptr = NULL;
-        #endif
+#endif
     }
 
     const T& front() const { return orderedMap.begin()->second; }

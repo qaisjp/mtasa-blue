@@ -41,7 +41,7 @@ namespace FPSLimiter
         virtual void SetServerEnforcedFPS(std::uint16_t fps) = 0;            // Set the server-enforced frame rate limit (0 = no limit)
         virtual void SetClientEnforcedFPS(std::uint16_t fps) = 0;            // Set the client-enforced frame rate limit (0 = no limit)
         virtual void SetUserDefinedFPS(std::uint16_t fps) = 0;               // Set the user-defined frame rate limit (0 = no limit)
-        virtual void SetDisplayVSync(bool enabled) = 0;                                 // Set the display refresh rate to cap FPS (0 = no cap)
+        virtual void SetDisplayVSync(bool enabled) = 0;                      // Set the display refresh rate to cap FPS (0 = no cap)
 
         virtual void OnFPSLimitChange() = 0;            // Event handler called when the active frame rate limit changes
         virtual void OnFrameStart() = 0;                // Event handler called at the start of each frame

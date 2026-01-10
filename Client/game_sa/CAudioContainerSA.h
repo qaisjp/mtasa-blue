@@ -17,8 +17,8 @@
 class CAudioContainerLookupTableSA;
 
 #define VALIDATE_BUFFER_SIZE 4096
-#define NUM_BEAT_ENTRIES 1000
-#define NUM_LENGTH_ENTRIES 8
+#define NUM_BEAT_ENTRIES     1000
+#define NUM_LENGTH_ENTRIES   8
 
 struct SAudioEntrySA
 {
@@ -52,7 +52,7 @@ struct SRiffWavePCMHeader
 
     uint32 subchunk2Id;              // big-endian // 36
     uint32 subchunk2Size;            // 40
-};                                   // size = 44 = 0x2C
+};            // size = 44 = 0x2C
 static_assert(sizeof(SRiffWavePCMHeader) == 0x2C, "Invalid size for SRiffWavePCMHeader");
 
 // Documentation by SAAT //

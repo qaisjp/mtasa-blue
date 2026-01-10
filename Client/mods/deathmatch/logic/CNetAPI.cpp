@@ -981,12 +981,13 @@ void CNetAPI::ReadPlayerPuresync(CClientPlayer* pPlayer, NetBitStreamInterface& 
     pPlayer->SetOnFire(flags.data.bIsOnFire);
     pPlayer->SetStealthAiming(flags.data.bStealthAiming);
 
-    if (flags.data.hangingDuringClimb && pPlayer->GetMovementState() != eMovementState::MOVEMENTSTATE_HANGING && pPlayer->GetMovementState() != eMovementState::MOVEMENTSTATE_CLIMB)
+    if (flags.data.hangingDuringClimb && pPlayer->GetMovementState() != eMovementState::MOVEMENTSTATE_HANGING &&
+        pPlayer->GetMovementState() != eMovementState::MOVEMENTSTATE_CLIMB)
         pPlayer->RunClimbingTask();
 
     if (flags.data.bIsInWater && !pPlayer->IsInWater())
         pPlayer->RunSwimTask();
-  
+
     // Remember now as the last puresync time
     pPlayer->SetLastPuresyncTime(CClientTime::GetTime());
     pPlayer->SetLastPuresyncPosition(position.data.vecPosition);
@@ -2239,9 +2240,8 @@ void CNetAPI::ReadBulletsync(CClientPlayer* player, NetBitStreamInterface& strea
 
     CVector start;
     CVector end;
-    if (!stream.Read(reinterpret_cast<char*>(&start), sizeof(CVector)) ||
-        !stream.Read(reinterpret_cast<char*>(&end), sizeof(CVector)) ||
-        !start.IsValid() || !end.IsValid())
+    if (!stream.Read(reinterpret_cast<char*>(&start), sizeof(CVector)) || !stream.Read(reinterpret_cast<char*>(&end), sizeof(CVector)) || !start.IsValid() ||
+        !end.IsValid())
         return;
 
     std::uint8_t order = 0;

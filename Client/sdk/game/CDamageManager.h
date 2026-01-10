@@ -12,12 +12,12 @@
 #pragma once
 
 // Not sure if R* used these
-#define DT_ENGINE_OK                    (0)
-#define DT_ENGINE_RADIATOR_BURST        (100)
-#define DT_ENGINE_ENGINE_OVERHEAT       (150)
-#define DT_ENGINE_ENGINE_PIPES_BURST    (200)
-#define DT_ENGINE_ON_FIRE               (225)
-#define DT_ENGINE_FUCKED                (250)
+#define DT_ENGINE_OK                 (0)
+#define DT_ENGINE_RADIATOR_BURST     (100)
+#define DT_ENGINE_ENGINE_OVERHEAT    (150)
+#define DT_ENGINE_ENGINE_PIPES_BURST (200)
+#define DT_ENGINE_ON_FIRE            (225)
+#define DT_ENGINE_FUCKED             (250)
 
 /*
 const unsigned char DT_ENG_INOPERABLE = 0x01;

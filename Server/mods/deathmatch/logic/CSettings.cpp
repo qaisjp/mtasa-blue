@@ -16,7 +16,7 @@
 #include "CGame.h"
 #include "CMapManager.h"
 
-#define ERROR_BUFFER            32
+#define ERROR_BUFFER 32
 
 CSettings::CSettings(CResourceManager* pResourceManager)
 {

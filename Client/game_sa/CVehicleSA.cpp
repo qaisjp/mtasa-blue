@@ -59,7 +59,7 @@ static void __declspec(naked) HOOK_Vehicle_PreRender(void)
     // clang-format on
 }
 
-static float& fTimeStep = *(float*)(0xB7CB5C);
+static float&          fTimeStep = *(float*)(0xB7CB5C);
 static bool __fastcall CanProcessFlyingCarStuff(CAutomobileSAInterface* vehicleInterface)
 {
     SClientEntity<CVehicleSA>* vehicle = pGame->GetPools()->GetVehicle((DWORD*)vehicleInterface);
@@ -68,12 +68,12 @@ static bool __fastcall CanProcessFlyingCarStuff(CAutomobileSAInterface* vehicleI
 
     if (vehicle->pEntity->GetVehicleRotorState())
     {
-        if (g_pCore->GetMultiplayer()->IsVehicleEngineAutoStartEnabled()) // keep default behavior
+        if (g_pCore->GetMultiplayer()->IsVehicleEngineAutoStartEnabled())            // keep default behavior
             return true;
 
         if (vehicle->pEntity->GetEntityStatus() != eEntityStatus::STATUS_PHYSICS && !vehicle->pEntity->IsBeingDriven())
         {
-            vehicle->pEntity->SetEntityStatus(eEntityStatus::STATUS_PHYSICS); // this will make rotors spin without driver when engine is on
+            vehicle->pEntity->SetEntityStatus(eEntityStatus::STATUS_PHYSICS);            // this will make rotors spin without driver when engine is on
             return false;
         }
         if (!vehicle->pEntity->IsEngineOn())
@@ -81,11 +81,11 @@ static bool __fastcall CanProcessFlyingCarStuff(CAutomobileSAInterface* vehicleI
             // Smoothly change rotors speed to 0
             float speed = vehicle->pEntity->GetHeliRotorSpeed();
             if (speed > 0)
-                vehicle->pEntity->SetHeliRotorSpeed(std::max(0.0f, speed - fTimeStep * 0.00055f)); // 0x6C4EB7
+                vehicle->pEntity->SetHeliRotorSpeed(std::max(0.0f, speed - fTimeStep * 0.00055f));            // 0x6C4EB7
 
             speed = vehicle->pEntity->GetPlaneRotorSpeed();
             if (speed > 0)
-                vehicle->pEntity->SetPlaneRotorSpeed(std::max(0.0f, speed - fTimeStep * 0.003f)); // 0x6CC145
+                vehicle->pEntity->SetPlaneRotorSpeed(std::max(0.0f, speed - fTimeStep * 0.003f));            // 0x6CC145
 
             return false;
         }
@@ -94,8 +94,8 @@ static bool __fastcall CanProcessFlyingCarStuff(CAutomobileSAInterface* vehicleI
     return false;
 }
 
-static constexpr DWORD CONTINUE_CHeli_ProcessFlyingCarStuff = 0x6C4E82;
-static constexpr DWORD RETURN_CHeli_ProcessFlyingCarStuff = 0x6C5404;
+static constexpr DWORD        CONTINUE_CHeli_ProcessFlyingCarStuff = 0x6C4E82;
+static constexpr DWORD        RETURN_CHeli_ProcessFlyingCarStuff = 0x6C5404;
 static void __declspec(naked) HOOK_CHeli_ProcessFlyingCarStuff()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -120,8 +120,8 @@ static void __declspec(naked) HOOK_CHeli_ProcessFlyingCarStuff()
     // clang-format on
 }
 
-static constexpr DWORD CONTINUE_CPlane_ProcessFlyingCarStuff = 0x6CB7D7;
-static constexpr DWORD RETURN_CPlane_ProcessFlyingCarStuff = 0x6CC482;
+static constexpr DWORD        CONTINUE_CPlane_ProcessFlyingCarStuff = 0x6CB7D7;
+static constexpr DWORD        RETURN_CPlane_ProcessFlyingCarStuff = 0x6CC482;
 static void __declspec(naked) HOOK_CPlane_ProcessFlyingCarStuff()
 {
     MTA_VERIFY_HOOK_LOCAL_SIZE;
@@ -207,7 +207,10 @@ namespace
     }
 
     // Get all atomics for this frame (even if they are invisible)
-    void GetAllAtomicObjects(RwFrame* frame, std::vector<RwObject*>& result) { RwFrameForAllObjects(frame, (void*)GetAllAtomicObjectCB, &result); }
+    void GetAllAtomicObjects(RwFrame* frame, std::vector<RwObject*>& result)
+    {
+        RwFrameForAllObjects(frame, (void*)GetAllAtomicObjectCB, &result);
+    }
 }            // namespace
 
 void CVehicleSA::Init()
@@ -625,7 +628,7 @@ void CVehicleSA::SetPlaneRotorSpeed(float fSpeed)
 }
 
 bool CVehicleSA::SetVehicleWheelRotation(float fWheelRot1, float fWheelRot2, float fWheelRot3, float fWheelRot4) noexcept
-{ 
+{
     VehicleClass m_eVehicleType = static_cast<VehicleClass>(GetVehicleInterface()->m_vehicleSubClass);
     switch (m_eVehicleType)
     {
@@ -655,7 +658,7 @@ bool CVehicleSA::SetVehicleWheelRotation(float fWheelRot1, float fWheelRot2, flo
     return false;
 }
 
-float CVehicleSA::GetPlaneRotorSpeed() 
+float CVehicleSA::GetPlaneRotorSpeed()
 {
     auto pInterface = static_cast<CPlaneSAInterface*>(GetInterface());
     return pInterface->m_fPropSpeed;
@@ -1602,7 +1605,7 @@ bool CVehicleSA::SpawnFlyingComponent(const eCarNodes& nodeIndex, const eCarComp
     if (nodeIndex == eCarNodes::NONE)
         return false;
 
-    DWORD nodesOffset = OFFSET_CAutomobile_Nodes;
+    DWORD    nodesOffset = OFFSET_CAutomobile_Nodes;
     RwFrame* defaultBikeChassisFrame = nullptr;
 
     // CBike, CBmx, CBoat and CTrain don't inherit CAutomobile so let's do it manually!

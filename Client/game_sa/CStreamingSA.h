@@ -13,15 +13,15 @@
 
 #include <game/CStreaming.h>
 
-#define VAR_DefaultStreamHandlersMaxCount                   32
-#define VAR_DefaultMaxArchives                              8
+#define VAR_DefaultStreamHandlersMaxCount 32
+#define VAR_DefaultMaxArchives            8
 
-#define FUNC_CStreaming__RequestModel                0x4087E0
-#define FUNC_LoadAllRequestedModels                  0x40EA10
-#define FUNC_CStreaming__HasVehicleUpgradeLoaded     0x407820
-#define FUNC_CStreaming_RequestSpecialModel          0x409d10
-#define FUNC_CStreaming_LoadScene                    0x40EB70
-#define FUNC_CStreaming_LoadSceneCollision           0x40ED80
+#define FUNC_CStreaming__RequestModel            0x4087E0
+#define FUNC_LoadAllRequestedModels              0x40EA10
+#define FUNC_CStreaming__HasVehicleUpgradeLoaded 0x407820
+#define FUNC_CStreaming_RequestSpecialModel      0x409d10
+#define FUNC_CStreaming_LoadScene                0x40EB70
+#define FUNC_CStreaming_LoadSceneCollision       0x40ED80
 
 struct CArchiveInfo
 {
@@ -74,7 +74,7 @@ public:
     unsigned char   AddArchive(const wchar_t* szFilePath);
     void            RemoveArchive(unsigned char ucStreamHandler);
     bool            SetStreamingBufferSize(uint32 uiSize);
-    uint32          GetStreamingBufferSize() { return ms_streamingHalfOfBufferSizeBlocks * 2048 * 2; }; // In bytes
+    uint32          GetStreamingBufferSize() { return ms_streamingHalfOfBufferSizeBlocks * 2048 * 2; };            // In bytes
 
     void          MakeSpaceFor(std::uint32_t memoryToCleanInBytes) override;
     std::uint32_t GetMemoryUsed() const override;
@@ -86,8 +86,8 @@ private:
     void AllocateArchive();
 
     std::vector<CArchiveInfo> m_Imgs;
-    std::vector<HANDLE> m_StreamHandles;
-    std::vector<SStreamName> m_StreamNames;
+    std::vector<HANDLE>       m_StreamHandles;
+    std::vector<SStreamName>  m_StreamNames;
 
     static void* (&ms_pStreamingBuffer)[2];
     static uint32(&ms_streamingHalfOfBufferSizeBlocks);

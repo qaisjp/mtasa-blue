@@ -15,7 +15,7 @@
 #include "ehs/ehs.h"
 
 #ifndef MAX_PATH
-#define MAX_PATH        260
+    #define MAX_PATH 260
 #endif
 
 class CResourceHTMLItem : public CResourceFile

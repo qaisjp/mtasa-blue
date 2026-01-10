@@ -53,7 +53,7 @@ public:
     CTaskSimpleSwimSA(CPed* ped, CVector* pos);
 
     const CTaskSimpleSwimSAInterface* GetTaskInterface() const { return static_cast<const CTaskSimpleSwimSAInterface*>(GetInterface()); }
-    CTaskSimpleSwimSAInterface* GetTaskInterface() { return static_cast<CTaskSimpleSwimSAInterface*>(GetInterface()); }
+    CTaskSimpleSwimSAInterface*       GetTaskInterface() { return static_cast<CTaskSimpleSwimSAInterface*>(GetInterface()); }
 
     swimState GetSwimState() const override { return GetTaskInterface()->m_swimState; }
 };

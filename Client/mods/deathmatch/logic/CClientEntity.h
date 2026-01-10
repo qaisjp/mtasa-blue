@@ -24,20 +24,20 @@ class CLuaFunctionRef;
 
 class CClientManager;
 
-#define IS_PED(entity) ((entity)->GetType()==CCLIENTPLAYER||(entity)->GetType()==CCLIENTPED)
-#define IS_PLAYER(entity) ((entity)->GetType()==CCLIENTPLAYER)
-#define IS_REMOTE_PLAYER(player) (IS_PLAYER(player)&&!(player)->IsLocalPlayer())
-#define IS_RADARMARKER(entity) ((entity)->GetType()==CCLIENTRADARMARKER)
-#define IS_VEHICLE(entity) ((entity)->GetType()==CCLIENTVEHICLE)
-#define IS_OBJECT(entity) ((entity)->GetType()==CCLIENTOBJECT)
-#define IS_MARKER(entity) ((entity)->GetType()==CCLIENTMARKER)
-#define IS_PICKUP(entity) ((entity)->GetType()==CCLIENTPICKUP)
-#define IS_RADAR_AREA(entity) ((entity)->GetType()==CCLIENTRADARAREA)
-#define IS_COLSHAPE(entity) ((entity)->GetType()==CCLIENTCOLSHAPE)
-#define IS_PROJECTILE(entity) ((entity)->GetType()==CCLIENTPROJECTILE)
-#define IS_GUI(entity) ((entity)->GetType()==CCLIENTGUI)
-#define IS_IFP(entity) ((entity)->GetType()==CCLIENTIFP)
-#define CHECK_CGUI(entity,type) (((CClientGUIElement*)entity)->GetCGUIElement()->GetType()==(type))
+#define IS_PED(entity)           ((entity)->GetType() == CCLIENTPLAYER || (entity)->GetType() == CCLIENTPED)
+#define IS_PLAYER(entity)        ((entity)->GetType() == CCLIENTPLAYER)
+#define IS_REMOTE_PLAYER(player) (IS_PLAYER(player) && !(player)->IsLocalPlayer())
+#define IS_RADARMARKER(entity)   ((entity)->GetType() == CCLIENTRADARMARKER)
+#define IS_VEHICLE(entity)       ((entity)->GetType() == CCLIENTVEHICLE)
+#define IS_OBJECT(entity)        ((entity)->GetType() == CCLIENTOBJECT)
+#define IS_MARKER(entity)        ((entity)->GetType() == CCLIENTMARKER)
+#define IS_PICKUP(entity)        ((entity)->GetType() == CCLIENTPICKUP)
+#define IS_RADAR_AREA(entity)    ((entity)->GetType() == CCLIENTRADARAREA)
+#define IS_COLSHAPE(entity)      ((entity)->GetType() == CCLIENTCOLSHAPE)
+#define IS_PROJECTILE(entity)    ((entity)->GetType() == CCLIENTPROJECTILE)
+#define IS_GUI(entity)           ((entity)->GetType() == CCLIENTGUI)
+#define IS_IFP(entity)           ((entity)->GetType() == CCLIENTIFP)
+#define CHECK_CGUI(entity, type) (((CClientGUIElement*)entity)->GetCGUIElement()->GetType() == (type))
 
 enum eClientEntityType
 {
@@ -229,7 +229,7 @@ public:
     virtual inline unsigned short GetDimension() { return m_usDimension; }
     virtual void                  SetDimension(unsigned short usDimension);
 
-    virtual void ModelRequestCallback(CModelInfo* pModelInfo){};
+    virtual void ModelRequestCallback(CModelInfo* pModelInfo) {};
 
     virtual bool IsOutOfBounds();
     CModelInfo*  GetModelInfo() { return m_pModelInfo; };

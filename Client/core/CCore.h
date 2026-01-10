@@ -87,26 +87,26 @@ public:
     ~CCore();
 
     // Subsystems (query)
-    eCoreVersion                       GetVersion();
-    CConsoleInterface*                 GetConsole();
-    CCommandsInterface*                GetCommands();
-    CConnectManager*                   GetConnectManager() { return m_pConnectManager; };
-    CGame*                             GetGame();
-    CGUI*                              GetGUI();
-    CGraphicsInterface*                GetGraphics();
-    CModManagerInterface*              GetModManager();
-    CMultiplayer*                      GetMultiplayer();
-    CNet*                              GetNetwork();
-    CXML*                              GetXML() { return m_pXML; };
-    CXMLNode*                          GetConfig();
-    CClientVariables*                  GetCVars() { return &m_ClientVariables; };
-    CKeyBindsInterface*                GetKeyBinds();
-    CMouseControl*                     GetMouseControl() { return m_pMouseControl; };
-    CLocalGUI*                         GetLocalGUI();
-    CLocalizationInterface*            GetLocalization() { return g_pLocalization; };
-    CWebCoreInterface*                 GetWebCore();
-    CWebCoreInterface*                 GetWebCoreUnchecked() { return m_pWebCore; }            // For cleanup in destructors only - bypasses initialization check
-    CTrayIconInterface*                GetTrayIcon() { return m_pTrayIcon; };
+    eCoreVersion            GetVersion();
+    CConsoleInterface*      GetConsole();
+    CCommandsInterface*     GetCommands();
+    CConnectManager*        GetConnectManager() { return m_pConnectManager; };
+    CGame*                  GetGame();
+    CGUI*                   GetGUI();
+    CGraphicsInterface*     GetGraphics();
+    CModManagerInterface*   GetModManager();
+    CMultiplayer*           GetMultiplayer();
+    CNet*                   GetNetwork();
+    CXML*                   GetXML() { return m_pXML; };
+    CXMLNode*               GetConfig();
+    CClientVariables*       GetCVars() { return &m_ClientVariables; };
+    CKeyBindsInterface*     GetKeyBinds();
+    CMouseControl*          GetMouseControl() { return m_pMouseControl; };
+    CLocalGUI*              GetLocalGUI();
+    CLocalizationInterface* GetLocalization() { return g_pLocalization; };
+    CWebCoreInterface*      GetWebCore();
+    CWebCoreInterface*      GetWebCoreUnchecked() { return m_pWebCore; }            // For cleanup in destructors only - bypasses initialization check
+    CTrayIconInterface*     GetTrayIcon() { return m_pTrayIcon; };
     std::shared_ptr<CDiscordInterface> GetDiscord();
     CSteamClient*                      GetSteamClient() { return m_steamClient.get(); }
     FPSLimiter::FPSLimiterInterface*   GetFPSLimiter() const noexcept { return m_pFPSLimiter.get(); }
@@ -294,8 +294,8 @@ public:
     const SString& GetLastConnectedServerName() const { return m_strLastConnectedServerName; }
     void           SetLastConnectedServerName(const SString& strServerName) { m_strLastConnectedServerName = strServerName; }
 
-    void         SetCurrentRefreshRate(uint uiRefreshRate) { m_uiCurrentRefreshRate = uiRefreshRate; }
-    uint         GetCurrentRefreshRate() const { return m_uiCurrentRefreshRate; }
+    void SetCurrentRefreshRate(uint uiRefreshRate) { m_uiCurrentRefreshRate = uiRefreshRate; }
+    uint GetCurrentRefreshRate() const { return m_uiCurrentRefreshRate; }
 
     void OnPostColorFilterRender() override;
 

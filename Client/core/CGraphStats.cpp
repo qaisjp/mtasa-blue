@@ -115,7 +115,7 @@ void CGraphStats::AddTimingPoint(const char* szName)
     CGraphicsInterface* pGraphics = g_pCore->GetGraphics();
 
     std::uint32_t viewportWidth = pGraphics->GetViewportWidth();
-    std::uint32_t sizeX = viewportWidth / 4; // one quarter of screen width
+    std::uint32_t sizeX = viewportWidth / 4;            // one quarter of screen width
 
     // Start of next frame?
     if (szName[0] == 0)
@@ -220,15 +220,15 @@ void CGraphStats::Draw()
     CGraphicsInterface* pGraphics = g_pCore->GetGraphics();
     CLocalGUI*          pLocalGUI = g_pCore->GetLocalGUI();
 
-    std::uint32_t viewportWidth = pGraphics->GetViewportWidth();    // get width of current resolution
-    std::uint32_t viewportHeight = pGraphics->GetViewportHeight();  // get height of current resolution
-    std::uint32_t originX = 10;                                     // offset the graph by 10 pixels from left side of screen
-    std::uint32_t originY = pLocalGUI->GetChatBottomPosition();     // get chat bottom screen position
-    std::uint32_t sizeX = viewportWidth / 4;                        // set the width of graph to 1/4 of current resolution
-    std::uint32_t sizeY = viewportHeight / 4;                       // set the height of graph to 1/4 of current resolution
-    std::uint32_t rangeY = 100;                                     // 100ms
+    std::uint32_t viewportWidth = pGraphics->GetViewportWidth();              // get width of current resolution
+    std::uint32_t viewportHeight = pGraphics->GetViewportHeight();            // get height of current resolution
+    std::uint32_t originX = 10;                                               // offset the graph by 10 pixels from left side of screen
+    std::uint32_t originY = pLocalGUI->GetChatBottomPosition();               // get chat bottom screen position
+    std::uint32_t sizeX = viewportWidth / 4;                                  // set the width of graph to 1/4 of current resolution
+    std::uint32_t sizeY = viewportHeight / 4;                                 // set the height of graph to 1/4 of current resolution
+    std::uint32_t rangeY = 100;                                               // 100ms
 
-    originY = originY + sizeY + 30;  // add graph height plus a little gap to the overall Y position
+    originY = originY + sizeY + 30;            // add graph height plus a little gap to the overall Y position
 
     float fLineScale = 1 / 1000.f / rangeY * sizeY;
     float fLineHeight = pGraphics->GetDXFontHeight();

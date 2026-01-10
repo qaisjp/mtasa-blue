@@ -95,20 +95,20 @@ int CLuaModule::_LoadModule()
             CLogger::LogPrintf("MODULE: File not found - %s\n", *strExpectedPathFilename);
         }
         else
-    #ifdef WIN_x64
+#ifdef WIN_x64
             if (IsModule32Bit(strExpectedPathFilename))
         {
             CLogger::LogPrintf("MODULE: File not 64 bit - %s\n", *strExpectedPathFilename);
         }
         else
-    #endif
-    #ifdef WIN_x86
+#endif
+#ifdef WIN_x86
             if (!IsModule32Bit(strExpectedPathFilename))
         {
             CLogger::LogPrintf("MODULE: File not 32 bit - %s\n", *strExpectedPathFilename);
         }
         else
-    #endif
+#endif
         {
             CLogger::LogPrintf("MODULE: Unable to load %s (%s)\n", *strExpectedPathFilename, *strError);
         }

@@ -48,13 +48,12 @@ const STypeMapping TypeMappingList[] = {
 // Big list of D3D registers
 //
 
-#define ADD_REGISTER(type,name) \
-    {offsetof(USING_STRUCT, name), USING_LIST, #name, type}
+#define ADD_REGISTER(type, name) {offsetof(USING_STRUCT, name), USING_LIST, #name, type}
 
 const SRegisterInfo BigRegisterInfoList[] = {
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DRenderState
-#define USING_LIST "RenderState"
+#define USING_LIST   "RenderState"
     ADD_REGISTER(TYPE_INT, ZENABLE),                             //  = 7,    /* D3DZBUFFERTYPE (or TRUE/FALSE for legacy) */
     ADD_REGISTER(TYPE_INT, FILLMODE),                            //  = 8,    /* D3DFILLMODE */
     ADD_REGISTER(TYPE_INT, SHADEMODE),                           //  = 9,    /* D3DSHADEMODE */
@@ -158,11 +157,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, SRCBLENDALPHA),             //  = 207,  /* SRC blend factor for the alpha channel when DWORD SEPARATEDESTALPHAENABLE )  */
     ADD_REGISTER(TYPE_INT, DESTBLENDALPHA),            //  = 208,  /* DST blend factor for the alpha channel when DWORD SEPARATEDESTALPHAENABLE ) */
     ADD_REGISTER(TYPE_INT, BLENDOPALPHA),              //  = 209,  /* Blending operation for the alpha channel when DWORD SEPARATEDESTALPHAENABLE ) */
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DStageState
-#define USING_LIST "StageState"
+#define USING_LIST   "StageState"
     ADD_REGISTER(TYPE_INT, COLOROP),                          //  =  1, /* D3DTEXTUREOP - per-stage blending controls for color channels */
     ADD_REGISTER(TYPE_INT, COLORARG1),                        //  =  2, /* D3DTA_* (texture arg) */
     ADD_REGISTER(TYPE_INT, COLORARG2),                        //  =  3, /* D3DTA_* (texture arg) */
@@ -181,11 +180,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, ALPHAARG0),                        //  = 27, /* D3DTA_* third arg for triadic ops */
     ADD_REGISTER(TYPE_INT, RESULTARG),                        //  = 28, /* D3DTA_* arg for result (CURRENT or TEMP) */
     ADD_REGISTER(TYPE_INT, CONSTANT),                         //  = 32, /* Per-stage constant D3DTA_CONSTANT */
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DSamplerState
-#define USING_LIST "SamplerState"
+#define USING_LIST   "SamplerState"
     ADD_REGISTER(TYPE_INT, ADDRESSU),                    //  = 1,  /* D3DTEXTUREADDRESS for U coordinate */
     ADD_REGISTER(TYPE_INT, ADDRESSV),                    //  = 2,  /* D3DTEXTUREADDRESS for V coordinate */
     ADD_REGISTER(TYPE_INT, ADDRESSW),                    //  = 3,  /* D3DTEXTUREADDRESS for W coordinate */
@@ -199,21 +198,21 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, SRGBTEXTURE),             //  = 11, /* Default = 0 (which means Gamma 1.0, no correction required.) else correct for Gamma = 2.2 */
     ADD_REGISTER(TYPE_INT, ELEMENTINDEX),            //  = 12, When multi-element texture is assigned to sampler, this indicates which element index to use.
     ADD_REGISTER(TYPE_INT, DMAPOFFSET),              //  = 13, /* Offset in vertices in the pre-sampled displacement map. */
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT D3DMATERIAL9
-#define USING_LIST "MaterialState"
+#define USING_LIST   "MaterialState"
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Diffuse),  /* Diffuse color RGBA */
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Ambient),  /* Ambient color RGB */
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Specular), /* Specular 'shininess' */
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Emissive), /* Emissive color RGB */
     ADD_REGISTER(TYPE_FLOAT, Power),            /* Sharpness if specular highlight */
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DTransformState
-#define USING_LIST "TransformState"
+#define USING_LIST   "TransformState"
     ADD_REGISTER(TYPE_MATRIX, VIEW),                  //  = 2,
     ADD_REGISTER(TYPE_MATRIX, PROJECTION),            //  = 3,
     ADD_REGISTER(TYPE_MATRIX, TEXTURE0),              //  = 16,
@@ -228,11 +227,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_MATRIX, WORLD1),                //  = 257,
     ADD_REGISTER(TYPE_MATRIX, WORLD2),                //  = 258,
     ADD_REGISTER(TYPE_MATRIX, WORLD3),                //  = 259,
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT D3DLIGHT9
-#define USING_LIST "LightState"
+#define USING_LIST   "LightState"
     ADD_REGISTER(TYPE_INT, Type),               /* Type of light source */
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Diffuse),  /* Diffuse color of light */
     ADD_REGISTER(TYPE_D3DCOLORVALUE, Specular), /* Specular color of light */
@@ -246,23 +245,23 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_FLOAT, Attenuation2),     /* Quadratic attenuation */
     ADD_REGISTER(TYPE_FLOAT, Theta),            /* Inner angle of spotlight cone */
     ADD_REGISTER(TYPE_FLOAT, Phi),              /* Outer angle of spotlight cone */
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DLightEnableState
-#define USING_LIST "LightEnableState"
+#define USING_LIST   "LightEnableState"
     ADD_REGISTER(TYPE_INT, Enable),
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DTextureState
-#define USING_LIST "TextureState"
+#define USING_LIST   "TextureState"
     ADD_REGISTER(TYPE_TEXTURE, Texture),
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT D3DCAPS9
-#define USING_LIST "DeviceCaps"
+#define USING_LIST   "DeviceCaps"
     ADD_REGISTER(TYPE_INT, DeviceType),
     ADD_REGISTER(TYPE_INT, AdapterOrdinal),
     ADD_REGISTER(TYPE_INT, Caps), /* Caps from DX7 Draw */
@@ -339,11 +338,11 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, MaxPShaderInstructionsExecuted),            // maximum number of pixel shader instructions that can be executed
     ADD_REGISTER(TYPE_INT, MaxVertexShader30InstructionSlots),
     ADD_REGISTER(TYPE_INT, MaxPixelShader30InstructionSlots),
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 
 #define USING_STRUCT CProxyDirect3DDevice9::SD3DVertexDeclState
-#define USING_LIST "VertexDeclState"
+#define USING_LIST   "VertexDeclState"
     ADD_REGISTER(TYPE_INT, Position),            // Does each vertex have these components ?
     ADD_REGISTER(TYPE_INT, PositionT),
     ADD_REGISTER(TYPE_INT, Normal),
@@ -351,8 +350,8 @@ const SRegisterInfo BigRegisterInfoList[] = {
     ADD_REGISTER(TYPE_INT, Color1),
     ADD_REGISTER(TYPE_INT, TexCoord0),
     ADD_REGISTER(TYPE_INT, TexCoord1),
-#undef  USING_STRUCT
-#undef  USING_LIST
+#undef USING_STRUCT
+#undef USING_LIST
 };
 
 ////////////////////////////////////////////////////////////////
@@ -1017,7 +1016,7 @@ SString CEffectParameters::GetAnnotationNameAndValue(D3DXHANDLE hParameter, uint
     if (!m_pD3DEffect)
         return "";
 
-    D3DXHANDLE         hAnnotation = m_pD3DEffect->GetAnnotation(hParameter, uiIndex);
+    D3DXHANDLE hAnnotation = m_pD3DEffect->GetAnnotation(hParameter, uiIndex);
     if (!hAnnotation)
         return "";
 
@@ -1156,8 +1155,8 @@ bool CEffectParameters::TryMappingParameterToRegister(D3DXHANDLE hParameter, con
         }
 
         // Extract prepended stage number, if any
-        SString strStagePart;
-        SString strName;
+        SString    strStagePart;
+        SString    strName;
         const bool bHasStagePart = strAnnotValue.Split(",", &strStagePart, &strName, -1);
         if (!bHasStagePart)
             strName = strAnnotValue;
@@ -1168,7 +1167,7 @@ bool CEffectParameters::TryMappingParameterToRegister(D3DXHANDLE hParameter, con
         if (strName.empty())
             continue;
 
-        int iStage = 0;
+        int        iStage = 0;
         const bool bGroupUsesStage = DoesStateGroupUseStageIndex(stateGroup);
         if (bHasStagePart)
         {
@@ -1181,7 +1180,7 @@ bool CEffectParameters::TryMappingParameterToRegister(D3DXHANDLE hParameter, con
             if (strStagePart.empty())
                 continue;
 
-            char* pParseEnd = nullptr;
+            char*      pParseEnd = nullptr;
             const long parsedStage = strtol(strStagePart.c_str(), &pParseEnd, 10);
             if (!pParseEnd || *pParseEnd != '\0')
                 continue;

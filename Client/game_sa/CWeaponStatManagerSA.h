@@ -15,10 +15,10 @@
 #include "CWeaponStatSA.h"
 
 // Straight out of CGameSA.h
-#define CLASSSIZE_WeaponInfo            112         // ##SA##
-#define NUM_WeaponInfosStdSkill         WEAPONTYPE_LAST_WEAPONTYPE
-#define NUM_WeaponInfosOtherSkill       11
-#define NUM_WeaponInfosTotal            (NUM_WeaponInfosStdSkill + (3*NUM_WeaponInfosOtherSkill)) // std, (poor, pro, special)
+#define CLASSSIZE_WeaponInfo      112            // ##SA##
+#define NUM_WeaponInfosStdSkill   WEAPONTYPE_LAST_WEAPONTYPE
+#define NUM_WeaponInfosOtherSkill 11
+#define NUM_WeaponInfosTotal      (NUM_WeaponInfosStdSkill + (3 * NUM_WeaponInfosOtherSkill))            // std, (poor, pro, special)
 
 #define WEAPON_STAT_MAX 112
 
